@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Batang Surigaonon Youth</title>
-  <!--<link rel="stylesheet" href="style.css" />-->
-  <style>
-    * {
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+ <!--   * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -35,30 +33,7 @@
       height: 100vh;
       object-fit: cover;
     }
-
-    /* Login link styles - moved to left */
-    .login_redirect {
-      position: absolute;
-      top: 30px;
-      left: 30px;
-      z-index: 100;
-    }
-
-    .login-link {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      padding: 5px 0;
-      transition: all 0.3s ease;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    }
-
-    .login-link:hover {
-      color: rgb(126, 151, 241);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-
+      
     /* Rest of your existing styles remain the same */
     .logo-circle img {
       width: 100px;
@@ -133,7 +108,7 @@
 
     .buttons button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
     .buttons .outline {
@@ -155,31 +130,37 @@
       width: 120%;
       height: 100vh;
       object-fit: cover;
-    }
-  </style>
+    } -->
 </head>
-
 <body>
 
   <header class="hero-section">
     <div class="login_redirect">
       <a href="{{ route('login') }}" class="login-link">Login</a>
     </div>
-    <div class="hero-image">
-      <img src="{{ asset('images/BSYCover.jpg') }}" alt="Group Photo" />
+    <div class="semi-circle">
+        <div class="title_container">
+            <img src="images/BSYLogo.png" class="landing_page_logo" alt="Logo"/>
+            <div class="title_wrapper_main">
+                <div class="t_1">BATANG</div>
+                <div class="t_2">SURIGAONON</div>
+                <div class="t_3">YOUTH</div>
+            </div>
+            <div class="title_wrapper_sub">
+                <div class="ts_1">"THE FIRST STEP OF LEADERSHIP IS</div>
+                <div class="ts_2">SERVANTHOOD."</div>
+            </div>
+        </div>
     </div>
-  </header>
-
+  </header><!--
   <section class="about-section">
     <div class="about-text">
       <h3>ABOUT US</h3>
       <h2>Who Are We?</h2>
       <p>
-        Batang Surigaonon Youth is a group or organization centered around the youth of Surigao,
-        typically aiming to uplift and empower young people in the region. The term could symbolize a collective
-        identity
-        for Surigao's younger generation, emphasizing pride in local culture, active participation in community
-        development,
+        Batang Surigaonon Youth is a group or organization centered around the youth of Surigao, 
+        typically aiming to uplift and empower young people in the region. The term could symbolize a collective identity 
+        for Surigao's younger generation, emphasizing pride in local culture, active participation in community development, 
         and fostering unity among peers.
       </p>
       <div class="buttons">
@@ -188,14 +169,13 @@
       </div>
     </div>
     <div class="about-image">
-      <img src="{{ asset('images/BSYSide.png') }}" alt="Event Group" />
+      <img src="{{ asset('images/BSYSide.png') }}" alt="Event Group" /> 
     </div>
   </section>
 
   <div class="LastHero">
     <img src="{{ asset('images/BSYLastHero.png') }}" alt="Last Image" />
-  </div>
+  </div>-->
 
 </body>
-
 </html>
