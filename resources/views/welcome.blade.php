@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Batang Surigaonon Youth</title>
   <!--<link rel="stylesheet" href="style.css" />-->
   <style>
@@ -50,12 +51,12 @@
       font-size: 1rem;
       padding: 5px 0;
       transition: all 0.3s ease;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
 
     .login-link:hover {
-      color:rgb(126, 151, 241);
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      color: rgb(126, 151, 241);
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
 
     /* Rest of your existing styles remain the same */
@@ -132,7 +133,7 @@
 
     .buttons button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .buttons .outline {
@@ -157,6 +158,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <header class="hero-section">
@@ -173,9 +175,11 @@
       <h3>ABOUT US</h3>
       <h2>Who Are We?</h2>
       <p>
-        Batang Surigaonon Youth is a group or organization centered around the youth of Surigao, 
-        typically aiming to uplift and empower young people in the region. The term could symbolize a collective identity 
-        for Surigao's younger generation, emphasizing pride in local culture, active participation in community development, 
+        Batang Surigaonon Youth is a group or organization centered around the youth of Surigao,
+        typically aiming to uplift and empower young people in the region. The term could symbolize a collective
+        identity
+        for Surigao's younger generation, emphasizing pride in local culture, active participation in community
+        development,
         and fostering unity among peers.
       </p>
       <div class="buttons">
@@ -184,7 +188,7 @@
       </div>
     </div>
     <div class="about-image">
-      <img src="{{ asset('images/BSYSide.png') }}" alt="Event Group" /> 
+      <img src="{{ asset('images/BSYSide.png') }}" alt="Event Group" />
     </div>
   </section>
 
@@ -193,4 +197,5 @@
   </div>
 
 </body>
+
 </html>
