@@ -1,181 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Batang Surigaonon Youth</title>
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
- <!--   * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: sans-serif;
-    }
 
-    body {
-      background-color: #f9f9ff;
-      color: #333;
-    }
-
-    .hero-section {
-      position: relative;
-      width: 100%;
-      height: auto;
-    }
-
-    .hero-image {
-      position: relative;
-    }
-
-    .hero-image img {
-      width: 100%;
-      display: block;
-      height: 100vh;
-      object-fit: cover;
-    }
-      
-    /* Rest of your existing styles remain the same */
-    .logo-circle img {
-      width: 100px;
-      border-radius: 50%;
-      background-color: white;
-      padding: 10px;
-    }
-
-    .hero-text {
-      color: #fff;
-    }
-
-    .hero-text h1 {
-      font-size: 2.5rem;
-      font-weight: bold;
-    }
-
-    .hero-text span {
-      color: #fff;
-      background-color: #6f30d3;
-      padding: 0.2rem 0.5rem;
-      border-radius: 5px;
-    }
-
-    .hero-text p {
-      font-style: italic;
-      margin-top: 0.5rem;
-    }
-
-    .about-section {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 3rem;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .about-text {
-      flex: 1 1 400px;
-    }
-
-    .about-text h3 {
-      color: #1C0BA3;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .about-text h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .about-text p {
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.5;
-    }
-
-    .buttons button {
-      padding: 0.6rem 1.2rem;
-      font-size: 1rem;
-      margin-right: 1rem;
-      border: none;
-      border-radius: 5px;
-      background-color: #1C0BA3;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .buttons button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .buttons .outline {
-      background-color: white;
-      color: #1C0BA3;
-      border: 2px solid #1C0BA3;
-    }
-
-    .buttons .outline:hover {
-      background-color: #f5f5ff;
-    }
-
-    .about-image img {
-      max-width: 100%;
-      margin-left: 8.1%;
-    }
-
-    .lasthero img {
-      width: 120%;
-      height: 100vh;
-      object-fit: cover;
-    } -->
 </head>
+
 <body>
 
-  <header class="hero-section">
-    <div class="login_redirect">
-      <a href="{{ route('login') }}" class="login-link">Login</a>
-    </div>
-    <div class="semi-circle">
-        <div class="title_container">
-            <img src="images/BSYLogo.png" class="landing_page_logo" alt="Logo"/>
+  <div class="container">
+    <! -- First Hero Section -->
+      <header class="hero1">
+        {{-- <img src="{{ asset('images/main_background.png') }}" alt="Hero Image" class="hero-image " /> --}}
+        <div class=" login_redirect">
+          <a href="{{ route('login') }}" class="login-link">Login</a>
+        </div>
+        <div class="semi-circle">
+          <div class="title_container">
+            <img src="images/BSYLogo.png" class="landing_page_logo" alt="Logo" />
             <div class="title_wrapper_main">
-                <div class="t_1">BATANG</div>
-                <div class="t_2">SURIGAONON</div>
-                <div class="t_3">YOUTH</div>
+              <div class="t_1">BATANG</div>
+              <div class="t_2">SURIGAONON</div>
+              <div class="t_3">YOUTH</div>
             </div>
             <div class="title_wrapper_sub">
-                <div class="ts_1">"THE FIRST STEP OF LEADERSHIP IS</div>
-                <div class="ts_2">SERVANTHOOD."</div>
+              <div class="ts_1">"THE FIRST STEP OF LEADERSHIP IS</div>
+              <div class="ts_2">SERVANTHOOD."</div>
             </div>
+          </div>
         </div>
-    </div>
-  </header><!--
-  <section class="about-section">
-    <div class="about-text">
-      <h3>ABOUT US</h3>
-      <h2>Who Are We?</h2>
-      <p>
-        Batang Surigaonon Youth is a group or organization centered around the youth of Surigao, 
-        typically aiming to uplift and empower young people in the region. The term could symbolize a collective identity 
-        for Surigao's younger generation, emphasizing pride in local culture, active participation in community development, 
-        and fostering unity among peers.
-      </p>
-      <div class="buttons">
-        <button>Learn More</button>
-        <button class="outline" onclick="window.location.href='{{ route('register') }}'">Join Us</button>
-      </div>
-    </div>
-    <div class="about-image">
-      <img src="{{ asset('images/BSYSide.png') }}" alt="Event Group" /> 
-    </div>
-  </section>
+      </header>
+      <! -- Second Hero Section -->
+        <div class="container">
+          <section class="about">
+            <div class="about-content">
+              <div class="about-text">
+                <h2>About Us</h2>
+                <h3>Who Are We?</h3>
+                <p>Batang Surigaonon Youth is a group or organization centered around the youth of Surigao, typically
+                  aiming to uplift and empower young people in the region. The term could symbolize a collective
+                  identity for Surigao's younger generation, emphasizing pride in local culture, active participation in
+                  community development, and fostering unity among peers.
+                </p>
+                <div class="buttons">
+                  <a href="#" class="learn-more">Learn More →</a>
+                  <a href="#" class="join-us">Join Us</a>
+                </div>
+              </div>
+              <div class="about-image">
+                <img src="{{ asset('images/BSYside.png') }}" alt="About Group Photo">
+              </div>
+            </div>
+          </section>
+        </div>
 
-  <div class="LastHero">
-    <img src="{{ asset('images/BSYLastHero.png') }}" alt="Last Image" />
-  </div>-->
+
+
+
+
+        <!-- Our Projects Section -->
+        <section class="projects">
+          <h2>Our Projects</h2>
+          <div class="scroll-gallery-container">
+            <div class="scroll-gallery-track">
+              <a href="{{ route('project.details', ['id' => 1]) }}" class="scroll-gallery-link">
+                <div class="scroll-gallery-item">
+                  <img src="{{ asset('assets/images/project1.jpg') }}" alt="Project 1">
+                  <div class="text-container">
+                    <h3>Community Clean-Up</h3>
+                    <p>A project to clean and preserve Surigao's beaches, promoting environmental awareness among the
+                      youth.</p>
+                  </div>
+                </div>
+              </a>
+              <a href="{{ route('project.details', ['id' => 2]) }}" class="scroll-gallery-link">
+                <div class="scroll-gallery-item">
+                  <img src="{{ asset('assets/images/project2.jpg') }}" alt="Project 2">
+                  <div class="text-container">
+                    <h3>Youth Leadership Summit</h3>
+                    <p>An annual summit to inspire and train young leaders in Surigao for community development.</p>
+                  </div>
+                </div>
+              </a>
+              <a href="{{ route('project.details', ['id' => 3]) }}" class="scroll-gallery-link">
+                <div class="scroll-gallery-item">
+                  <img src="{{ asset('assets/images/project3.jpg') }}" alt="Project 3">
+                  <div class="text-container">
+                    <h3>Scholarship Drive</h3>
+                    <p>Supporting education by providing scholarships to underprivileged students in the region.</p>
+                  </div>
+                </div>
+              </a>
+              <a href="{{ route('project.details', ['id' => 4]) }}" class="scroll-gallery-link">
+                <div class="scroll-gallery-item">
+                  <img src="{{ asset('assets/images/project4.jpg') }}" alt="Project 4">
+                  <div class="text-container">
+                    <h3>Cultural Festival</h3>
+                    <p>Celebrating Surigaonon culture through art, music, and dance performances by the youth.</p>
+                  </div>
+                </div>
+              </a>
+              <a href="{{ route('project.details', ['id' => 5]) }}" class="scroll-gallery-link">
+                <div class="scroll-gallery-item">
+                  <img src="{{ asset('assets/images/project5.jpg') }}" alt="Project 5">
+                  <div class="text-container">
+                    <h3>Tree Planting Event</h3>
+                    <p>Planting trees to contribute to a greener Surigao community.</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+
+
+  </div>
+
+
+
+
+
+
+
 
 </body>
+
 </html>
