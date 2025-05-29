@@ -32,6 +32,8 @@
           </div>
         </div>
       </header>
+
+
       <! -- Second Hero Section -->
         <div class="container">
           <section class="about">
