@@ -14,7 +14,6 @@
   <div class="container">
     <! -- First Hero Section -->
       <header class="hero1">
-        {{-- <img src="{{ asset('images/main_background.png') }}" alt="Hero Image" class="hero-image " /> --}}
         <div class=" login_redirect">
           <a href="{{ route('login') }}" class="login-link">Login</a>
         </div>
@@ -56,8 +55,6 @@
             </div>
           </section>
         </div>
-
-
 
 
 
