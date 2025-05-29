@@ -1,5 +1,8 @@
 <?php
 
+// This file is part of the Surigao Youth Development Project.
+// (c) Batang Surigaonon Youth.
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -8,32 +11,38 @@ class ProjectController extends Controller
 {
     public function show($id)
     {
-    $projects = [
-            1 => (object) [
+    $project = [
+            1 => [
                 'id' => 1,
-                'title' => 'Community Clean-Up',
+                'title' => 'Basic Life Support Training',
                 'description' => 'A project to clean and preserve Surigao\'s beaches, promoting environmental awareness among the youth.',
-                'image' => 'project1.jpg'
+                'image' => '1.jpg',
+                'gallery_images' => [
+                    '1.jpg',
+                    '1.jpg',
+                    '2.jpg',
+                    '3.jpg',
+                ],
             ],
-            2 => (object) [
+            2 => [
                 'id' => 2,
                 'title' => 'Youth Leadership Summit',
                 'description' => 'An annual summit to inspire and train young leaders in Surigao for community development.',
                 'image' => 'project2.jpg'
             ],
-            3 => (object) [
+            3 => [
                 'id' => 3,
                 'title' => 'Scholarship Drive',
                 'description' => 'Supporting education by providing scholarships to underprivileged students in the region.',
                 'image' => 'project3.jpg'
             ],
-            4 => (object) [
+            4 =>  [
                 'id' => 4,
                 'title' => 'Cultural Festival',
                 'description' => 'Celebrating Surigaonon culture through art, music, and dance performances by the youth.',
                 'image' => 'project4.jpg'
             ],
-            5 => (object) [
+            5 =>  [
                 'id' => 5,
                 'title' => 'Tree Planting Event',
                 'description' => 'Planting trees to contribute to a greener Surigao community.',
@@ -42,13 +51,15 @@ class ProjectController extends Controller
         ];
 
         // Fetch the project by ID, or return a default/fallback if not found
-        $project = isset($projects[$id]) ? $projects[$id] : (object) [
-            'id' => $id,
-            'title' => 'Project Not Found',
-            'description' => 'The project you are looking for does not exist.',
-            'image' => 'default.jpg'
-        ];
+        // $project = [
+        //     'id' => $id,
+        //     'project' => $projects,
+        //     'title' => 'Project Not Found',
+        //     'description' => 'The project you are looking for does not exist.',
+        //     'image' => 'default.jpg'
+        // ];
 
-        return view('project-details', compact('project'));
+        return view('project-details', compact('project', 'id'));
     }
 }
+

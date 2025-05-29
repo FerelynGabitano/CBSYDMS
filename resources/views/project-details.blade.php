@@ -4,108 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $project->title }} - Project Details</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
-
-        h1 {
-            color: #FFA500;
-            /* Orange heading */
-            font-size: 1.5em;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            color: #6A0DAD;
-            /* Purple subheading */
-            font-size: 1.2em;
-            margin: 20px 0 10px;
-        }
-
-        p {
-            color: #666;
-            font-size: 1em;
-            line-height: 1.6;
-            margin: 0 0 15px;
-            text-align: left;
-        }
-
-        .image-container img {
-            width: 100%;
-            max-width: 600px;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .section {
-            text-align: left;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.2em;
-            }
-
-            h2 {
-                font-size: 1em;
-            }
-
-            p {
-                font-size: 0.9em;
-            }
-
-            .image-container img {
-                max-width: 100%;
-            }
-        }
-    </style>
+    <title>{{ $project[$id]['title'] ?? 'Our Project' }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="container">
-        <h1>{{ $project->title }}</h1>
-        <div class="image-container">
-            <img src="{{ asset('assets/images/' . $project->image) }}" alt="{{ $project->title }}">
+<body class="bg-gray-100 font-sans">
+    <!-- Hero Section -->
+    <section class="bg-blue-600 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ $project[$id]['title'] ?? 'Project Not Found' }}</h1>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto">
+                {{ $project[$id]['description'] ?? 'The project you are looking for does not exist.' }}
+            </p>
         </div>
-        <div class="section">
-            <h2>Overview</h2>
-            <p>{{ $project->description }}</p>
+    </section>
+
+    <!-- Description Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">About This Project</h2>
+            <div class="max-w-3xl mx-auto text-gray-700">
+                <p class="mb-4">
+                    {{ $project[$id]['description'] ?? 'The project you are looking for does not exist.' }}
+                </p>
+                <p>
+                    Explore more about our initiatives and join us in making a difference in the Surigao community.
+                </p>
+            </div>
         </div>
-        <div class="section">
-            <h2>Goals</h2>
-            <p>This project aims to achieve sustainable outcomes, such as environmental preservation, community
-                engagement, or educational support. Specific goals will be detailed as the project progresses.</p>
+    </section>
+
+    <!-- Image Gallery Section -->
+    <section class="bg-white py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Project Gallery</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @if(isset($project[$id]['gallery_images']) && !empty($project[$id]['gallery_images']))
+                    @foreach($project[$id]['gallery_images'] as $index => $image)
+                        <div class="overflow-hidden rounded-lg shadow-lg">
+                            <img src="{{ asset('images/' . $image) }}" alt="Project Image {{ $index + 1 }}"
+                                class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300">
+                        </div>
+                    @endforeach
+                @else
+                    <div class="col-span-3 text-center text-gray-500">
+                        No gallery images available for this project.
+                    </div>
+                @endif
+            </div>
         </div>
-        <div class="section">
-            <h2>Timeline</h2>
-            <p>Planned start: June 2025. Estimated completion: December 2025. Updates will be provided as milestones are
-                reached.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">© 2025 Surigao Youth Development Project. All rights reserved.</p>
+            <p>Contact us at: <a href="mailto:info@surigaoyouth.org"
+                    class="underline hover:text-blue-300">info@surigaoyouth.org</a></p>
         </div>
-        <div class="section">
-            <h2>Additional Notes</h2>
-            <p>This is a temporary placeholder page. Replace this content with the actual project documentation,
-                including team members, resources, and progress updates.</p>
-        </div>
-    </div>
+    </footer>
 </body>
 
 </html>

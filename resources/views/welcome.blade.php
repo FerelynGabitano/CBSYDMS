@@ -51,7 +51,7 @@
                 </div>
               </div>
               <div class="about-image">
-                <img src="{{ asset('images/BSYside.png') }}" alt="About Group Photo">
+                <img src="{{ asset('images/side_feat.png') }}" alt="About Group Photo">
               </div>
             </div>
           </section>
@@ -116,7 +116,57 @@
           </div>
         </section>
 
+        <!-- Partners & Sponsors Section -->
+        <section class="partners-sponsors">
+          <h2>PARTNERS & SPONSORS</h2>
+          <h3>Extending Hands</h3>
+          <div class="logo-grid">
+            <img src="{{ asset('images/logos/jci-surigao-nickel 1.png') }}" alt="JCI Surigao Nickel">
+            <img src="{{ asset('images/logos/lydo.png') }}" alt="LYDO Surigao City">
+            <img src="{{ asset('images/logos/city_logo.png') }}" alt="Surigao City Logo">
+            <img src="{{ asset('images/logos/jjc.png') }}" alt="JJC Surigao Ironwood">
+            <img src="{{ asset('images/logos/ylp.png') }}" alt="YLP Youth Leadership">
+            <img src="{{ asset('images/logos/tingog.png') }}" alt="Tingog Party List">
+            <img src="{{ asset('images/logos/sk.png') }}" alt="SK Federation Surigao City">
+          </div>
+        </section>
 
+        <!-- Footer Section -->
+        <footer class="footer-section">
+          <div class="footer-left">
+            <img src="{{ asset('images/logos/bsylogo.png') }}" alt="BSY Logo">
+            <img src="{{ asset('images/logos/offtogreatness.png') }}" alt="Off to Greatness Logo">
+            <img src="{{ asset('images/logos/ignitethelight.png') }}" alt="Ignite the Light Logo">
+            <img src="{{ asset('images/logos/daretolead.png') }}" alt="Dare to Lead Logo">
+          </div>
+          <div class="footer-right">
+            <div class="footer-column">
+              <h4>BSY DISTRICTS</h4>
+              <ul>
+                <li>Arellano Districts</li>
+                <li>Urban Districts</li>
+                <li>Highway Districts</li>
+                <li>North Districts</li>
+                <li>East Districts</li>
+                <li>South Districts</li>
+                <li>West Districts</li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>GET INVOLVED</h4>
+              <ul>
+                <li><a href="#">Join Us</a></li>
+                <li><a href="#">Donate</a></li>
+              </ul>
+            </div>
+            <div class="footer-column">
+              <h4>STAY CONNECTED</h4>
+              <ul>
+                <li><a href="#">Facebook</a></li>
+              </ul>
+            </div>
+          </div>
+        </footer>
 
   </div>
 

@@ -230,6 +230,7 @@ body {
     position: relative;
     max-width: 50%;
     top: 20px;
+    
 }
 
 /* Create the purple gradient border frame */
@@ -253,12 +254,12 @@ body {
     display: block;
     padding: 0;
     box-sizing: border-box;
-    left: 160px;
+    
 }
 
 
 
-/* Responsive Design */
+/* Responsive Design for Second Section */
 @media (max-width: 768px) {
     .about-content {
         flex-direction: column;
@@ -424,3 +425,142 @@ body {
     }
 }
 
+
+
+  /* Partners & Sponsors Section */
+  .partners-sponsors {
+    background-color: #fff;
+    padding: 40px 0;
+    text-align: center;
+  }
+  .partners-sponsors h2 {
+    font-size: 2rem;
+    color: #4B0082; /* Purple color for "PARTNERS & SPONSORS" */
+    margin-bottom: 10px;
+  }
+  .partners-sponsors h3 {
+    font-size: 1.5rem;
+    color: #4B0082; /* Purple color for "EXTENDING HANDS" */
+    margin-bottom: 40px;
+  }
+  .logo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Reduced gap to match tighter spacing in the second image */
+    margin-bottom: 40px;
+  }
+  .logo-grid img {
+    max-width: 220px; /* Increased max-width to make logos larger, matching the second image */
+    height: 74px;
+  }
+
+  /* Responsive Design for Partners & Sponsor Section */
+  @media (max-width: 768px) {
+  .partners-sponsors h2 {
+    font-size: 1.8rem; /* Smaller heading for tablets */
+  }
+  .partners-sponsors h3 {
+    font-size: 1.3rem; /* Smaller subheading for tablets */
+  }
+  .logo-grid img {
+    max-width: 150px; /* Smaller logos for tablets */
+  }
+  .footer-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-left {
+    margin-bottom: 20px;
+  }
+  .footer-right {
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer-column {
+    text-align: center;
+  }
+}
+
+  /* Footer Section */
+  .footer-section {
+    background-color: #E6E6FA; 
+    padding: 30px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .footer-left img {
+    max-width: 100px;
+    height: auto;
+  }
+  .footer-left .ignite-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #FF4500; /* Orange color for "IGNITE THE LIGHT" */
+  }
+  .footer-right {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .footer-column {
+    text-align: left;
+  }
+  .footer-column h4 {
+    font-size: 1.1rem;
+    color: #FF4500; /* Orange color for column headings */
+    margin-bottom: 10px;
+  }
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+  }
+  .footer-column ul li {
+    margin-bottom: 5px;
+  }
+  .footer-column ul li a {
+    color: #333;
+    text-decoration: none;
+  }
+  .footer-column ul li a:hover {
+    text-decoration: underline;
+  }
+
+/* Responsive Design for Footer Section */
+  @media (max-width: 480px) {
+  .partners-sponsors {
+    padding: 20px 0; /* Reduced padding for mobile */
+  }
+  .partners-sponsors h2 {
+    font-size: 1.5rem; /* Smaller heading for mobile */
+  }
+  .partners-sponsors h3 {
+    font-size: 1.1rem; /* Smaller subheading for mobile */
+    margin-bottom: 20px;
+  }
+  .logo-grid img {
+    max-width: 120px; /* Smaller logos for mobile */
+  }
+  .footer-left img {
+    max-width: 80px; /* Smaller logos in footer for mobile */
+  }
+  .footer-left .ignite-text {
+    font-size: 1rem; /* Smaller text for mobile */
+  }
+  .footer-column h4 {
+    font-size: 0.9rem; /* Smaller heading for mobile */
+  }
+  .footer-column ul li {
+    margin-bottom: 3px; /* Reduced spacing between list items */
+  }
+}
