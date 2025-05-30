@@ -9,6 +9,128 @@ body {
     overflow-y: auto;
     }
 
+
+
+
+    /* Navigation Bar Styles */
+.navbar {
+  /* background-color: #035ba28e;  */
+  padding: 15px 20px;
+  margin-right: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  width: 26%;
+  /* border-bottom-right-radius: 30px; */
+  height: fit-content;
+  z-index: 1000;
+  transition: transform 0.1s ease; 
+}
+
+.navbar.hidden {
+  transform: translateY(-100%); /* Slide the navbar up out of view */
+}
+
+.navbar-logo img {
+  width: 60px;
+  height: 60px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navbar-links a {
+  color: #F5A623; /* Orange color for links */
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  color: #fff; /* White on hover */
+}
+
+.join-us-btn {
+  background-color: #007BFF; /* Blue button */
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.join-us-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+  .navbar-links a {
+    font-size: 0.9rem; /* Slightly smaller text for tablets */
+  }
+  .navbar-logo img {
+    max-width: 130px; /* Smaller logo for tablets */
+  }
+  .join-us-btn {
+    padding: 6px 15px; /* Reduced padding for tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 15px; /* Reduced padding for tablets */
+  }
+  .navbar-links {
+    gap: 15px; /* Reduced gap between links */
+  }
+  .navbar-links a {
+    font-size: 0.85rem; /* Smaller text for tablets */
+  }
+  .navbar-logo img {
+    max-width: 120px; /* Smaller logo for tablets */
+  }
+  .join-us-btn {
+    padding: 5px 12px; /* Further reduced padding */
+    font-size: 0.9rem; /* Smaller button text */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column; /* Stack elements vertically on mobile */
+    padding: 10px; /* Reduced padding for mobile */
+    text-align: center;
+  }
+  .navbar-logo {
+    margin-bottom: 10px; /* Space below logo */
+  }
+  .navbar-logo img {
+    max-width: 100px; /* Smaller logo for mobile */
+  }
+  .navbar-links {
+    flex-direction: column; /* Stack links vertically */
+    gap: 10px; /* Reduced gap */
+    margin-bottom: 10px;
+  }
+  .navbar-links a {
+    font-size: 0.8rem; /* Smaller text for mobile */
+  }
+  .join-us-btn {
+    padding: 5px 10px; /* Minimal padding for mobile */
+    font-size: 0.85rem; /* Smaller button text */
+    width: 100px; /* Fixed width for consistency */
+    display: block; /* Ensure it behaves as a block */
+    margin: 0 auto; /* Center the button */
+  }
+}
+
 /* First Section */
     .hero1 {
       background-image: url('/images/main_background.png');
@@ -38,10 +160,13 @@ body {
     }
 
     .login_redirect {
-      position: absolute;
-      top: 30px;
-      left: 30px;
-      z-index: 100;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+  padding: 10px 20px; /* Add padding for better spacing */
+  border-radius: 5px; /* Rounded corners */
+  display: inline-block; /* Ensure it wraps tightly around the link */
+  position: absolute; /* Position it relative to the header */
+  top: 20px; /* Adjust positioning as needed */
+  left: 20px;
     }
 
     .login-link {
@@ -55,6 +180,7 @@ body {
     }
 
     .login-link:hover {
+        background-color: rgba(255, 255, 255, 0.3);
       color:rgb(126, 151, 241);
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }

@@ -14,4 +14,10 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
+Route::get('/learnmore', function () {
+    return view('learnmore');
+})->name('learnmore');
+
+
+
 Route::get('/project/{id}', [ProjectController::class, 'show'])->name('project.details');
