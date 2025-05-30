@@ -19,7 +19,7 @@
         <div class="container mx-auto text-center">
             <h2 class="text-2xl font-semibold mb-4">Watch Our Video</h2>
             <video controls class="w-full max-w-4xl mx-auto">
-                <source src="/videos/bsy-video.mp4" type="video/mp4">
+                <source src="images/videos/BSY Story.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
