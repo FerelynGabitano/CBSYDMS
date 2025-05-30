@@ -28,7 +28,7 @@
     </nav>
 
     <div class="container">
-      <! -- First Hero Section -->
+      <!-- First Hero Section -->
         <header class="hero1">
           {{-- <div class=" login_redirect">
             <a href="{{ route('login') }}" class="login-link">Login</a>
@@ -51,7 +51,7 @@
     </div>
 
 
-    <! -- Second Hero Section -->
+    <!-- Second Hero Section -->
       <section id="about-section" class="about">
         <div class="container">
 
