@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,7 @@
             color: white;
             padding: 20px;
             text-align: center;
+            position: relative;
         }
 
         .header h1 {
@@ -45,6 +47,24 @@
         .header img {
             height: 80px;
             margin-bottom: 15px;
+        }
+
+        .header a {
+            position: absolute;
+            left: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+        }
+
+        .header a:hover {
+            color: #d1d5db;
+        }
+
+        .header a svg {
+            width: 2rem;
+            height: 2rem;
         }
 
         .form-container {
@@ -160,7 +180,7 @@
             align-items: center;
             margin-top: 20px;
         }
-        
+
         .terms-checkbox {
             appearance: none;
             width: 20px;
@@ -174,24 +194,24 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .terms-checkbox:checked {
             background-color: #1C0BA3;
         }
-        
+
         .terms-checkbox:checked::after {
             content: "✓";
             color: white;
             font-size: 14px;
             position: absolute;
         }
-        
+
         .terms-label {
             font-size: 0.95rem;
             color: #333;
             cursor: pointer;
         }
-        
+
         .terms-label .required {
             color: red;
         }
@@ -201,16 +221,22 @@
                 flex-direction: column;
                 gap: 0;
             }
-            
+
             .header h1 {
                 font-size: 1.5rem;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
+            <a href="{{ url('/') }}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
             <img src="{{ asset('images/BSYLogo.png') }}" alt="BSY Logo">
             <h1>Batang Surigaonon Youth Registration</h1>
             <p>Join our Batang Surigaonon Youth and be Part of the Change!</p>
@@ -336,7 +362,8 @@
                         <div class="form-group">
                             <label class="required">Birth Certificate</label>
                             <div class="file-upload">
-                                <input type="file" id="birthCert" name="birthCert" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <input type="file" id="birthCert" name="birthCert" accept=".pdf,.jpg,.jpeg,.png"
+                                    required>
                                 <label for="birthCert">Click to upload file</label>
                                 <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
                             </div>
@@ -347,7 +374,8 @@
                         <div class="form-group">
                             <label class="required">Latest Grade Report</label>
                             <div class="file-upload">
-                                <input type="file" id="gradeReport" name="gradeReport" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <input type="file" id="gradeReport" name="gradeReport" accept=".pdf,.jpg,.jpeg,.png"
+                                    required>
                                 <label for="gradeReport">Click to upload file</label>
                                 <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
                             </div>
@@ -381,10 +409,10 @@
     <script>
         // Simple file upload feedback
         document.querySelectorAll('input[type="file"]').forEach(input => {
-            input.addEventListener('change', function() {
+            input.addEventListener('change', function () {
                 const fileInfo = this.parentElement.querySelector('.file-info');
                 if (this.files.length > 0) {
-                    fileInfo.textContent = this.files[0].name + " (" + 
+                    fileInfo.textContent = this.files[0].name + " (" +
                         Math.round(this.files[0].size / 1024) + "KB)";
                     fileInfo.style.color = "#1C0BA3";
                 } else {
@@ -395,4 +423,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -29,51 +29,48 @@
 
     <div class="container">
       <!-- First Hero Section -->
-        <header class="hero1">
-          {{-- <div class=" login_redirect">
-            <a href="{{ route('login') }}" class="login-link">Login</a>
-          </div> --}}
-          <div class="semi-circle">
-            <div class="title_container">
-              <img src="images/BSYLogo.png" class="landing_page_logo" alt="Logo" />
-              <div class="title_wrapper_main">
-                <div class="t_1">BATANG</div>
-                <div class="t_2">SURIGAONON</div>
-                <div class="t_3">YOUTH</div>
-              </div>
-              <div class="title_wrapper_sub">
-                <div class="ts_1">"THE FIRST STEP OF LEADERSHIP IS</div>
-                <div class="ts_2">SERVANTHOOD."</div>
-              </div>
+      <header class="hero1">
+        <div class="semi-circle">
+          <div class="title_container">
+            <img src="images/BSYLogo.png" class="landing_page_logo" alt="Logo" />
+            <div class="title_wrapper_main">
+              <div class="t_1">BATANG</div>
+              <div class="t_2">SURIGAONON</div>
+              <div class="t_3">YOUTH</div>
+            </div>
+            <div class="title_wrapper_sub">
+              <div class="ts_1">"THE FIRST STEP OF LEADERSHIP IS</div>
+              <div class="ts_2">SERVANTHOOD."</div>
             </div>
           </div>
-        </header>
+        </div>
+      </header>
     </div>
 
 
     <!-- Second Hero Section -->
-      <section id="about-section" class="about">
-        <div class="container">
+    <section id="about-section" class="about">
+      <div class="container">
 
-          <div class="about-content">
-            <div class="about-text">
-              <h2>About Us</h2>
-              <h3>Who Are We?</h3>
-              <p>Batang Surigaonon Youth is a group or organization centered around the youth of Surigao, typically
-                aiming to uplift and empower young people in the region. The term could symbolize a collective
-                identity for Surigao's younger generation, emphasizing pride in local culture, active participation in
-                community development, and fostering unity among peers.
-              </p>
-              <div class="buttons">
-                <a href="{{ route('learnmore')}}" class="learn-more">Learn More →</a>
-                <a href="{{ route('register') }}" class="join-us">Join Us</a>
-              </div>
-            </div>
-            <div class="about-image">
-              <img src="{{ asset('images/side_feat.png') }}" alt="About Group Photo">
+        <div class="about-content">
+          <div class="about-text">
+            <h2>About Us</h2>
+            <h3>Who Are We?</h3>
+            <p>Batang Surigaonon Youth is a group or organization centered around the youth of Surigao, typically
+              aiming to uplift and empower young people in the region. The term could symbolize a collective
+              identity for Surigao's younger generation, emphasizing pride in local culture, active participation in
+              community development, and fostering unity among peers.
+            </p>
+            <div class="buttons">
+              <a href="{{ route('learnmore')}}" class="learn-more">Learn More →</a>
+              <a href="{{ route('register') }}" class="join-us">Join Us</a>
             </div>
           </div>
-      </section>
+          <div class="about-image">
+            <img src="{{ asset('images/side_feat.png') }}" alt="About Group Photo">
+          </div>
+        </div>
+    </section>
   </div>
 
 
