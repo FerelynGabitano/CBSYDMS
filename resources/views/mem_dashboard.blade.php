@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Batang Surigaonon Youth - Dashboard</title>
+  <title>Batang Surigaonon Youth - Dashboard</title>
   <style>
     * {
       margin: 0;
@@ -25,7 +26,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .logo {
@@ -68,7 +69,7 @@
       width: 250px;
       background-color: white;
       padding: 1.5rem 0;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
     }
 
     .menu-item {
@@ -80,7 +81,8 @@
       transition: all 0.3s;
     }
 
-    .menu-item:hover, .menu-item.active {
+    .menu-item:hover,
+    .menu-item.active {
       background-color: #f0f2ff;
       color: #1C0BA3;
       border-left: 4px solid #1C0BA3;
@@ -131,7 +133,7 @@
       background: white;
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
       transition: transform 0.3s;
     }
 
@@ -217,9 +219,11 @@
       .dashboard-container {
         flex-direction: column;
       }
+
       .sidebar {
         width: 100%;
       }
+
       .activity-cards {
         grid-template-columns: 1fr;
       }
@@ -228,6 +232,7 @@
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
+
 <body>
   <header class="dashboard-header">
     <div class="logo">
@@ -368,6 +373,7 @@
               <a href="#" class="btn-join">Confirm Attendance</a>
             </div>
           </div>
+
         </div>
       </section>
     </main>
@@ -376,7 +382,7 @@
   <script>
     // Example JavaScript for join buttons
     document.querySelectorAll('.btn-join').forEach(button => {
-      button.addEventListener('click', function(e) {
+      button.addEventListener('click', function (e) {
         e.preventDefault();
         const activityTitle = this.closest('.activity-card').querySelector('h3').textContent;
         alert(`You've joined "${activityTitle}"! Details will be sent to your email.`);
@@ -387,4 +393,5 @@
     });
   </script>
 </body>
+
 </html>
