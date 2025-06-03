@@ -94,9 +94,9 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4 text-center">
-            <p class="mb-2">© 2025 Surigao Youth Development Project. All rights reserved.</p>
+            <p class="mb-2">© 2025 Batang Surigaonon Youth. <br> All rights reserved.</p>
             <p>Contact us at: <a href="mailto:info@surigaoyouth.org"
-                    class="underline hover:text-blue-300">info@surigaoyouth.org</a></p>
+                    class="underline hover:text-blue-300">info@batangsurigaononyouth.org</a></p>
         </div>
     </footer>
 </body>
