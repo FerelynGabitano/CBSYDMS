@@ -365,9 +365,8 @@
     </section>
 
     <!-- Footer -->
-    <footer>
-        <p>© 2025 BSY. All rights reserved.</p>
-        <p class="mt-2">Contact us: info@bsy.org | Follow us on social media</p>
+    <p>© 2025 BSY. All rights reserved.</p>
+    <p class="mt-2">Contact us: info@bsy.org | Follow us on social media</p>
     </footer>
 </body>
 

@@ -17,36 +17,76 @@ class ProjectController extends Controller
                 'title' => 'Basic Life Support Training',
                 'description' => 'A project to clean and preserve Surigao\'s beaches, promoting environmental awareness among the youth.',
                 'image' => '1.jpg',
+                'folder' => 'Basic_Life_Support_Training',
                 'gallery_images' => [
                     '1.jpg',
-                    '1.jpg',
-                    '2.jpg',
+                    '2.jpg',    
                     '3.jpg',
+                    '4.jpg',
+                    '5.jpg',
+                    '6.jpg',
                 ],
             ],
             2 => [
                 'id' => 2,
                 'title' => 'Youth Leadership Summit',
                 'description' => 'An annual summit to inspire and train young leaders in Surigao for community development.',
-                'image' => 'project2.jpg'
+                'image' => '1.jpg',
+                'folder' => 'Community_Clean_Up',
+                'gallery_images' => [
+                    '1.jpg',
+                    '2.jpg',
+                    '3.jpg',
+                    '4.jpg',
+                    '5.jpg',
+                    '6.jpg',
+                ],
             ],
             3 => [
                 'id' => 3,
                 'title' => 'Scholarship Drive',
                 'description' => 'Supporting education by providing scholarships to underprivileged students in the region.',
-                'image' => 'project3.jpg'
+                'image' => '1.jpg',
+                'folder' => 'Feeding_Program',
+                'gallery_images' => [
+                    '1.jpg',
+                    '2.jpg',
+                    '3.jpg',
+                    '4.jpg',
+                    '5.jpg',
+                    '6.jpg',
+                ],
             ],
             4 =>  [
                 'id' => 4,
                 'title' => 'Cultural Festival',
                 'description' => 'Celebrating Surigaonon culture through art, music, and dance performances by the youth.',
-                'image' => 'project4.jpg'
+                'image' => '1.jpg',
+                'folder' => 'Free_IceCream&Sim_Reg',
+                'gallery_images' => [
+                    '1.jpg',
+                    '2.jpg',
+                    '3.jpg',
+                    '4.jpg',
+                    '5.jpg',
+                    '6.jpg',
+
+                ],
             ],
             5 =>  [
                 'id' => 5,
                 'title' => 'Tree Planting Event',
                 'description' => 'Planting trees to contribute to a greener Surigao community.',
-                'image' => 'project5.jpg'
+                'image' => '1.jpg',
+                'folder' => 'Relief_Operations',
+                'gallery_images' => [
+                    '1.jpg',
+                    '2.jpg',
+                    '3.jpg',
+                    '4.jpg',
+                    '5.jpg',
+                    '6.jpg',
+                ],
             ]
         ];
 
