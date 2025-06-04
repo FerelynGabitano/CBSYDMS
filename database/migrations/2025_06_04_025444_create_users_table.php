@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone', 20)->nullable();
             $table->text('address')->nullable();
             $table->string('profile_picture', 255)->nullable();
-            $table->foreignId('role_id')->constrained('roles');
+            $table->foreignId('role_id')->constrained('roles', 'role_id')->onDelete('cascade');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

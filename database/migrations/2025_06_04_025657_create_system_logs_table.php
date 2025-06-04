@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('system_logs', function (Blueprint $table) {
             $table->id('log_id');
-            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('user_id')->nullable()->constrained('users', 'user_id');
             $table->string('action', 255);
             $table->text('details')->nullable();
             $table->string('ip_address', 45)->nullable();

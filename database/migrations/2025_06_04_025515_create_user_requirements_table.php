@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('user_requirements', function (Blueprint $table) {
             $table->id('user_req_id');
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('requirement_id')->constrained('requirement_types');
+            $table->foreignId('user_id')->constrained('users', 'user_id');
+            $table->foreignId('requirement_id')->constrained('requirement_types', 'requirement_id');
             $table->string('file_path', 255);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('feedback')->nullable();
-            $table->foreignId('reviewed_by')->nullable()->constrained('users');
+            $table->foreignId('reviewed_by')->nullable()->constrained('users', 'user_id');
             $table->timestamp('reviewed_at')->nullable();
             $table->timestamps();
         });

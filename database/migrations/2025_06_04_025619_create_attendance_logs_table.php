@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('attendance_logs', function (Blueprint $table) {
             $table->id('log_id');
-            $table->foreignId('activity_id')->constrained('activities');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('activity_id')->constrained('activities', 'activity_id');
+            $table->foreignId('user_id')->constrained('users', 'user_id');
             $table->string('device_info', 255)->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->timestamps();

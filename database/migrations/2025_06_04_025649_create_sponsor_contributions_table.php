@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('sponsor_contributions', function (Blueprint $table) {
             $table->id('contribution_id');
-            $table->foreignId('sponsor_id')->constrained('sponsors');
-            $table->foreignId('activity_id')->nullable()->constrained('activities');
+            $table->foreignId('sponsor_id')->constrained('sponsors', 'sponsor_id');
+            $table->foreignId('activity_id')->nullable()->constrained('activities', 'activity_id');
             $table->decimal('amount', 10, 2);
             $table->string('contribution_type', 100);
             $table->text('description')->nullable();
             $table->dateTime('contributed_at');
-            $table->foreignId('recorded_by')->constrained('users');
+            $table->foreignId('recorded_by')->constrained('users', 'user_id');
             $table->timestamps();
         });
     }

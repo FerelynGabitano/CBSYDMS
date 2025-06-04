@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('activity_participants', function (Blueprint $table) {
             $table->id('participant_id');
-            $table->foreignId('activity_id')->constrained('activities');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('activity_id')->constrained('activities', 'activity_id');
+            $table->foreignId('user_id')->constrained('users', 'user_id');
             $table->enum('attendance_status', ['registered', 'attended', 'absent'])->default('registered');
             $table->timestamps();
             

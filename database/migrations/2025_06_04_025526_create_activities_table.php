@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id('activity_id');
             $table->string('title', 100);
             $table->text('description')->nullable();
-            $table->foreignId('category_id')->constrained('activity_categories');
+            $table->foreignId('category_id')->constrained('activity_categories', 'category_id');
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');
             $table->string('location', 255);
             $table->integer('max_participants')->nullable();
-            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('created_by')->constrained('users', 'user_id');
             $table->string('qr_code_path', 255)->nullable();
             $table->dateTime('qr_code_expiry')->nullable();
             $table->boolean('is_active')->default(true);
