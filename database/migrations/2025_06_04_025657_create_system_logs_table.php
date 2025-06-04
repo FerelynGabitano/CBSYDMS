@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::create('system_logs', function (Blueprint $table) {
+            $table->id('log_id');
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->string('action', 255);
+            $table->text('details')->nullable();
+            $table->string('ip_address', 45)->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('system_logs');
     }
 };
