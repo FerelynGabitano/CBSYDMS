@@ -2,47 +2,49 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    protected $primaryKey = 'user_id';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    // Relationships
+    public function role(): BelongsTo
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function requirements(): HasMany
+    {
+        return $this->hasMany(UserRequirement::class, 'user_id');
+    }
+
+    public function reviewedRequirements(): HasMany
+    {
+        return $this->hasMany(UserRequirement::class, 'reviewed_by');
+    }
+
+    public function activities(): BelongsToMany
+    {
+        return $this->belongsToMany(Activity::class, 'activity_participants', 'user_id', 'activity_id')
+            ->withPivot('attendance_status', 'registered_at');
+    }
+
+    public function createdActivities(): HasMany
+    {
+        return $this->hasMany(Activity::class, 'created_by');
+    }
+
+    public function attendanceLogs(): HasMany
+    {
+        return $this->hasMany(AttendanceLog::class, 'user_id');
+    }
+
+    public function recordedContributions(): HasMany
+    {
+        return $this->hasMany(SponsorContribution::class, 'recorded_by');
     }
 }
