@@ -14,7 +14,20 @@
         <div class="container mx-auto px-4 text-center">
 
             <!-- Previous Arrow -->
-            <a href="{{ url('/') }}"
+            {{-- <a href="{{ url('/') }}"
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a> --}}
+
+            <!-- Previous Arrow -->
+            @php
+                $totalProjects = count($project);
+                $prevId = ($id - 1 >= 0) ? $id - 1 : 0; // Calculate previous ID, default to 0 if at first project
+            @endphp
+            <a href="{{ route('project.details', ['id' => $prevId]) }}"
                 class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
