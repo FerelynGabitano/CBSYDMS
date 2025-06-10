@@ -16,7 +16,7 @@
     <!-- New Header with Navigation -->
     <nav class="navbar">
       <div class="navbar-logo">
-        <img src="{{ asset('images/logos/bsylogo.png') }}" alt="JCI Surigao Nickel Logo">
+        <img src="{{ asset('images/logos/bsylogo.png') }}" alt="BSY Logo">
       </div>
       <div class="navbar-links">
         <a href="#" onclick="scrollToSection('about-section')">About Us</a>
