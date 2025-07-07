@@ -15,7 +15,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::get('/learnmore', [LearnMoreController::class, 'learnmore'])->name('learnmore');
 Route::get('/admin_dashboard', [AdminController::class, 'admin_dashboard'])->name('admin_dashboard'); // Placeholder
-Route::get('/mem/dashboard', [MemberController::class, 'mem_dashboard'])->name('mem_dashboard');
+Route::get('/mem_dashboard', [MemberController::class, 'mem_dashboard'])->name('mem_dashboard');
 Route::get('/faci_dashboard', [FacilitatorController::class, 'faci_dashboard'])->name('faci_dashboard'); // Placeholder
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 Route::get('/project/{id}', [ProjectController::class, 'show'])->name('project.details')->where('id', '[1-5]');
