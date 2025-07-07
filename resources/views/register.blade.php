@@ -230,182 +230,195 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="header">
-            <a href="{{ url('/') }}">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </a>
-            <img src="{{ asset('images/BSYLogo.png') }}" alt="BSY Logo">
-            <h1>Batang Surigaonon Youth Registration</h1>
-            <p>Join our Batang Surigaonon Youth and be Part of the Change!</p>
+    <form method="GET" action="/login">
+        @csrf
+        <div class="container">
+            <div class="header">
+                <a href="{{ url('/') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </a>
+                <img src="{{ asset('images/BSYLogo.png') }}" alt="BSY Logo">
+                <h1>Batang Surigaonon Youth Registration</h1>
+                <p>Join our Batang Surigaonon Youth and be Part of the Change!</p>
+            </div>
+
+            <div class="form-container">
+                <form id="registrationForm" enctype="multipart/form-data">
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <h2>Personal Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="required">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="middleName">Middle Name</label>
+                                <input type="text" id="middleName" name="middleName">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="required">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="birthdate" class="required">Date of Birth</label>
+                                <input type="date" id="birthdate" name="birthdate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender" class="required">Gender</label>
+                                <select id="gender" name="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactNumber" class="required">Contact Number</label>
+                                <input type="tel" id="contactNumber" name="contactNumber" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="required">Email Address</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Information Section -->
+                    <div class="form-section">
+                        <h2>Address Information</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="street" class="required">Street Address</label>
+                                <input type="text" id="street" name="street" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="barangay" class="required">Barangay</label>
+                                <input type="text" id="barangay" name="barangay" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city" class="required">City/Municipality</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="province" class="required">Province</label>
+                                <input type="text" id="province" name="province" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zipCode" class="required">Zip Code</label>
+                                <input type="text" id="zipCode" name="zipCode" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Educational Background Section -->
+                    <div class="form-section">
+                        <h2>Educational Background</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="school" class="required">School Name</label>
+                                <input type="text" id="school" name="school" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gradeLevel" class="required">Grade Level</label>
+                                <select id="gradeLevel" name="gradeLevel" required>
+                                    <option value="">Select Grade Level</option>
+                                    <option value="grade7">Grade 7</option>
+                                    <option value="grade8">Grade 8</option>
+                                    <option value="grade9">Grade 9</option>
+                                    <option value="grade10">Grade 10</option>
+                                    <option value="grade11">Grade 11</option>
+                                    <option value="grade12">Grade 12</option>
+                                    <option value="1stcollege">1st Yr College</option>
+                                    <option value="2ndcollege">2nd Yr College</option>
+                                    <option value="3rdcollege">3rd Yr College</option>
+                                    <option value="4thcollege">4th Yr College</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Document Upload Section -->
+                    <div class="form-section">
+                        <h2>Required Documents</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="required">Barangay Certificate</label>
+                                <div class="file-upload">
+                                    <input type="file" id="brgyCert" name="brgyCert" accept=".pdf,.jpg,.jpeg,.png"
+                                        required>
+                                    <label for="brgyCert">Click to upload file</label>
+                                    <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Birth Certificate</label>
+                                <div class="file-upload">
+                                    <input type="file" id="birthCert" name="birthCert" accept=".pdf,.jpg,.jpeg,.png"
+                                        required>
+                                    <label for="birthCert">Click to upload file</label>
+                                    <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="required">Latest Grade Report</label>
+                                <div class="file-upload">
+                                    <input type="file" id="gradeReport" name="gradeReport" accept=".pdf,.jpg,.jpeg,.png"
+                                        required>
+                                    <label for="gradeReport">Click to upload file</label>
+                                    <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">2x2 ID Picture</label>
+                                <div class="file-upload">
+                                    <input type="file" id="idPicture" name="idPicture" accept=".jpg,.jpeg,.png"
+                                        required>
+                                    <label for="idPicture">Click to upload file</label>
+                                    <div class="file-info">(JPG or PNG, max 2MB)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="form-section">
+                        <div class="terms-container">
+                            <input type="checkbox" id="terms" name="terms" class="terms-checkbox" required>
+                            <label for="terms" class="terms-label">
+                                <span class="required"></span> I certify that all information provided is true and
+                                correct.
+                            </label>
+                        </div>
+                    </div>
+
+                    <button href="{{ route('login') }}" type="submit" class="btn-submit">Submit Registration</button>
+                    <div style="text-align: center; padding-top: 3%;">
+                        <p>Already have an account?
+                            <a href="/login"> Login</a>
+                        </p>
+                        @if (session('error'))
+                            <p style="color: red;">{{ session('error') }}</p>
+                        @endif
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <div class="form-container">
-            <form id="registrationForm" enctype="multipart/form-data">
-                <!-- Personal Information Section -->
-                <div class="form-section">
-                    <h2>Personal Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName" class="required">First Name</label>
-                            <input type="text" id="firstName" name="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="middleName">Middle Name</label>
-                            <input type="text" id="middleName" name="middleName">
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName" class="required">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="birthdate" class="required">Date of Birth</label>
-                            <input type="date" id="birthdate" name="birthdate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="gender" class="required">Gender</label>
-                            <select id="gender" name="gender" required>
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="contactNumber" class="required">Contact Number</label>
-                            <input type="tel" id="contactNumber" name="contactNumber" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="required">Email Address</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Address Information Section -->
-                <div class="form-section">
-                    <h2>Address Information</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="street" class="required">Street Address</label>
-                            <input type="text" id="street" name="street" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="barangay" class="required">Barangay</label>
-                            <input type="text" id="barangay" name="barangay" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="city" class="required">City/Municipality</label>
-                            <input type="text" id="city" name="city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="province" class="required">Province</label>
-                            <input type="text" id="province" name="province" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="zipCode" class="required">Zip Code</label>
-                            <input type="text" id="zipCode" name="zipCode" required>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Educational Background Section -->
-                <div class="form-section">
-                    <h2>Educational Background</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="school" class="required">School Name</label>
-                            <input type="text" id="school" name="school" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="gradeLevel" class="required">Grade Level</label>
-                            <select id="gradeLevel" name="gradeLevel" required>
-                                <option value="">Select Grade Level</option>
-                                <option value="grade7">Grade 7</option>
-                                <option value="grade8">Grade 8</option>
-                                <option value="grade9">Grade 9</option>
-                                <option value="grade10">Grade 10</option>
-                                <option value="grade11">Grade 11</option>
-                                <option value="grade12">Grade 12</option>
-                                <option value="1stcollege">1st Yr College</option>
-                                <option value="2ndcollege">2nd Yr College</option>
-                                <option value="3rdcollege">3rd Yr College</option>
-                                <option value="4thcollege">4th Yr College</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Document Upload Section -->
-                <div class="form-section">
-                    <h2>Required Documents</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">Barangay Certificate</label>
-                            <div class="file-upload">
-                                <input type="file" id="brgyCert" name="brgyCert" accept=".pdf,.jpg,.jpeg,.png" required>
-                                <label for="brgyCert">Click to upload file</label>
-                                <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">Birth Certificate</label>
-                            <div class="file-upload">
-                                <input type="file" id="birthCert" name="birthCert" accept=".pdf,.jpg,.jpeg,.png"
-                                    required>
-                                <label for="birthCert">Click to upload file</label>
-                                <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="required">Latest Grade Report</label>
-                            <div class="file-upload">
-                                <input type="file" id="gradeReport" name="gradeReport" accept=".pdf,.jpg,.jpeg,.png"
-                                    required>
-                                <label for="gradeReport">Click to upload file</label>
-                                <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="required">2x2 ID Picture</label>
-                            <div class="file-upload">
-                                <input type="file" id="idPicture" name="idPicture" accept=".jpg,.jpeg,.png" required>
-                                <label for="idPicture">Click to upload file</label>
-                                <div class="file-info">(JPG or PNG, max 2MB)</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Terms and Conditions -->
-                <div class="form-section">
-                    <div class="terms-container">
-                        <input type="checkbox" id="terms" name="terms" class="terms-checkbox" required>
-                        <label for="terms" class="terms-label">
-                            <span class="required"></span> I certify that all information provided is true and correct.
-                        </label>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-submit">Submit Registration</button>
-            </form>
-        </div>
-    </div>
-
+    </form>
     <script>
         // Simple file upload feedback
         document.querySelectorAll('input[type="file"]').forEach(input => {

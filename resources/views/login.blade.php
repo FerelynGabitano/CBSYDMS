@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -133,11 +134,11 @@
             .login-form {
                 padding: 30px 20px;
             }
-            
+
             .login-form h2 {
                 font-size: 1.5rem;
             }
-            
+
             .logo {
                 width: 100px;
                 height: 100px;
@@ -145,6 +146,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="login-form">
@@ -154,7 +156,8 @@
                 </div>
                 <h2>Login</h2>
             </div>
-            <form>
+            <form method="GET" action="/login">
+                @csrf
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Enter your email" required>
@@ -171,4 +174,5 @@
         </div>
     </div>
 </body>
+
 </html>
