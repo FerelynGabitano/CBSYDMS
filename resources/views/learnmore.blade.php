@@ -13,7 +13,7 @@
         }
 
         header {
-            background-color: #4c1d95;
+            background-color: #1C0BA3;
             color: white;
             padding: 1.5rem;
             text-align: center;
@@ -159,7 +159,7 @@
         }
 
         footer {
-            background-color: #4c1d95;
+            background-color: #1C0BA3;
             color: white;
             padding: 1.5rem;
             text-align: center;
@@ -173,13 +173,18 @@
             margin-top: 0.5rem;
             font-size: 0.875rem;
         }
+
+        .footer-email {
+            color: #ff5733;
+            /* Replace with your desired color (e.g., hex code, RGB, or color name) */
+        }
     </style>
 </head>
 
 <body>
     <!-- Header -->
     <header>
-        <a href="{{ url('welcome') }}">
+        <a href="{{ url('/') }}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
             </svg>
@@ -365,8 +370,13 @@
     </section>
 
     <!-- Footer -->
-    <p>© 2025 BSY. All rights reserved.</p>
-    <p class="mt-2">Contact us: info@bsy.org | Follow us on social media</p>
+    <footer>
+        <div class="footer-container">
+            <p class="mb-2">© 2025 Batang Surigaonon Youth. <br> All rights reserved.</p>
+            <p>Contact us at: <a href="mailto:info@surigaoyouth.org"
+                    class="footer-email">info@batangsurigaononyouth.org</a>
+            </p>
+        </div>
     </footer>
 </body>
 

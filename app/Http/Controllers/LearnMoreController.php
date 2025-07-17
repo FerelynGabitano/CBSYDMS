@@ -10,4 +10,9 @@ class LearnMoreController extends Controller
     {
         return view('learnmore');
     }
+
+    public function learnmore()
+    {
+        return view('learnmore');
+    }
 }
