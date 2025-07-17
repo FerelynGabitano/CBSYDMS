@@ -236,7 +236,7 @@
 <body>
   <header class="dashboard-header">
     <div class="logo">
-      <img src="{{ asset('images/bsy-logo.png') }}" alt="BSY Logo">
+      <img src="{{ asset('images/BSYLogo.png') }}" alt="BSY Logo">
       <h2>Batang Surigaonon</h2>
     </div>
     <div class="user-menu">
