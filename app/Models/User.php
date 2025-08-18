@@ -11,6 +11,25 @@ class User extends Authenticatable
 {
     protected $primaryKey = 'user_id';
 
+    protected $fillable = [
+        'first_name',
+        'middle_name',
+        'last_name',
+        'date_of_birth',
+        'gender',
+        'contact_number',
+        'email',
+        'password',
+        'street_address',
+        'barangay',
+        'city_municipality',
+        'province',
+        'zip_code',
+        'profile_picture',
+        'role_id',
+        'is_active',
+    ];
+
     // Relationships
     public function role(): BelongsTo
     {

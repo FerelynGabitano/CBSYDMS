@@ -230,7 +230,7 @@
 </head>
 
 <body>
-    <form method="GET" action="/login">
+    <form method="POST" action="{{ route('register.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="container">
             <div class="header">
@@ -243,84 +243,100 @@
                 <h1>Batang Surigaonon Youth Registration</h1>
                 <p>Join our Batang Surigaonon Youth and be Part of the Change!</p>
             </div>
-
-            <div class="form-container">
-                <form id="registrationForm" enctype="multipart/form-data">
-                    <!-- Personal Information Section -->
-                    <div class="form-section">
-                        <h2>Personal Information</h2>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="firstName" class="required">First Name</label>
-                                <input type="text" id="firstName" name="firstName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="middleName">Middle Name</label>
-                                <input type="text" id="middleName" name="middleName">
-                            </div>
-                            <div class="form-group">
-                                <label for="lastName" class="required">Last Name</label>
-                                <input type="text" id="lastName" name="lastName" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="birthdate" class="required">Date of Birth</label>
-                                <input type="date" id="birthdate" name="birthdate" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="gender" class="required">Gender</label>
-                                <select id="gender" name="gender" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="contactNumber" class="required">Contact Number</label>
-                                <input type="tel" id="contactNumber" name="contactNumber" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email" class="required">Email Address</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                        </div>
+        <div class="form-container">
+            <!-- Success Message -->
+            @if (session('success'))
+                <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                {{ session('success') }}
+         </div>
+             @endif
+        <div class="form-container">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <h2>Personal Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name" class="required">First Name</label>
+                        <input type="text" id="first_name" name="first_name" required>
                     </div>
-
-                    <!-- Address Information Section -->
-                    <div class="form-section">
-                        <h2>Address Information</h2>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="street" class="required">Street Address</label>
-                                <input type="text" id="street" name="street" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="barangay" class="required">Barangay</label>
-                                <input type="text" id="barangay" name="barangay" required>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="city" class="required">City/Municipality</label>
-                                <input type="text" id="city" name="city" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="province" class="required">Province</label>
-                                <input type="text" id="province" name="province" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="zipCode" class="required">Zip Code</label>
-                                <input type="text" id="zipCode" name="zipCode" required>
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label for="middle_name">Middle Name</label>
+                        <input type="text" id="middle_name" name="middle_name">
                     </div>
+                    <div class="form-group">
+                        <label for="last_name" class="required">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date_of_birth" class="required">Date of Birth</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender" class="required">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contact_number" class="required">Contact Number</label>
+                        <input type="tel" id="contact_number" name="contact_number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="required">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password" class="required">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation" class="required">Confirm Password</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Information Section -->
+            <div class="form-section">
+                <h2>Address Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="street_address" class="required">Street Address</label>
+                        <input type="text" id="street_address" name="street_address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="barangay" class="required">Barangay</label>
+                        <input type="text" id="barangay" name="barangay" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city_municipality" class="required">City/Municipality</label>
+                        <input type="text" id="city_municipality" name="city_municipality" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="province" class="required">Province</label>
+                        <input type="text" id="province" name="province" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="zip_code" class="required">Zip Code</label>
+                        <input type="text" id="zip_code" name="zip_code" required>
+                    </div>
+                </div>
+            </div>
 
                     <!-- Educational Background Section -->
                     <div class="form-section">
@@ -415,7 +431,6 @@
                             <p style="color: red;">{{ session('error') }}</p>
                         @endif
                     </div>
-                </form>
             </div>
         </div>
     </form>

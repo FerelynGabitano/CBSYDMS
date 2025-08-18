@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Batang Surigaonon Youth</title>
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
 </head>
@@ -16,7 +15,7 @@
     <!-- New Header with Navigation -->
     <nav class="navbar">
       <div class="navbar-logo">
-        <img src="{{ asset('images/logos/bsylogo.png') }}" alt="BSY Logo">
+        <img src="{{ asset('images/logos/bsylogo.png') }}" alt="JCI Surigao Nickel Logo">
       </div>
       <div class="navbar-links">
         <a href="#" onclick="scrollToSection('about-section')">About Us</a>
