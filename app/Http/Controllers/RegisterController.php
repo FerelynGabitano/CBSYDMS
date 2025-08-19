@@ -11,7 +11,7 @@ class RegisterController extends Controller
     // Show the registration form
     public function create()
     {
-        return view('register'); // make sure your view file is resources/views/register.blade.php
+        return view('register'); 
     }
 
     public function store(Request $request)
@@ -19,7 +19,7 @@ class RegisterController extends Controller
         // validate input
         $validated = $request->validate([
             'first_name'     => 'required|string|max:50',
-            'middle_name'    => 'nullable|string|max:50',
+            'middle_name'    => 'nullable|string|max:50',   
             'last_name'      => 'required|string|max:50',
             'date_of_birth'  => 'required|date',
             'gender'         => 'required|in:Male,Female,Other',

@@ -156,18 +156,36 @@
                 </div>
                 <h2>Login</h2>
             </div>
-            <form method="GET" action="/login">
-                @csrf
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="btn">Login</button>
-            </form>
+                <form method="POST" action="{{ route('login.post') }}">
+                    @csrf
+
+                    @if (session('error'))
+                        <div style="background:#fdecea;color:#b71c1c;padding:10px;border-radius:6px;margin-bottom:12px;">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @error('email')
+                        <div style="color:#b71c1c;margin-bottom:8px;">{{ $message }}</div>
+                    @enderror
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input value="{{ old('email') }}" type="email" id="email" name="email" required>
+                    </div>
+
+                    @error('password')
+                        <div style="color:#b71c1c;margin-bottom:8px;">{{ $message }}</div>
+                    @enderror
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div>
+                        <input type="checkbox" name="remember"> Remember Me
+                    </div>
+                    <button type="submit" class="btn">Login</button>
+                </form>
+
             <div class="links">
                 <a href="#">Forgot Password?</a>
             </div>

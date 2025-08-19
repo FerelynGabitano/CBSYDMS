@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticatable
 {
     protected $primaryKey = 'user_id';
+    public $timestamps = true;
 
     protected $fillable = [
         'first_name',
@@ -28,6 +29,11 @@ class User extends Authenticatable
         'profile_picture',
         'role_id',
         'is_active',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     // Relationships
