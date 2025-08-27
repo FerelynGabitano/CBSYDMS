@@ -2,15 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Sponsor extends Model
 {
-    protected $primaryKey = 'sponsor_id';
+    use HasFactory;
 
-    public function contributions(): HasMany
-    {
-        return $this->hasMany(SponsorContribution::class, 'sponsor_id');
-    }
+    protected $primaryKey = 'sponsor_id'; // since you’re not using default "id"
+
+    protected $fillable = [
+        'name',
+        'contact_person',
+        'email',
+        'phone',
+        'address',
+        'logo_path',
+    ];
 }

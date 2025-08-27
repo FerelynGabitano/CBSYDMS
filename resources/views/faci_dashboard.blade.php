@@ -183,78 +183,104 @@
     <!-- Upload Activity Section -->
     <section class="form-section">
       <h3>Upload New Activity</h3>
-      <form>
-        <input type="text" placeholder="Activity Title" required>
-        <textarea rows="4" placeholder="Activity Description" required></textarea>
-        <input type="date" required>
-        <button type="submit">Upload Activity</button>
-      </form>
+          <form action="{{ route('faci.activity.store') }}" method="POST">
+              @csrf
+
+              <!-- Example fields for activity -->
+              <div>
+                  <label for="title">Activity Title</label>
+                  <input type="text" id="title" name="title" required>
+              </div>
+
+              <div>
+                  <label for="description">Description</label>
+                  <textarea id="description" name="description" required></textarea>
+              </div>
+
+              <div>
+                  <label for="date">Date</label>
+                  <input type="date" id="date" name="date" required>
+              </div>
+
+              <button type="submit">Save Activity</button>
+          </form>
     </section>
 
     <!-- Members & Attendance Section -->
     <section class="list-section">
       <h3>Members & Attendance</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Member Name</th>
-            <th>Activity</th>
-            <th>Status</th>
-            <th>Attendance</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Juan Dela Cruz</td>
-            <td>Community Cleanup</td>
-            <td>Joined</td>
-            <td><input type="checkbox" checked></td>
-          </tr>
-          <tr>
-            <td>Maria Santos</td>
-            <td>Art Workshop</td>
-            <td>Joined</td>
-            <td><input type="checkbox"></td>
-          </tr>
-        </tbody>
-      </table>
+      <form action="{{ route('faci.attendance.update') }}" method="POST">
+        @csrf
+        <table>
+          <thead>
+            <tr>
+              <th>Member Name</th>
+              <th>Status</th>
+              <th>Attendance</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($members as $member)
+            <tr>
+              <td>{{ $member->name }}</td>
+              <td>{{ $member->status }}</td>
+              <td>
+                <input type="checkbox" name="attendance[{{ $member->id }}]" value="1" {{ $member->attendance ? 'checked' : '' }}>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+        <button type="submit">Save Attendance</button>
+      </form>
     </section>
 
     <!-- Sponsors Section -->
-    <section class="form-section">
-      <h3>Log Sponsor</h3>
-      <form>
-        <input type="text" placeholder="Sponsor Name" required>
-        <textarea rows="3" placeholder="Sponsorship Details" required></textarea>
-        <button type="submit">Add Sponsor</button>
-      </form>
+        <form action="{{ route('faci.sponsor.store') }}" method="POST" enctype="multipart/form-data">
+          @csrf
 
-      <div class="list-section">
-        <h3>Current Sponsors</h3>
+          <input type="text" name="name" placeholder="Sponsor Name" required>
+
+          <input type="text" name="contact_person" placeholder="Contact Person">
+
+          <input type="email" name="email" placeholder="Email">
+
+          <input type="text" name="phone" placeholder="Phone">
+
+          <textarea name="address" rows="3" placeholder="Address"></textarea>
+
+          <input type="file" name="logo_path" accept="image/*">
+
+          <button type="submit">Add Sponsor</button>
+        </form>
+
+        <!-- Show Sponsor List -->
         <ul>
-          <li>Surigao Coop Bank - ₱10,000</li>
-          <li>Barangay Council - ₱5,000</li>
+          @foreach($sponsors as $sponsor)
+            <li>
+              <strong>{{ $sponsor->name }}</strong>
+              @if($sponsor->contact_person) - Contact: {{ $sponsor->contact_person }} @endif
+              @if($sponsor->email) - Email: {{ $sponsor->email }} @endif
+              @if($sponsor->phone) - Phone: {{ $sponsor->phone }} @endif
+              @if($sponsor->address) - Address: {{ $sponsor->address }} @endif
+
+              @if($sponsor->logo_path)
+                <br>
+                <img src="{{ asset('storage/' . $sponsor->logo_path) }}" alt="Logo" width="80">
+              @endif
+            </li>
+          @endforeach
         </ul>
-      </div>
-    </section>
+
   </main>
 </div>
 
-<!-- JavaScript to simulate functionality -->
+<!-- JavaScript just for sidebar menu highlight -->
 <script>
   document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', function() {
       document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
       this.classList.add('active');
-    });
-  });
-
-  // Basic form submissions simulation
-  document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Form submitted!');
-      form.reset();
     });
   });
 </script>
