@@ -85,8 +85,8 @@
             <img src="{{ asset('images/projects/Community_Clean_Up/1.jpg') }}" alt="Project 1">
             <div class="text-container">
               <h3>Community Clean-Up</h3>
-              <p>A project to clean and preserve Surigao's beaches, promoting environmental awareness among the
-                youth.</p>
+              <p>Organizing volunteers to clean and maintain Surigao's beaches, fostering environmental stewardship and
+                community pride among the youth.</p>
             </div>
           </div>
         </a>
@@ -97,7 +97,8 @@
             <img src="{{ asset('images/projects/Basic_Life_Support_Training/6.jpg') }}" alt="Project 2">
             <div class="text-container">
               <h3>Basic Life Support Training</h3>
-              <p>An annual summit to inspire and train young leaders in Surigao for community development.</p>
+              <p>Providing hands-on training in CPR and first aid to empower Surigao's youth with life-saving skills.
+              </p>
             </div>
           </div>
         </a>
@@ -108,7 +109,8 @@
             <img src="{{ asset('images/projects/Feeding_Program/5.jpg') }}" alt="Project 3">
             <div class="text-container">
               <h3>Feeding Programs</h3>
-              <p>Supporting education by providing scholarships to underprivileged students in the region.</p>
+              <p>Distributing nutritious meals to underprivileged children in Surigao to support their health and
+                education.</p>
             </div>
           </div>
         </a>
@@ -119,7 +121,8 @@
             <img src="{{ asset('images/projects/Free_IceCream&Sim_Reg/10.jpg') }}" alt="Project 4">
             <div class="text-container">
               <h3>Free Ice Cream & Sim Registration</h3>
-              <p>Celebrating Surigaonon culture through art, music, and dance performances by the youth.</p>
+              <p>Hosting a fun community event with free ice cream and SIM card registration to promote connectivity and
+                joy among Surigaonons.</p>
             </div>
           </div>
         </a>
@@ -130,7 +133,7 @@
             <img src="{{ asset('images/projects/Relief_Operations/5.jpg') }}" alt="Project 5">
             <div class="text-container">
               <h3>Relief Operation</h3>
-              <p>Planting trees to contribute to a greener Surigao community.</p>
+              <p>Delivering essential supplies and support to Surigao communities affected by natural disasters.</p>
             </div>
           </div>
         </a>
