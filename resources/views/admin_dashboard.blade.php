@@ -294,9 +294,17 @@
         <i class="fas fa-home"></i>
         <span>Dashboard</span>
       </div>
+      <div class="menu-item" onclick="navigate('users')">
+        <i class="fas fa-users"></i>
+        <span>Users</span>
+      </div>
       <div class="menu-item" onclick="navigate('members')">
         <i class="fas fa-users"></i>
         <span>Members</span>
+      </div>
+      <div class="menu-item" onclick="navigate('facilitator')">
+        <i class="fas fa-users"></i>
+        <span>Facilitators</span>
       </div>
       <div class="menu-item" onclick="navigate('events')">
         <i class="fas fa-calendar-alt"></i>
@@ -435,11 +443,26 @@
             </section>
           `;
           break;
+        case 'users':
+          content = `
+            <h1>Add Users Credentials</h1>
+            <p>View and manage users here.</p>
+            <button class="edit-btn" onclick="editUsers()">Edit</button>
+            <button class="delete-btn" onclick="deleteUsers()">Delete</button>
+          `;
+          break;
         case 'members':
           content = `
             <h1>Members Section</h1>
             <p>View and manage members here.</p>
             <button class="download-btn" onclick="downloadMembers()">Download All Members</button>
+          `;
+          break;
+        case 'facilitator':
+          content = `
+            <h1>Facilitators Section</h1>
+            <p>View and manage facilitators here.</p>
+            <button class="download-btn" onclick="downloadFacilitators()">Download All Facilitators</button>
           `;
           break;
         case 'events':
