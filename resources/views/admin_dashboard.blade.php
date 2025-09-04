@@ -294,9 +294,9 @@
         <i class="fas fa-home"></i>
         <span>Dashboard</span>
       </div>
-      <div class="menu-item" onclick="navigate('members')">
+      <div class="menu-item" onclick="navigate('users')">
         <i class="fas fa-users"></i>
-        <span>Members</span>
+        <span>Users</span>
       </div>
       <div class="menu-item" onclick="navigate('events')">
         <i class="fas fa-calendar-alt"></i>
@@ -435,10 +435,10 @@
             </section>
           `;
           break;
-        case 'members':
+        case 'users':
           content = `
-            <h1>Members Section</h1>
-            <p>View and manage members here.</p>
+            <h1>Users Section</h1>
+            <p>View and manage users here.</p>
             <button class="download-btn" onclick="downloadMembers()">Download All Members</button>
           `;
           break;

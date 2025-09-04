@@ -430,11 +430,9 @@
 
 <body>
   <header class="dashboard-header">
-    <div class="logo">
-      <div
-        style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #1C0BA3; font-weight: bold;">
-        BSY</div>
-      <h2>Batang Surigaonon</h2>
+      <div class="logo">
+      <img src="{{ asset('images/bsylogo.png') }}" alt="BSY Logo">
+      <h2>Batang Surigaonon Youth</h2>
     </div>
     <div class="user-menu">
       <span id="user-name">Juan Dela Cruz</span>

@@ -19,6 +19,7 @@ class User extends Authenticatable
         'date_of_birth',
         'gender',
         'contact_number',
+        'credential_email',
         'email',
         'password',
         'street_address',
@@ -35,7 +36,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    public function getAuthIdentifierName()
+    {
+        return 'credential_email';
+    }
     // Relationships
     public function role(): BelongsTo
     {

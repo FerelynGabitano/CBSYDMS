@@ -169,9 +169,12 @@
                         <div style="color:#b71c1c;margin-bottom:8px;">{{ $message }}</div>
                     @enderror
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input value="{{ old('email') }}" type="email" id="email" name="email" required>
+                        <label for="credential_email">Credential Email</label>
+                        <input value="{{ old('credential_email') }}" type="email" id="credential_email" name="credential_email" required>
                     </div>
+                    @error('credential_email')
+                        <div style="color:#b71c1c;margin-bottom:8px;">{{ $message }}</div>
+                    @enderror
 
                     @error('password')
                         <div style="color:#b71c1c;margin-bottom:8px;">{{ $message }}</div>
