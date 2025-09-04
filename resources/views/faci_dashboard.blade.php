@@ -162,7 +162,7 @@
 <body>
 <header class="dashboard-header">
   <div class="logo">
-    <img src="{{ asset('images/bsy-logo.png') }}" alt="BSY Logo">
+    <img src="{{ asset('images/bsylogo.png') }}" alt="BSY Logo">
     <h2>BSY Facilitator</h2>
   </div>
   <div class="user-menu">

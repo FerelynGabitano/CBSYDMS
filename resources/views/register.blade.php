@@ -296,18 +296,6 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="password" class="required">Password</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password_confirmation" class="required">Confirm Password</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" required>
-                    </div>
-                </div>
-            </div>
-
             <!-- Address Information Section -->
             <div class="form-section">
                 <h2>Address Information</h2>
