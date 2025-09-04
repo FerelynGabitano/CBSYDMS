@@ -276,7 +276,7 @@
 <body>
   <header class="dashboard-header">
     <div class="logo">
-      <img src="{{ asset('images/bsy-logo.png') }}" alt="BSY Logo">
+      <img src="{{ asset('images\BSYLogo.png') }}" alt="BSY Logo">
       <h2>Batang Surigaonon Youth</h2>
     </div>
     <div class="user-menu">
@@ -294,17 +294,9 @@
         <i class="fas fa-home"></i>
         <span>Dashboard</span>
       </div>
-      <div class="menu-item" onclick="navigate('users')">
-        <i class="fas fa-users"></i>
-        <span>Users</span>
-      </div>
       <div class="menu-item" onclick="navigate('members')">
         <i class="fas fa-users"></i>
         <span>Members</span>
-      </div>
-      <div class="menu-item" onclick="navigate('facilitator')">
-        <i class="fas fa-users"></i>
-        <span>Facilitators</span>
       </div>
       <div class="menu-item" onclick="navigate('events')">
         <i class="fas fa-calendar-alt"></i>
@@ -443,26 +435,11 @@
             </section>
           `;
           break;
-        case 'users':
-          content = `
-            <h1>Add Users Credentials</h1>
-            <p>View and manage users here.</p>
-            <button class="edit-btn" onclick="editUsers()">Edit</button>
-            <button class="delete-btn" onclick="deleteUsers()">Delete</button>
-          `;
-          break;
         case 'members':
           content = `
             <h1>Members Section</h1>
             <p>View and manage members here.</p>
             <button class="download-btn" onclick="downloadMembers()">Download All Members</button>
-          `;
-          break;
-        case 'facilitator':
-          content = `
-            <h1>Facilitators Section</h1>
-            <p>View and manage facilitators here.</p>
-            <button class="download-btn" onclick="downloadFacilitators()">Download All Facilitators</button>
           `;
           break;
         case 'events':
@@ -500,6 +477,7 @@
         { id: 1, name: "Juan Dela Cruz", batch: "Batch 1", email: "juan@example.com" },
         { id: 2, name: "Maria Santos", batch: "Batch 2", email: "maria@example.com" },
         { id: 3, name: "Pedro Reyes", batch: "Batch 1", email: "pedro@example.com" }
+
       ];
 
       // Group by batch and create CSV content
