@@ -234,21 +234,61 @@
       margin-right: 1rem;
       object-fit: cover;
     }
-
-    .download-btn {
+        /* Base button style */
+    .btn {
       background-color: #1C0BA3;
       color: white;
       border: none;
       padding: 0.5rem 1rem;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Hover effect */
+    .btn:hover {
+      background-color: #150882;
+    }
+
+    /* Specific button types (optional) */
+    .btn-edit {
+      /* Same as base for uniform color */
+    }
+
+    .btn-delete {
+      background-color: #1C0BA3; /* same blue */
+    }
+
+    .btn-delete:hover {
+      background-color: #150882; /* same hover as others */
+    }
+
+    .download-btn {
+      background-color: #1C0BA3; /* same base blue */
     }
 
     .download-btn:hover {
       background-color: #150882;
     }
 
+    .btn-logout {
+      background-color: #1C0BA3;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .btn-logout:hover {
+      background-color: #150882;
+    }
     /* Responsive */
     @media (max-width: 768px) {
       .sidebar {
@@ -276,252 +316,103 @@
 <body>
   <header class="dashboard-header">
     <div class="logo">
-      <img src="{{ asset('images\BSYLogo.png') }}" alt="BSY Logo">
+      <img src="{{ asset('images/BSYLogo.png') }}" alt="BSY Logo">
       <h2>Batang Surigaonon Youth</h2>
     </div>
+
     <div class="user-menu">
-      <span>Admin User</span>
+      <span>{{ auth()->user()->first_name }}</span>
       <img src="{{ asset('images/user-avatar.jpg') }}" alt="User Avatar">
+
+      <!-- Logout Form -->
+      <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
+        @csrf
+        <button type="submit" class="btn-logout">Logout</button>
+      </form>
     </div>
   </header>
 
+
   <div class="dashboard-container">
     <aside class="sidebar">
-      <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
       <div class="menu-item active" onclick="navigate('dashboard')">
-        <i class="fas fa-home"></i>
-        <span>Dashboard</span>
+        <i class="fas fa-home"></i><span>Dashboard</span>
       </div>
       <div class="menu-item" onclick="navigate('users')">
-        <i class="fas fa-users"></i>
-        <span>Users</span>
-      </div>
-      <div class="menu-item" onclick="navigate('events')">
-        <i class="fas fa-calendar-alt"></i>
-        <span>Events</span>
-      </div>
-      <div class="menu-item" onclick="navigate('gallery')">
-        <i class="fas fa-image"></i>
-        <span>Gallery</span>
-      </div>
-      <div class="menu-item" onclick="navigate('reports')">
-        <i class="fas fa-file-alt"></i>
-        <span>Reports</span>
-      </div>
-      <div class="menu-item" onclick="navigate('settings')">
-        <i class="fas fa-cog"></i>
-        <span>Settings</span>
+        <i class="fas fa-users"></i><span>Users</span>
       </div>
     </aside>
 
     <main class="main-content">
-      <section class="welcome-section">
-        <h1>Welcome back, Admin!</h1>
-        <p>Here's what's happening with BSY today.</p>
+      <!-- Dashboard Section -->
+      <section id="dashboard-section">
+        <div class="welcome-section">
+          <h1>Welcome back, Admin!</h1>
+          <p>Here's what's happening with BSY today.</p>
+        </div>
+
+        <div class="stats-cards">
+          <div class="stat-card"><h3>Total Members</h3><p>{{ $users->count() }}</p></div>
+          <div class="stat-card"><h3>Upcoming Events</h3><p>5</p></div>
+          <div class="stat-card"><h3>New Members (This Month)</h3><p>18</p></div>
+          <div class="stat-card"><h3>Active Projects</h3><p>3</p></div>
+        </div>
       </section>
 
-      <div class="stats-cards">
-        <div class="stat-card">
-          <h3>Total Members</h3>
-          <p>248</p>
-        </div>
-        <div class="stat-card">
-          <h3>Upcoming Events</h3>
-          <p>5</p>
-        </div>
-        <div class="stat-card">
-          <h3>New Members (This Month)</h3>
-          <p>18</p>
-        </div>
-        <div class="stat-card">
-          <h3>Active Projects</h3>
-          <p>3</p>
-        </div>
+      <!-- Users Section -->
+      <div id="users-section" style="display:none;">
+        <h1>Users</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Contact No.</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Credential Email</th>
+              <th>Joined Since </th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($users as $user)
+              <tr>
+                <td>{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}</td>
+                <td>{{ $user->gender }}</td>
+                <td>{{ $user->contact_number }}</td>
+                <td>{{ $user->email}}</td>
+                <td>{{ $user->street_address }} {{ $user->barangay}} {{ $user->city_municipality}} {{ $user->province}} {{ $user->zip_code}}</td>
+                <td>{{ $user->credential_email}}</td>
+                <td>{{ $user->created_at->format('M d, Y') }}</td>
+                <td>
+                
+                <a href="{{ route('users.edit', ['user_id' => $user->user_id]) }}" class="btn btn-edit">Edit</a>
+
+                <form action="{{ route('users.destroy', ['user_id' => $user->user_id]) }}" method="POST" style="display:inline;">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">
+                    Delete
+                  </button>
+                </form>
+
+                </td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
       </div>
-
-      <section class="recent-activity">
-        <h2>Recent Activity</h2>
-        <div class="activity-item">
-          <img src="{{ asset('images/user1.jpg') }}" alt="User">
-          <div>
-            <p><strong>Juan Dela Cruz</strong> registered as new member</p>
-            <small>2 hours ago</small>
-          </div>
-        </div>
-        <div class="activity-item">
-          <img src="{{ asset('images/user2.jpg') }}" alt="User">
-          <div>
-            <p><strong>Maria Santos</strong> attended the community meeting</p>
-            <small>5 hours ago</small>
-          </div>
-        </div>
-        <div class="activity-item">
-          <img src="{{ asset('images/user3.jpg') }}" alt="User">
-          <div>
-            <p>New event <strong>Youth Summit 2023</strong> was created</p>
-            <small>Yesterday</small>
-          </div>
-        </div>
-      </section>
     </main>
   </div>
 
   <script>
-    function toggleSidebar() {
-      const sidebar = document.querySelector('.sidebar');
-      sidebar.classList.toggle('collapsed');
-    }
-
     function navigate(section) {
-      // Remove active class from all menu items
-      document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('active');
-      });
-      // Add active class to clicked menu item
+      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
       event.target.closest('.menu-item').classList.add('active');
 
-      // Simple navigation logic
-      let content = '';
-      switch (section) {
-        case 'dashboard':
-          content = `
-            <section class="welcome-section">
-              <h1>Welcome back, Admin!</h1>
-              <p>Here's what's happening with BSY today.</p>
-            </section>
-            <div class="stats-cards">
-              <div class="stat-card">
-                <h3>Total Members</h3>
-                <p>248</p>
-              </div>
-              <div class="stat-card">
-                <h3>Upcoming Events</h3>
-                <p>5</p>
-              </div>
-              <div class="stat-card">
-                <h3>New Members (This Month)</h3>
-                <p>18</p>
-              </div>
-              <div class="stat-card">
-                <h3>Active Projects</h3>
-                <p>3</p>
-              </div>
-            </div>
-            <section class="recent-activity">
-              <h2>Recent Activity</h2>
-              <div class="activity-item">
-                <img src="{{ asset('images/user1.jpg') }}" alt="User">
-                <div>
-                  <p><strong>Juan Dela Cruz</strong> registered as new member</p>
-                  <small>2 hours ago</small>
-                </div>
-              </div>
-              <div class="activity-item">
-                <img src="{{ asset('images/user2.jpg') }}" alt="User">
-                <div>
-                  <p><strong>Maria Santos</strong> attended the community meeting</p>
-                  <small>5 hours ago</small>
-                </div>
-              </div>
-              <div class="activity-item">
-                <img src="{{ asset('images/user3.jpg') }}" alt="User">
-                <div>
-                  <p>New event <strong>Youth Summit 2023</strong> was created</p>
-                  <small>Yesterday</small>
-                </div>
-              </div>
-            </section>
-          `;
-          break;
-        case 'users':
-          content = `
-            <h1>Users Section</h1>
-            <p>View and manage users here.</p>
-            <button class="download-btn" onclick="downloadMembers()">Download All Members</button>
-          `;
-          break;
-        case 'events':
-          content = `
-            <h1>Events Section</h1>
-            <p>Manage upcoming events here.</p>
-            <div class="event-box">
-              <img src="{{ asset('images/event-placeholder.jpg') }}" alt="Event Image">
-              <h2>Youth Summit 2025</h2>
-              <p>A gathering to empower young leaders in Surigao on August 28, 2025.</p>
-              <div class="facilitators">Facilitators: John Doe, Jane Smith</div>
-            </div>
-          `;
-          break;
-        case 'gallery':
-          content = `<h1>Gallery Section</h1><p>Browse the gallery here.</p>`;
-          break;
-        case 'reports':
-          content = `
-            <h1>Reports Section</h1>
-            <p>Generate reports here.</p>
-            <button class="download-btn" onclick="downloadReports()">Download All Reports</button>
-          `;
-          break;
-        case 'settings':
-          content = `<h1>Settings Section</h1><p>Configure settings here.</p>`;
-          break;
-      }
-      document.querySelector('.main-content').innerHTML = content;
-    }
-
-    function downloadMembers() {
-      // Sample member data (replace with your actual data)
-      const members = [
-        { id: 1, name: "Juan Dela Cruz", batch: "Batch 1", email: "juan@example.com" },
-        { id: 2, name: "Maria Santos", batch: "Batch 2", email: "maria@example.com" },
-        { id: 3, name: "Pedro Reyes", batch: "Batch 1", email: "pedro@example.com" }
-
-      ];
-
-      // Group by batch and create CSV content
-      const batches = {};
-      members.forEach(member => {
-        if (!batches[member.batch]) batches[member.batch] = [];
-        batches[member.batch].push(`${member.id},${member.name},${member.email}`);
-      });
-
-      for (const [batch, data] of Object.entries(batches)) {
-        const csvContent = `ID,Name,Email\n${data.join('\n')}`;
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `members_${batch.replace(' ', '_').toLowerCase()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-    }
-
-    function downloadReports() {
-      // Sample report data (replace with your actual report files or data)
-      const reports = [
-        { id: 1, title: "Monthly Report - August 2025", content: "Report content for August 2025..." },
-        { id: 2, title: "Annual Report - 2024", content: "Annual report content for 2024..." }
-      ];
-
-      reports.forEach(report => {
-        const csvContent = `Title,Content\n${report.title},${report.content}`;
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', `${report.title.replace(/ /g, '_').toLowerCase()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      });
+      document.getElementById('dashboard-section').style.display = (section === 'dashboard') ? 'block' : 'none';
+      document.getElementById('users-section').style.display = (section === 'users') ? 'block' : 'none';
     }
   </script>
 </body>
-
 </html>
