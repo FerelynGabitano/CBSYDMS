@@ -18,20 +18,20 @@ class RegisterController extends Controller
     {
         // validate input
         $validated = $request->validate([
-            'first_name'     => 'required|string|max:50',
-            'middle_name'    => 'nullable|string|max:50',   
-            'last_name'      => 'required|string|max:50',
-            'date_of_birth'  => 'required|date',
-            'gender'         => 'required|in:Male,Female,Other',
-            'contact_number' => 'required|string|max:20',
-            'email'          => 'required|email|unique:users,email',
-            'password'       => 'required|string|min:6|confirmed',
-            'street_address' => 'required|string|max:255',
-            'barangay'       => 'required|string|max:100',
+            'first_name'        => 'required|string|max:50',
+            'middle_name'       => 'nullable|string|max:50',   
+            'last_name'         => 'required|string|max:50',
+            'date_of_birth'     => 'required|date',
+            'gender'            => 'required|in:Male,Female,Other',
+            'contact_number'    => 'required|string|max:20',
+            'email'             => 'required|email|unique:users,email',
+            'street_address'    => 'required|string|max:255',
+            'barangay'          => 'required|string|max:100',
             'city_municipality' => 'required|string|max:100',
-            'province'       => 'required|string|max:100',
-            'zip_code'       => 'required|string|max:20',
-            'profile_picture'=> 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'province'          => 'required|string|max:100',
+            'zip_code'          => 'required|string|max:20',
+            'profile_picture'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            // no password validation here
         ]);
 
         // handle file upload (optional)
@@ -39,8 +39,8 @@ class RegisterController extends Controller
             $validated['profile_picture'] = $request->file('profile_picture')->store('photos', 'public');
         }
 
-        // hash password
-        $validated['password'] = Hash::make($validated['password']);
+        // password is optional; admin can set it later
+        $validated['password'] = null;
 
         // assign default role (adjust as needed)
         $validated['role_id'] = 1;  

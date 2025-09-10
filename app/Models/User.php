@@ -41,9 +41,9 @@ class User extends Authenticatable
         return 'credential_email';
     }
     // Relationships
-    public function role(): BelongsTo
+    public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->belongsTo(Role::class, 'role_id', 'role_id');
     }
 
     public function requirements(): HasMany

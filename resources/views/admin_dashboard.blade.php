@@ -289,6 +289,108 @@
     .btn-logout:hover {
       background-color: #150882;
     }
+    /* Modal background */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.5); 
+      padding: 2rem;
+    }
+
+    /* Modal box styled like edit page */
+    .modal-content {
+      background-color: white;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .modal-content select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 0.95rem;
+    }
+
+    /* Close button */
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      color: #1C0BA3;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #150882;
+    }
+
+    .modal-content h2 {
+      color: #1C0BA3;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-content label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #1C0BA3;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 0.95rem;
+    }
+
+    .modal-content .btn {
+      background-color: #1C0BA3;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .modal-content .btn:hover {
+      background-color: #150882;
+    }
+
+    /* Alert messages */
+    .alert-success {
+      background-color: #e6f4ea;
+      color: #256029;
+      padding: 0.75rem 1rem;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .alert-error {
+      background-color: #fdecea;
+      color: #b71c1c;
+      padding: 0.75rem 1rem;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .sidebar {
@@ -371,6 +473,7 @@
               <th>Email</th>
               <th>Address</th>
               <th>Credential Email</th>
+              <th>Role</th>
               <th>Joined Since </th>
             </tr>
           </thead>
@@ -383,10 +486,11 @@
                 <td>{{ $user->email}}</td>
                 <td>{{ $user->street_address }} {{ $user->barangay}} {{ $user->city_municipality}} {{ $user->province}} {{ $user->zip_code}}</td>
                 <td>{{ $user->credential_email}}</td>
+                <td>{{ $user->role ? $user->role->role_name : 'No role' }}</td>
                 <td>{{ $user->created_at->format('M d, Y') }}</td>
                 <td>
                 
-                <a href="{{ route('users.edit', ['user_id' => $user->user_id]) }}" class="btn btn-edit">Edit</a>
+                <a href="#" class="btn btn-edit" data-user-id="{{ $user->user_id }}" data-credential-email="{{ $user->credential_email }}">Edit</a>
 
                 <form action="{{ route('users.destroy', ['user_id' => $user->user_id]) }}" method="POST" style="display:inline;">
                   @csrf
@@ -395,7 +499,41 @@
                     Delete
                   </button>
                 </form>
+                <!-- Edit User Modal -->
+                <div id="editUserModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close">&times;</span>
 
+                    <h2>Manage User</h2>
+
+                    <!-- Alert messages (hidden by default, can be toggled via JS) -->
+                    <div id="modalSuccess" class="alert-success" style="display:none;">User updated successfully!</div>
+                    <div id="modalError" class="alert-error" style="display:none;">Something went wrong.</div>
+
+                    <form id="editUserForm" method="POST">
+                      @csrf
+                      @method('PUT')
+
+                      <label>Credential Email:</label>
+                      <input type="email" name="credential_email" id="credential_email" required>
+
+                      <label>Role:</label> <select name="role_id" id="role" required>
+                                              @foreach($roles as $role)
+                                                <option value="{{ $role->role_id }}">{{ $role->role_name }}</option>
+                                              @endforeach
+                                            </select>
+
+
+                      <label>New Password (leave blank to keep current):</label>
+                      <input type="password" name="password" placeholder="Enter new password">
+
+                      <label>Confirm Password:</label>
+                      <input type="password" name="password_confirmation" placeholder="Confirm new password">
+
+                      <button type="submit" class="btn">Update</button>
+                    </form>
+                  </div>
+                </div>
                 </td>
               </tr>
             @endforeach
@@ -406,6 +544,34 @@
   </div>
 
   <script>
+    const modal = document.getElementById('editUserModal');
+    const closeBtn = modal.querySelector('.close');
+    const editButtons = document.querySelectorAll('.btn-edit');
+    const form = document.getElementById('editUserForm');
+
+    editButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const userId = this.dataset.userId; // add data-user-id attribute on your edit button
+        const credentialEmail = this.dataset.credentialEmail;
+
+        // Fill the form with user's data
+        form.action = `/users/${userId}`; 
+        form.credential_email.value = credentialEmail;
+
+        modal.style.display = 'block';
+      });
+    });
+
+    closeBtn.onclick = function() {
+      modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
     function navigate(section) {
       document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
       event.target.closest('.menu-item').classList.add('active');

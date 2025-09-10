@@ -148,7 +148,21 @@
   th {
     background-color: #f0f2ff;
   }
+  .btn-logout {
+      background-color: #1C0BA3;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
 
+    .btn-logout:hover {
+      background-color: #150882;
+    }
   @media (max-width: 768px) {
     .dashboard-container {
       flex-direction: column;
@@ -165,18 +179,24 @@
     <img src="{{ asset('images/bsylogo.png') }}" alt="BSY Logo">
     <h2>BSY Facilitator</h2>
   </div>
-  <div class="user-menu">
-    <span>Facilitator Name</span>
-    <img src="{{ asset('images/user-avatar.jpg') }}" alt="Facilitator Avatar">
+
+  <!-- Combined facilitator info + logout -->
+  <div class="user-actions" style="display: flex; align-items: center; gap: 10px;">
+    <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
+    <img src="{{ asset('images/user-avatar.jpg') }}" alt="Facilitator Avatar" style="width:36px; height:36px; border-radius:50%; object-fit:cover;">
+    <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
+      @csrf
+      <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
   </div>
 </header>
+
 
 <div class="dashboard-container">
   <aside class="sidebar">
     <div class="menu-item active"><i class="fas fa-plus"></i> <span>Upload Activity</span></div>
     <div class="menu-item"><i class="fas fa-users"></i> <span>Members & Attendance</span></div>
     <div class="menu-item"><i class="fas fa-hand-holding-usd"></i> <span>Sponsors</span></div>
-    <div class="menu-item"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></div>
   </aside>
 
   <main class="main-content">

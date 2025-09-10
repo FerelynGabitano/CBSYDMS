@@ -399,6 +399,21 @@
       font-size: 0.8rem;
       font-weight: bold;
     }
+    .btn-logout {
+      background-color: #1C0BA3;
+      color: white;
+      border: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .btn-logout:hover {
+      background-color: #150882;
+    }
 
     /* Responsive */
     @media (max-width: 768px) {
@@ -434,11 +449,18 @@
       <img src="{{ asset('images/bsylogo.png') }}" alt="BSY Logo">
       <h2>Batang Surigaonon Youth</h2>
     </div>
-    <div class="user-menu">
-      <span id="user-name">Juan Dela Cruz</span>
+        <div class="user-menu">
+      <span id="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
       <div
         style="width: 36px; height: 36px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
-        JD</div>
+        JD
+      </div>
+
+      <!-- Logout Form -->
+      <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
+        @csrf
+        <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </form>
     </div>
   </header>
 
@@ -459,10 +481,6 @@
       <div class="menu-item" data-section="gallery">
         <i class="fas fa-images"></i>
         <span>Gallery</span>
-      </div>
-      <div class="menu-item" data-section="logout">
-        <i class="fas fa-sign-out-alt"></i>
-        <span>Logout</span>
       </div>
     </aside>
 
@@ -581,49 +599,55 @@
         <div class="profile-card">
           <div class="profile-header">
             <div class="profile-avatar">
-              <i class="fas fa-user"></i>
+                @if(Auth::user()->profile_picture)
+                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                @else
+                    {{ strtoupper(substr(Auth::user()->first_name,0,1) . substr(Auth::user()->last_name,0,1)) }}
+                @endif
             </div>
+
             <div class="profile-info">
-              <h2>Juan Dela Cruz</h2>
-              <p><i class="fas fa-envelope"></i> juan.delacruz@email.com</p>
-              <p><i class="fas fa-phone"></i> +63 912 345 6789</p>
-              <p><i class="fas fa-calendar"></i> Member since January 2023</p>
+              <h2>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h2>
+              <p><i class="fas fa-envelope"></i> {{ Auth::user()->email }}</p>
+              <p><i class="fas fa-phone"></i> {{ Auth::user()->phone }}</p>
+              <p><i class="fas fa-calendar"></i> Member since {{ Auth::user()->created_at->format('F Y') }}</p>
             </div>
           </div>
 
           <div class="profile-details">
             <div class="detail-group">
               <label>Full Name:</label>
-              <span>Juan Miguel Dela Cruz</span>
+              <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
             </div>
             <div class="detail-group">
               <label>Age:</label>
-              <span>22 years old</span>
+              <span>{{ \Carbon\Carbon::parse(Auth::user()->birthdate)->age }} years old</span>
             </div>
             <div class="detail-group">
               <label>Address:</label>
-              <span>123 Rizal Street, Surigao City</span>
+              <span>{{ Auth::user()->address }}</span>
             </div>
             <div class="detail-group">
               <label>Barangay:</label>
-              <span>Barangay Centro</span>
+              <span>{{ Auth::user()->barangay }}</span>
             </div>
             <div class="detail-group">
               <label>Education:</label>
-              <span>College Student - Surigao State University</span>
+              <span>{{ Auth::user()->education }}</span>
             </div>
             <div class="detail-group">
               <label>Course:</label>
-              <span>Bachelor of Science in Information Technology</span>
+              <span>{{ Auth::user()->course }}</span>
             </div>
             <div class="detail-group">
               <label>Skills/Interests:</label>
-              <span>Programming, Community Service, Sports</span>
+              <span>{{ Auth::user()->skills }}</span>
             </div>
             <div class="detail-group">
               <label>Emergency Contact:</label>
-              <span>Maria Dela Cruz - +63 912 345 6788</span>
+              <span>{{ Auth::user()->emergency_contact }}</span>
             </div>
+
           </div>
         </div>
       </div>
@@ -848,14 +872,13 @@
           const sectionName = this.getAttribute('data-section');
 
           // Handle logout separately
-          if (sectionName === 'logout') {
+                if (sectionName === 'logout') {
             if (confirm('Are you sure you want to logout?')) {
-              alert('Logging out...');
-              // Add your logout logic here
-              // window.location.href = '/logout';
+                document.getElementById('logoutForm').submit(); // <-- submit the form
             }
             return;
-          }
+        }
+
 
           // Remove active class from all menu items
           menuItems.forEach(menuItem => {
