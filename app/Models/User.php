@@ -3,13 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'user_id'; // your primary key
     public $timestamps = true;
 
     protected $fillable = [
@@ -36,10 +35,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    public function getAuthIdentifierName()
-    {
-        return 'credential_email';
-    }
+
+    // REMOVE the getAuthIdentifierName override entirely
+    // Laravel will now correctly use user_id for auth()->id()
+    
     // Relationships
     public function role()
     {

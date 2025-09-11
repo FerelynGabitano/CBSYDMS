@@ -482,6 +482,9 @@
         <i class="fas fa-images"></i>
         <span>Gallery</span>
       </div>
+      <div class="menu-item" data-section="scholarships">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>Scholarship</span>
     </aside>
 
     <main class="main-content">

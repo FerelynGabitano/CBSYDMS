@@ -200,6 +200,11 @@
   </aside>
 
   <main class="main-content">
+        @if(session('success'))
+        <div style="background-color: #d4edda; color: #155724; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+            {{ session('success') }}
+        </div>
+    @endif
     <!-- Upload Activity Section -->
     <section class="form-section">
       <h3>Upload New Activity</h3>
@@ -218,11 +223,26 @@
               </div>
 
               <div>
-                  <label for="date">Date</label>
-                  <input type="date" id="date" name="date" required>
+                  <label for="location">Location</label>
+                  <input type="text" id="location" name="location" required>
               </div>
 
-              <button type="submit">Save Activity</button>
+              <div>
+                  <label for="max_participants">Max Participants</label>
+                  <input type="number" id="max_participants" name="max_participants" min="1">
+              </div>
+
+              <div>
+                  <label for="start_datetime">Start Date & Time</label>
+                  <input type="datetime-local" id="start_datetime" name="start_datetime" required>
+              </div>
+
+              <div>
+                  <label for="end_datetime">End Date & Time</label>
+                  <input type="datetime-local" id="end_datetime" name="end_datetime" required>
+              </div>
+
+              <button type="submit">Post Activity</button>
           </form>
     </section>
 

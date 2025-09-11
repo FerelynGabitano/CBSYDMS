@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\User;
 use App\Models\Sponsor;
+use Illuminate\Support\Facades\Auth;    
 
 class FacilitatorController extends Controller
 {
@@ -19,23 +20,30 @@ class FacilitatorController extends Controller
         return view('faci_dashboard', compact('activities', 'members', 'sponsors'));
     }
 
-    // 📌 Handle uploading new activity
     public function storeActivity(Request $request)
-    {
-        $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'date'        => 'required|date',
-        ]);
+{
+    $request->validate([
+        'title'            => 'required|string|max:255',
+        'description'      => 'required|string',
+        'start_datetime'   => 'required|date',
+        'end_datetime'     => 'required|date|after:start_datetime',
+        'location'         => 'required|string|max:255',
+        'max_participants' => 'nullable|integer|min:1',
+    ]);
 
-        Activity::create([
-            'title'       => $request->title,
-            'description' => $request->description,
-            'date'        => $request->date,
-        ]);
+    Activity::create([
+        'title'            => $request->title,
+        'description'      => $request->description,
+        'start_datetime'   => $request->start_datetime,
+        'end_datetime'     => $request->end_datetime,
+        'location'         => $request->location,
+        'max_participants' => $request->max_participants,
+        'created_by'       => Auth::id(), // stores the logged-in user's ID
+    ]);
 
-        return redirect()->route('faci_dashboard')->with('success', 'Activity uploaded successfully!');
-    }
+    // Redirect back to facilitator dashboard with a success message
+    return redirect()->route('faci_dashboard')->with('success', 'Activity posted successfully!');
+}
 
     // 📌 Handle attendance update
     public function updateAttendance(Request $request)
