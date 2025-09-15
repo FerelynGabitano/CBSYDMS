@@ -29,15 +29,18 @@ class User extends Authenticatable
         'profile_picture',
         'role_id',
         'is_active',
+
+        // ✅ Add fields for profile updates
+        'education',
+        'course',
+        'skills',
+        'emergency_contact',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
-    // REMOVE the getAuthIdentifierName override entirely
-    // Laravel will now correctly use user_id for auth()->id()
     
     // Relationships
     public function role()
@@ -61,7 +64,7 @@ class User extends Authenticatable
             ->withPivot('attendance_status')
             ->withTimestamps(); 
     }
-
+    
     public function createdActivities(): HasMany
     {
         return $this->hasMany(Activity::class, 'created_by');

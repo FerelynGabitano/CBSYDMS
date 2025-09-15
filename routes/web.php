@@ -36,6 +36,8 @@
     Route::post('/scholarship/upload', [MemberController::class, 'uploadScholarshipRequirements'])
         ->name('upload.scholarship');
 
+    Route::post('/profile/update-picture', [App\Http\Controllers\MemberController::class, 'updateProfilePicture'])
+        ->name('profile.picture.update');
 
     // Facilitator dashboard (only facilitators can access)
     Route::get('/faci_dashboard', [FacilitatorController::class, 'faci_dashboard'])
