@@ -488,114 +488,73 @@
     </aside>
 
     <main class="main-content">
-      <!-- Activities Section -->
-      <div id="activities-section" class="content-section active">
-        <section class="welcome-section">
-          <h1 id="greeting">Welcome!</h1>
-          <p>Stay updated with BSY activities and join upcoming events.</p>
-        </section>
-
-        <!-- Active Activities Section -->
-        <section class="activity-section">
-          <div class="section-title">
-            <h2><i class="fas fa-fire"></i> Active Activities</h2>
+      <!-- Active Activities Section -->
+<section class="activity-section">
+  <div class="section-title">
+    <h2><i class="fas fa-fire"></i> Active Activities</h2>
+  </div>
+  <div class="activity-cards">
+    @forelse($activeActivities as $activity)
+      <div class="activity-card">
+        <div class="activity-image">
+          @if($activity->icon)
+            <i class="fas {{ $activity->icon }}" style="font-size: 3rem; color: #28a745;"></i>
+          @else
+            <i class="fas fa-calendar" style="font-size: 3rem; color: #28a745;"></i>
+          @endif
+        </div>
+        <div class="activity-details">
+          <span class="activity-status status-active">Ongoing</span>
+          <h3>{{ $activity->title }}</h3>
+          <div class="activity-meta">
+            <span><i class="fas fa-map-marker-alt"></i> {{ $activity->location }}</span>
+            <span><i class="fas fa-calendar-day"></i> {{ $activity->start_date->format('M d, Y') }} 
+              @if($activity->end_date) - {{ $activity->end_date->format('M d, Y') }} @endif
+            </span>
           </div>
-          <div class="activity-cards">
-            <!-- Activity Card 1 -->
-            <div class="activity-card">
-              <div class="activity-image">
-                <i class="fas fa-broom" style="font-size: 3rem; color: #28a745;"></i>
-              </div>
-              <div class="activity-details">
-                <span class="activity-status status-active">Ongoing</span>
-                <h3>Community Cleanup Drive</h3>
-                <div class="activity-meta">
-                  <span><i class="fas fa-map-marker-alt"></i> Surigao City Plaza</span>
-                  <span><i class="fas fa-calendar-day"></i> Until Oct 30</span>
-                </div>
-                <p>Help clean our community and win prizes for most collected trash!</p>
-                <a href="#" class="btn-join">Participate Now</a>
-              </div>
-            </div>
-
-            <!-- Activity Card 2 -->
-            <div class="activity-card">
-              <div class="activity-image">
-                <i class="fas fa-palette" style="font-size: 3rem; color: #fd7e14;"></i>
-              </div>
-              <div class="activity-details">
-                <span class="activity-status status-active">Ongoing</span>
-                <h3>Youth Art Workshop</h3>
-                <div class="activity-meta">
-                  <span><i class="fas fa-map-marker-alt"></i> BSY Center</span>
-                  <span><i class="fas fa-calendar-day"></i> Daily until Nov 15</span>
-                </div>
-                <p>Free art workshops for young aspiring artists every afternoon.</p>
-                <a href="#" class="btn-join">Join Today</a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Upcoming Activities Section -->
-        <section class="activity-section">
-          <div class="section-title">
-            <h2><i class="fas fa-clock"></i> Upcoming Activities</h2>
-          </div>
-          <div class="activity-cards">
-            <!-- Activity Card 1 -->
-            <div class="activity-card">
-              <div class="activity-image">
-                <i class="fas fa-users" style="font-size: 3rem; color: #1C0BA3;"></i>
-              </div>
-              <div class="activity-details">
-                <span class="activity-status status-upcoming">Starts Nov 5</span>
-                <h3>BSY Youth Summit 2023</h3>
-                <div class="activity-meta">
-                  <span><i class="fas fa-map-marker-alt"></i> City Convention Center</span>
-                  <span><i class="fas fa-calendar-day"></i> Nov 5-7, 2023</span>
-                </div>
-                <p>Annual gathering of Surigao youth with workshops, talks, and networking.</p>
-                <a href="#" class="btn-join">Register Now</a>
-              </div>
-            </div>
-
-            <!-- Activity Card 2 -->
-            <div class="activity-card">
-              <div class="activity-image">
-                <i class="fas fa-basketball-ball" style="font-size: 3rem; color: #dc3545;"></i>
-              </div>
-              <div class="activity-details">
-                <span class="activity-status status-upcoming">Starts Dec 10</span>
-                <h3>Inter-Barangay Sports Fest</h3>
-                <div class="activity-meta">
-                  <span><i class="fas fa-map-marker-alt"></i> City Sports Complex</span>
-                  <span><i class="fas fa-calendar-day"></i> Dec 10-15, 2023</span>
-                </div>
-                <p>Basketball, volleyball, and badminton tournaments for youth.</p>
-                <a href="#" class="btn-join">Join Team</a>
-              </div>
-            </div>
-
-            <!-- Activity Card 3 -->
-            <div class="activity-card">
-              <div class="activity-image">
-                <i class="fas fa-gift" style="font-size: 3rem; color: #28a745;"></i>
-              </div>
-              <div class="activity-details">
-                <span class="activity-status status-upcoming">Starts Dec 23</span>
-                <h3>BSY Christmas Party</h3>
-                <div class="activity-meta">
-                  <span><i class="fas fa-map-marker-alt"></i> BSY Headquarters</span>
-                  <span><i class="fas fa-calendar-day"></i> Dec 23, 2023</span>
-                </div>
-                <p>Annual Christmas celebration with games, gifts, and performances.</p>
-                <a href="#" class="btn-join">Confirm Attendance</a>
-              </div>
-            </div>
-          </div>
-        </section>
+          <p>{{ $activity->description }}</p>
+          <a href="#" class="btn-join">Participate Now</a>
+        </div>
       </div>
+    @empty
+      <p>No active activities available.</p>
+    @endforelse
+  </div>
+</section>
+
+<!-- Upcoming Activities Section -->
+<section class="activity-section">
+  <div class="section-title">
+    <h2><i class="fas fa-clock"></i> Upcoming Activities</h2>
+  </div>
+  <div class="activity-cards">
+    @forelse($upcomingActivities as $activity)
+      <div class="activity-card">
+        <div class="activity-image">
+          @if($activity->icon)
+            <i class="fas {{ $activity->icon }}" style="font-size: 3rem; color: #fd7e14;"></i>
+          @else
+            <i class="fas fa-calendar" style="font-size: 3rem; color: #fd7e14;"></i>
+          @endif
+        </div>
+        <div class="activity-details">
+          <span class="activity-status status-upcoming">Starts {{ $activity->start_date->format('M d, Y') }}</span>
+          <h3>{{ $activity->title }}</h3>
+          <div class="activity-meta">
+            <span><i class="fas fa-map-marker-alt"></i> {{ $activity->location }}</span>
+            <span><i class="fas fa-calendar-day"></i> {{ $activity->start_date->format('M d, Y') }} 
+              @if($activity->end_date) - {{ $activity->end_date->format('M d, Y') }} @endif
+            </span>
+          </div>
+          <p>{{ $activity->description }}</p>
+          <a href="#" class="btn-join">Register Now</a>
+        </div>
+      </div>
+    @empty
+      <p>No upcoming activities available.</p>
+    @endforelse
+  </div>
+</section>
 
       <!-- Profile Section -->
       <div id="profile-section" class="content-section">

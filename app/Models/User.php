@@ -58,7 +58,8 @@ class User extends Authenticatable
     public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class, 'activity_participants', 'user_id', 'activity_id')
-            ->withPivot('attendance_status', 'registered_at');
+            ->withPivot('attendance_status')
+            ->withTimestamps(); 
     }
 
     public function createdActivities(): HasMany

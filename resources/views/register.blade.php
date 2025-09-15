@@ -82,7 +82,10 @@
             padding-bottom: 10px;
             border-bottom: 2px solid #f1c40f;
         }
-
+        .form-section i {
+            font-size: 0.9rem;
+            color: #666;
+        }
         .form-row {
             display: flex;
             flex-wrap: wrap;
@@ -188,6 +191,7 @@
             border: 2px solid #1C0BA3;
             border-radius: 4px;
             margin-right: 10px;
+            margin-bottom: 10px;
             cursor: pointer;
             position: relative;
             display: flex;
@@ -207,6 +211,7 @@
         }
 
         .terms-label {
+            margin-bottom: 10px;
             font-size: 0.95rem;
             color: #333;
             cursor: pointer;
@@ -215,7 +220,6 @@
         .terms-label .required {
             color: red;
         }
-
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
@@ -408,6 +412,7 @@
                                 correct.
                             </label>
                         </div>
+                        <i>Note: Hardcopy of All Documents Must Be Submitted Upon Request</i>
                     </div>
 
                     <button href="{{ route('login') }}" type="submit" class="btn-submit">Submit Registration</button>
