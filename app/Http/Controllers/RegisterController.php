@@ -30,22 +30,27 @@ class RegisterController extends Controller
             'city_municipality' => 'required|string|max:100',
             'province'          => 'required|string|max:100',
             'zip_code'          => 'required|string|max:20',
-            'profile_picture'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            // no password validation here
+
+            // file validations
+            'brgyCert'     => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'birthCert'    => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'gradeReport'  => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'idPicture'    => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // handle file upload (optional)
-        if ($request->hasFile('profile_picture')) {
-            $validated['profile_picture'] = $request->file('profile_picture')->store('photos', 'public');
-        }
+        // store files into storage/app/public/uploads
+        $validated['brgyCert']    = $request->file('brgyCert')->store('uploads', 'public');
+        $validated['birthCert']   = $request->file('birthCert')->store('uploads', 'public');
+        $validated['gradeReport'] = $request->file('gradeReport')->store('uploads', 'public');
+        $validated['idPicture']   = $request->file('idPicture')->store('uploads', 'public');
 
-        // password is optional; admin can set it later
+        // no password yet
         $validated['password'] = null;
 
-        // assign default role (adjust as needed)
-        $validated['role_id'] = 1;  
+        // assign default role (adjust if needed)
+        $validated['role_id'] = 1;
 
-        // save user
+        // save to DB
         User::create($validated);
 
         return redirect()->back()->with('success', 'Registration successful!');

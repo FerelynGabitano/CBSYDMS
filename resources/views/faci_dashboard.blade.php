@@ -125,61 +125,54 @@
         <!-- Activity Feed -->
         <div class="list-section">
           <h3>Activity Feed</h3>
-          <div class="activity-grid">
-            @foreach($activities as $activity)
-              @php
-                $now = \Carbon\Carbon::now();
-                $start = \Carbon\Carbon::parse($activity->start_datetime);
-                $end = \Carbon\Carbon::parse($activity->end_datetime);
-                if ($now->lt($start)) {
-                  $status = 'Not Started'; $statusClass = 'not-started';
-                } elseif ($now->between($start, $end)) {
-                  $status = 'Ongoing'; $statusClass = 'ongoing';
-                } else {
-                  $status = 'Complete'; $statusClass = 'complete';
-                }
-              @endphp
+        <div class="activity-grid">
+          @foreach($activities as $activity)
+            @php
+              $now = \Carbon\Carbon::now();
+              $start = \Carbon\Carbon::parse($activity->start_datetime);
+              $end = \Carbon\Carbon::parse($activity->end_datetime);
+              if ($now->lt($start)) {
+                $status = 'Not Started'; $statusClass = 'not-started';
+              } elseif ($now->between($start, $end)) {
+                $status = 'Ongoing'; $statusClass = 'ongoing';
+              } else {
+                $status = 'Complete'; $statusClass = 'complete';
+              }
+            @endphp
 
-              <div class="activity-post">
-                @if($activity->cover_photo)
-                  <img src="{{ asset('storage/' . $activity->cover_photo) }}" alt="Activity Cover">
-                @endif
-                <div class="post-content">
-                  <span class="status {{ $statusClass }}">{{ $status }}</span>
-                  <h4>{{ $activity->title }}</h4>
-                  <p>{{ $activity->description }}</p>
-                  <p><strong>📍 Location:</strong> {{ $activity->location }}</p>
-                  <p><strong>📅 When:</strong>
-                    {{ \Carbon\Carbon::parse($activity->start_datetime)->format('M d, Y h:i A') }} –
-                    {{ \Carbon\Carbon::parse($activity->end_datetime)->format('M d, Y h:i A') }}
-                  </p>
-                  <p><strong>👥 Max Participants:</strong> {{ $activity->max_participants ?? 'N/A' }}</p>
-                  <p><strong>⭐ Lead Facilitator:</strong>
-                    @if($activity->leadFacilitator)
-                      {{ $activity->leadFacilitator->first_name }} {{ $activity->leadFacilitator->last_name }}
-                    @else
-                      Not Assigned
-                    @endif
-                  </p>
+            <div class="activity-post">
+              @if($activity->cover_photo)
+                <img src="{{ asset('storage/' . $activity->cover_photo) }}" alt="Activity Cover">
+              @endif
+              <div class="post-content">
+                <span class="status {{ $statusClass }}">{{ $status }}</span>
+                <h4>{{ $activity->title }}</h4>
+                <p>{{ $activity->description }}</p>
+                <p><strong>📍 Location:</strong> {{ $activity->location }}</p>
+                <p><strong>📅 When:</strong>
+                  {{ \Carbon\Carbon::parse($activity->start_datetime)->format('M d, Y h:i A') }} –
+                  {{ \Carbon\Carbon::parse($activity->end_datetime)->format('M d, Y h:i A') }}
+                </p>
+                <p><strong>👥 Max Participants:</strong> {{ $activity->max_participants ?? 'N/A' }}</p>
+                <p><strong>⭐ Lead Facilitator:</strong>
+                  @if($activity->leadFacilitator)
+                    {{ $activity->leadFacilitator->first_name }} {{ $activity->leadFacilitator->last_name }}
+                  @else
+                    Not Assigned
+                  @endif
+                </p>
 
-                  <!-- Action Buttons -->
-                  <button class="btn btn-warning" onclick="openModal('editActivityModal{{ $activity->activity_id }}')">Edit</button>
-                  <form action="{{ route('faci.activity.destroy', $activity->activity_id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this activity?')">Delete</button>
-                  </form>
-                </div>
+                <!-- Action Buttons -->
+                <button class="btn btn-warning" onclick="openModal('editActivityModal{{ $activity->activity_id }}')">Edit</button>
+                <form action="{{ route('faci.activity.destroy', $activity->activity_id) }}" method="POST" style="display:inline;">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this activity?')">Delete</button>
+                </form>
               </div>
-            @endforeach
-          </div>
-          <!-- Activities Section -->
-        <section id="activities" class="tab-section active">
-          <button class="btn btn-primary" onclick="openModal('addActivityModal')">+ Add Activity</button>
-        </div>
-              
+            </div>
 
-            <!-- Edit Modal -->
+            <!-- Edit Modal for this activity -->
             <div id="editActivityModal{{ $activity->activity_id }}" class="modal">
               <div class="modal-content">
                 <span class="close" onclick="closeModal('editActivityModal{{ $activity->activity_id }}')">&times;</span>
@@ -212,6 +205,7 @@
                 </form>
               </div>
             </div>
+          @endforeach
         </div>
       </section>
 
