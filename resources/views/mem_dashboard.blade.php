@@ -445,18 +445,15 @@
 
 <body>
   <header class="dashboard-header">
-      <div class="logo">
+    <div class="logo">
       <img src="{{ asset('images/bsylogo.png') }}" alt="BSY Logo">
       <h2>Batang Surigaonon Youth</h2>
     </div>
-        <div class="user-menu">
+    <div class="user-menu">
       <span id="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-      <div
-        style="width: 36px; height: 36px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+      <div style="width: 36px; height: 36px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
         JD
       </div>
-
-      <!-- Logout Form -->
       <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
         @csrf
         <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -465,6 +462,7 @@
   </header>
 
   <div class="dashboard-container">
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="menu-item active" data-section="activities">
         <i class="fas fa-calendar-alt"></i>
@@ -485,79 +483,84 @@
       <div class="menu-item" data-section="scholarships">
         <i class="fa-solid fa-graduation-cap"></i>
         <span>Scholarship</span>
+      </div>
     </aside>
 
+    <!-- Main Content -->
     <main class="main-content">
-      <!-- Active Activities Section -->
-<section class="activity-section">
-  <div class="section-title">
-    <h2><i class="fas fa-fire"></i> Active Activities</h2>
-  </div>
-  <div class="activity-cards">
-    @forelse($activeActivities as $activity)
-      <div class="activity-card">
-        <div class="activity-image">
-          @if($activity->icon)
-            <i class="fas {{ $activity->icon }}" style="font-size: 3rem; color: #28a745;"></i>
-          @else
-            <i class="fas fa-calendar" style="font-size: 3rem; color: #28a745;"></i>
-          @endif
-        </div>
-        <div class="activity-details">
-          <span class="activity-status status-active">Ongoing</span>
-          <h3>{{ $activity->title }}</h3>
-          <div class="activity-meta">
-            <span><i class="fas fa-map-marker-alt"></i> {{ $activity->location }}</span>
-            <span><i class="fas fa-calendar-day"></i> {{ $activity->start_date->format('M d, Y') }} 
-              @if($activity->end_date) - {{ $activity->end_date->format('M d, Y') }} @endif
-            </span>
+      <!-- Activities Section -->
+      <div id="activities-section" class="content-section active">
+        <!-- Active Activities -->
+        <section class="activity-section">
+          <div class="section-title">
+            <h2><i class="fas fa-fire"></i> Active Activities</h2>
           </div>
-          <p>{{ $activity->description }}</p>
-          <a href="#" class="btn-join">Participate Now</a>
-        </div>
-      </div>
-    @empty
-      <p>No active activities available.</p>
-    @endforelse
-  </div>
-</section>
+          <div class="activity-cards">
+            @forelse($activeActivities as $activity)
+              <div class="activity-card">
+                <div class="activity-image">
+                  @if($activity->icon)
+                    <i class="fas {{ $activity->icon }}" style="font-size: 3rem; color: #28a745;"></i>
+                  @else
+                    <i class="fas fa-calendar" style="font-size: 3rem; color: #28a745;"></i>
+                  @endif
+                </div>
+                <div class="activity-details">
+                  <span class="activity-status status-active">Ongoing</span>
+                  <h3>{{ $activity->title }}</h3>
+                  <div class="activity-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> {{ $activity->location }}</span>
+                    <span><i class="fas fa-calendar-day"></i> {{ $activity->start_date->format('M d, Y') }}
+                      @if($activity->end_date) - {{ $activity->end_date->format('M d, Y') }} @endif
+                    </span>
+                  </div>
+                  <p>{{ $activity->description }}</p>
+                  <a href="#" class="btn-join">Participate Now</a>
+                </div>
+              </div>
+            @empty
+              <p>No active activities available.</p>
+            @endforelse
+          </div>
+        </section>
 
-<!-- Upcoming Activities Section -->
-<section class="activity-section">
-  <div class="section-title">
-    <h2><i class="fas fa-clock"></i> Upcoming Activities</h2>
-  </div>
-  <div class="activity-cards">
-    @forelse($upcomingActivities as $activity)
-      <div class="activity-card">
-        <div class="activity-image">
-          @if($activity->icon)
-            <i class="fas {{ $activity->icon }}" style="font-size: 3rem; color: #fd7e14;"></i>
-          @else
-            <i class="fas fa-calendar" style="font-size: 3rem; color: #fd7e14;"></i>
-          @endif
-        </div>
-        <div class="activity-details">
-          <span class="activity-status status-upcoming">Starts {{ $activity->start_date->format('M d, Y') }}</span>
-          <h3>{{ $activity->title }}</h3>
-          <div class="activity-meta">
-            <span><i class="fas fa-map-marker-alt"></i> {{ $activity->location }}</span>
-            <span><i class="fas fa-calendar-day"></i> {{ $activity->start_date->format('M d, Y') }} 
-              @if($activity->end_date) - {{ $activity->end_date->format('M d, Y') }} @endif
-            </span>
+        <!-- Upcoming Activities -->
+        <section class="activity-section">
+          <div class="section-title">
+            <h2><i class="fas fa-clock"></i> Upcoming Activities</h2>
           </div>
-          <p>{{ $activity->description }}</p>
-          <a href="#" class="btn-join">Register Now</a>
-        </div>
+          <div class="activity-cards">
+            @forelse($upcomingActivities as $activity)
+              <div class="activity-card">
+                <div class="activity-image">
+                  @if($activity->icon)
+                    <i class="fas {{ $activity->icon }}" style="font-size: 3rem; color: #fd7e14;"></i>
+                  @else
+                    <i class="fas fa-calendar" style="font-size: 3rem; color: #fd7e14;"></i>
+                  @endif
+                </div>
+                <div class="activity-details">
+                  <span class="activity-status status-upcoming">Starts {{ $activity->start_date->format('M d, Y') }}</span>
+                  <h3>{{ $activity->title }}</h3>
+                  <div class="activity-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> {{ $activity->location }}</span>
+                    <span><i class="fas fa-calendar-day"></i> {{ $activity->start_date->format('M d, Y') }}
+                      @if($activity->end_date) - {{ $activity->end_date->format('M d, Y') }} @endif
+                    </span>
+                  </div>
+                  <p>{{ $activity->description }}</p>
+                  <a href="#" class="btn-join">Join</a>
+                </div>
+              </div>
+            @empty
+              <p>No upcoming activities available.</p>
+            @endforelse
+          </div>
+        </section>
       </div>
-    @empty
-      <p>No upcoming activities available.</p>
-    @endforelse
-  </div>
-</section>
 
       <!-- Profile Section -->
-      <div id="profile-section" class="content-section">
+            <div id="profile-section" class="content-section">
         <div class="profile-card">
           <div class="profile-header">
             <div class="profile-avatar">
@@ -614,8 +617,9 @@
         </div>
       </div>
 
+
       <!-- Participation Section -->
-      <div id="participation-section" class="content-section">
+            <div id="participation-section" class="content-section">
         <div class="participation-stats">
           <div class="stat-card">
             <div class="stat-number">12</div>
@@ -689,7 +693,7 @@
       </div>
 
       <!-- Gallery Section -->
-      <div id="gallery-section" class="content-section">
+            <div id="gallery-section" class="content-section">
         <div class="section-title">
           <h2><i class="fas fa-images"></i> Photo Gallery</h2>
         </div>
@@ -776,55 +780,75 @@
           </div>
         </div>
       </div>
+
+      <!-- Scholarships Section -->
+      <div id="scholarships-section" class="content-section">
+        <div class="section-title">
+          <h2><i class="fa-solid fa-graduation-cap"></i> Scholarships</h2>
+        </div>
+
+        @if(session('success'))
+          <p style="color:green;">{{ session('success') }}</p>
+        @endif
+
+        <form action="{{ route('upload.scholarship') }}" method="POST" enctype="multipart/form-data">
+          @csrf
+
+          <div class="detail-group">
+            <label>Barangay Certificate:</label>
+            <input type="file" name="brgyCert">
+            @if(Auth::user()->brgyCert)
+              <a href="{{ asset('storage/' . Auth::user()->brgyCert) }}" target="_blank">View</a>
+            @endif
+          </div>
+
+          <div class="detail-group">
+            <label>Birth Certificate:</label>
+            <input type="file" name="birthCert">
+            @if(Auth::user()->birthCert)
+              <a href="{{ asset('storage/' . Auth::user()->birthCert) }}" target="_blank">View</a>
+            @endif
+          </div>
+
+          <div class="detail-group">
+            <label>Grade Report:</label>
+            <input type="file" name="gradeReport">
+            @if(Auth::user()->gradeReport)
+              <a href="{{ asset('storage/' . Auth::user()->gradeReport) }}" target="_blank">View</a>
+            @endif
+          </div>
+
+          <div class="detail-group">
+            <label>ID Picture:</label>
+            <input type="file" name="idPicture">
+            @if(Auth::user()->idPicture)
+              <a href="{{ asset('storage/' . Auth::user()->idPicture) }}" target="_blank">View</a>
+            @endif
+          </div>
+
+          <div class="detail-group">
+            <label>Certificate of Registration (COR):</label>
+            <input type="file" name="cor">
+            @if(Auth::user()->cor)
+              <a href="{{ asset('storage/' . Auth::user()->cor) }}" target="_blank">View</a>
+            @endif
+          </div>
+
+          <div class="detail-group">
+            <label>Voter's Certificate:</label>
+            <input type="file" name="votersCert">
+            @if(Auth::user()->votersCert)
+              <a href="{{ asset('storage/' . Auth::user()->votersCert) }}" target="_blank">View</a>
+            @endif
+          </div>
+          <button type="submit" class="btn-submit">Submit Requirements</button>
+        </form>
+      </div>
     </main>
   </div>
 
   <script>
-    // Function to get the member name from the user's account
-    function getMemberName() {
-      // Replace this with your actual method to get the user's name
-      // Example: From a session object, token, or API
-      const user = JSON.parse(sessionStorage.getItem('user')) || {}; // Example: Mock session data
-      return user.name || 'Juan Dela Cruz'; // Fallback to default name
-    }
-
-    // Function to handle the greeting logic
-    function setGreeting() {
-      const memberName = getMemberName();
-      const currentTime = new Date().getTime();
-      let visitData = JSON.parse(localStorage.getItem('visitData')) || {
-        visitCount: 0,
-        lastVisit: null
-      };
-
-      // Increment visit count
-      visitData.visitCount += 1;
-
-      // Determine greeting
-      let greetingText = '';
-      if (visitData.visitCount === 1) {
-        greetingText = `Welcome, ${memberName}!`;
-      } else {
-        const lastVisitTime = visitData.lastVisit;
-        const timeDiff = lastVisitTime ? (currentTime - lastVisitTime) / (1000 * 60 * 60) : Infinity;
-
-        if (timeDiff <= 1) {
-          greetingText = `Welcome back, ${memberName}!`;
-        } else {
-          visitData.visitCount = 1;
-          greetingText = `Welcome, ${memberName}!`;
-        }
-      }
-
-      // Update the greeting
-      document.getElementById('greeting').textContent = greetingText;
-
-      // Update visit data
-      visitData.lastVisit = currentTime;
-      localStorage.setItem('visitData', JSON.stringify(visitData));
-    }
-
-    // Sidebar navigation functionality
+    // Sidebar navigation
     function initializeSidebar() {
       const menuItems = document.querySelectorAll('.menu-item');
       const contentSections = document.querySelectorAll('.content-section');
@@ -833,38 +857,17 @@
         item.addEventListener('click', function () {
           const sectionName = this.getAttribute('data-section');
 
-          // Handle logout separately
-                if (sectionName === 'logout') {
-            if (confirm('Are you sure you want to logout?')) {
-                document.getElementById('logoutForm').submit(); // <-- submit the form
-            }
-            return;
-        }
-
-
-          // Remove active class from all menu items
-          menuItems.forEach(menuItem => {
-            menuItem.classList.remove('active');
-          });
-
-          // Add active class to clicked item
+          menuItems.forEach(menuItem => menuItem.classList.remove('active'));
           this.classList.add('active');
 
-          // Hide all content sections
-          contentSections.forEach(section => {
-            section.classList.remove('active');
-          });
-
-          // Show selected section
+          contentSections.forEach(section => section.classList.remove('active'));
           const targetSection = document.getElementById(sectionName + '-section');
-          if (targetSection) {
-            targetSection.classList.add('active');
-          }
+          if (targetSection) targetSection.classList.add('active');
         });
       });
     }
 
-    // Initialize join button functionality
+    // Join buttons
     function initializeJoinButtons() {
       document.querySelectorAll('.btn-join').forEach(button => {
         button.addEventListener('click', function (e) {
@@ -878,26 +881,22 @@
       });
     }
 
-    // Initialize gallery item click functionality
+    // Gallery
     function initializeGallery() {
       document.querySelectorAll('.gallery-item').forEach(item => {
         item.addEventListener('click', function () {
           const title = this.querySelector('h4').textContent;
           const date = this.querySelector('p').textContent;
           alert(`Viewing: ${title} - ${date}`);
-          // You can implement a modal or lightbox here
         });
       });
     }
 
-    // Initialize all functionality when page loads
     document.addEventListener('DOMContentLoaded', function () {
-      setGreeting();
       initializeSidebar();
       initializeJoinButtons();
       initializeGallery();
     });
   </script>
 </body>
-
 </html>

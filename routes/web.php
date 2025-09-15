@@ -33,6 +33,10 @@
         ->name('mem_dashboard')
         ->middleware(['auth', 'role:member']);
 
+    Route::post('/scholarship/upload', [MemberController::class, 'uploadScholarshipRequirements'])
+        ->name('upload.scholarship');
+
+
     // Facilitator dashboard (only facilitators can access)
     Route::get('/faci_dashboard', [FacilitatorController::class, 'faci_dashboard'])
         ->name('faci_dashboard')

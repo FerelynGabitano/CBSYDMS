@@ -71,7 +71,7 @@
       <img src="{{ asset('images/user-avatar.jpg') }}" alt="User Avatar">
       <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
         @csrf
-        <button type="submit" class="btn-logout">Logout</button>
+        <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
       </form>
     </div>
   </header>
