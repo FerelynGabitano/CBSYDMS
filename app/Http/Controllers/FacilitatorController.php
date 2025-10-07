@@ -6,23 +6,53 @@ use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\User;
 use App\Models\Sponsor;
-use Illuminate\Support\Facades\Auth;    
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class FacilitatorController extends Controller
 {
-    public function faci_dashboard()
+    public function faci_dashboard(Request $request)
     {
-        // Fetch data to display in the dashboard
+        // Default: show all activities in the dashboard
         $activities = Activity::latest()->get();
-        $members    = User::all();
-        $sponsors   = Sponsor::all();
-
-        // Get all regular facilitators
+        $members = User::all();
+        $sponsors = Sponsor::all();
         $regularFacilitators = User::where('role_id', 2)->get();
 
-        return view('faci_dashboard', compact('activities', 'members', 'sponsors', 'regularFacilitators'));
-    }
+        // If filter was provided in the dashboard (optional)
+        $filter = $request->input('filter'); // 'daily'|'monthly'|'annual' or null
+        $filtered = null;
+        $type = 'All';
+        $date = $request->input('date', now()->toDateString());
 
+        if ($filter === 'daily') {
+            $filtered = Activity::whereDate('created_at', $date)->get();
+            $type = 'Daily';
+        } elseif ($filter === 'monthly') {
+            // if user passed a date, use that month/year; otherwise current month
+            $d = Carbon::parse($date);
+            $filtered = Activity::whereMonth('created_at', $d->month)
+                                 ->whereYear('created_at', $d->year)
+                                 ->get();
+            $type = 'Monthly';
+        } elseif ($filter === 'annual') {
+            $d = Carbon::parse($date);
+            $filtered = Activity::whereYear('created_at', $d->year)->get();
+            $type = 'Annual';
+        }
+
+        return view('faci_dashboard', compact(
+            'activities',
+            'filtered',          // collection or null
+            'members',
+            'sponsors',
+            'regularFacilitators',
+            'filter',
+            'type',
+            'date'
+        ));
+    }
 
     public function storeActivity(Request $request)
     {
@@ -42,10 +72,9 @@ class FacilitatorController extends Controller
             'end_datetime'     => $request->end_datetime,
             'location'         => $request->location,
             'max_participants' => $request->max_participants,
-            'created_by'       => Auth::id(), // stores the logged-in user's ID
+            'created_by'       => Auth::id(),
         ]);
 
-        // Redirect back to facilitator dashboard with a success message
         return redirect()->route('faci_dashboard')->with('success', 'Activity posted successfully!');
     }
 
@@ -78,7 +107,6 @@ class FacilitatorController extends Controller
         return redirect()->route('faci_dashboard')->with('success', 'Activity deleted successfully!');
     }
 
-    // 📌 Handle attendance update
     public function updateAttendance(Request $request)
     {
         if ($request->has('attendance')) {
@@ -94,7 +122,6 @@ class FacilitatorController extends Controller
         return redirect()->route('faci_dashboard')->with('success', 'Attendance updated!');
     }
 
-    // 📌 Handle sponsor logging
     public function storeSponsor(Request $request)
     {
         $request->validate([
@@ -106,7 +133,6 @@ class FacilitatorController extends Controller
             'logo_path'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // ✅ If logo is uploaded, save file
         $logoPath = null;
         if ($request->hasFile('logo_path')) {
             $logoPath = $request->file('logo_path')->store('sponsors', 'public');
@@ -122,5 +148,52 @@ class FacilitatorController extends Controller
         ]);
 
         return redirect()->route('faci_dashboard')->with('success', 'Sponsor added successfully!');
+    }
+
+    /**
+     * Generates a PDF for the filtered activities.
+     * Accepts GET params: filter (daily|monthly|annual), date (Y-m-d) (optional)
+     */
+    public function downloadReport(Request $request)
+    {
+        $filter = $request->input('filter');
+        $date = $request->input('date', now()->toDateString());
+        $filtered = collect();
+        $type = 'All';
+        $title = 'All Activities Report';
+
+        if ($filter === 'daily') {
+            $filtered = Activity::whereDate('created_at', $date)->get();
+            $type = 'Daily';
+            $title = 'Daily Activities Report (' . Carbon::parse($date)->toFormattedDateString() . ')';
+        } elseif ($filter === 'monthly') {
+            $d = Carbon::parse($date);
+            $filtered = Activity::whereMonth('created_at', $d->month)
+                                ->whereYear('created_at', $d->year)
+                                ->get();
+            $type = 'Monthly';
+            $title = 'Monthly Activities Report (' . $d->format('F Y') . ')';
+        } elseif ($filter === 'annual') {
+            $d = Carbon::parse($date);
+            $filtered = Activity::whereYear('created_at', $d->year)->get();
+            $type = 'Annual';
+            $title = 'Annual Activities Report (' . $d->format('Y') . ')';
+        } else {
+            $filtered = Activity::latest()->get();
+        }
+
+        // Ensure you have resources/views/reports/pdf.blade.php
+        $pdf = Pdf::loadView('reports.pdf', compact('filtered', 'type', 'date', 'title'));
+        return $pdf->download('Activities_Report_' . ($type ?? 'All') . '.pdf');
+    }
+
+    /**
+     * Endpoint used by the reports form (if you want a dedicated route).
+     * Returns the dashboard view with the filtered result inserted into the reports tab.
+     */
+    public function filterReports(Request $request)
+    {
+        // We'll reuse faci_dashboard logic: forward request to faci_dashboard
+        return $this->faci_dashboard($request);
     }
 }

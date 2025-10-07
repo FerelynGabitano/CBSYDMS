@@ -38,7 +38,8 @@
 
     Route::post('/profile/update-picture', [App\Http\Controllers\MemberController::class, 'updateProfilePicture'])
         ->name('profile.picture.update');
-
+    Route::put('/profile/update', [MemberController::class, 'updateProfile'])->name('profile.update');
+    
     // Facilitator dashboard (only facilitators can access)
     Route::get('/faci_dashboard', [FacilitatorController::class, 'faci_dashboard'])
         ->name('faci_dashboard')
@@ -65,6 +66,8 @@
         ->name('faci.activity.destroy')
         ->middleware(['auth','role:facilitator']);
 
+    Route::get('/facilitator/reports', [FacilitatorController::class, 'filterReports'])->name('facilitator.reports.filter');
+    Route::get('/facilitator/reports/pdf', [FacilitatorController::class, 'generatePDF'])->name('facilitator.reports.pdf');
 
     // Projects (still public but limited to IDs 1-5)
     Route::get('/project/{id}', [ProjectController::class, 'show'])
