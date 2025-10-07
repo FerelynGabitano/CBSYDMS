@@ -29,12 +29,17 @@ class User extends Authenticatable
         'profile_picture',
         'role_id',
         'is_active',
-
-        // ✅ Add fields for profile updates
-        'education',
         'course',
         'skills',
-        'emergency_contact',
+        'brgyCert',
+        'birthCert',
+        'gradeReport',
+        'idPicture',
+        'school',      
+        'gradeLevel', 
+        'course',              
+        'skills',               
+        'emergency_contact_no',
     ];
 
     protected $hidden = [

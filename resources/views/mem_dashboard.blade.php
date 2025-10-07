@@ -653,7 +653,7 @@
             </div>
 
             <div class="profile-info">
-              <h2>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h2>
+              <h2>{{ Auth::user()->first_name }} {{ Auth::user()->middle_name }} {{ Auth::user()->last_name }}</h2>
               <p><i class="fas fa-envelope"></i> {{ Auth::user()->email }}</p>
               <p><i class="fas fa-phone"></i> {{ Auth::user()->contact_number }}</p>
               <p><i class="fas fa-calendar"></i> Member since {{ Auth::user()->created_at->format('F Y') }}</p>
@@ -677,14 +677,6 @@
 
           <div class="profile-details">
             <div class="detail-group">
-              <label>Full Name:</label>
-              <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-            </div>
-            <div class="detail-group">
-              <label>Age:</label>
-              <span>{{ \Carbon\Carbon::parse(Auth::user()->birthdate)->age }} years old</span>
-            </div>
-            <div class="detail-group">
               <label>Address:</label>
               <span>{{ Auth::user()->street_address . ', ' . Auth::user()->barangay . ', ' . Auth::user()->city_municipality . ', ' . Auth::user()->province . ' ' . Auth::user()->zip_code }}</span>
             </div>
@@ -698,7 +690,7 @@
             </div>
             <div class="detail-group">
               <label>Yeal Level:</label>
-              <span>{{ Auth::user()->yr_lvl }}</span>
+              <span>{{ Auth::user()->gradeLevel}}</span>
             </div>
             <div class="detail-group">
               <label>Skills/Interests:</label>
@@ -706,7 +698,7 @@
             </div>
             <div class="detail-group">
               <label>Emergency Contact:</label>
-              <span>{{ Auth::user()->emergency_contact }}</span>
+              <span>{{ Auth::user()->emergency_contact_no }}</span>
             </div>
           </div>
         </div>
@@ -717,7 +709,7 @@
   <div class="modal-content">
     <span class="close">&times;</span>
     <h2>Edit Profile Information</h2>
-    <form action="{{ route('users.update', auth()->id()) }}" method="POST">
+    <form action="{{ route('profile.update') }}" method="POST">
         @csrf
         @method('PUT')
       
@@ -726,11 +718,15 @@
         <input type="text" name="first_name" value="{{ Auth::user()->first_name }}">
       </div>
       <div class="detail-group">
+        <label for="middle_name">Middle Name:</label>
+        <input type="text" name="middle_name" value="{{ Auth::user()->middle_name }}">
+      </div>
+      <div class="detail-group">
         <label for="last_name">Last Name:</label>
         <input type="text" name="last_name" value="{{ Auth::user()->last_name }}">
       </div>
       <div class="detail-group">
-        <label for="contact_number">Phone:</label>
+        <label for="contact_number">Contact Number:</label>
         <input type="text" name="contact_number" value="{{ Auth::user()->contact_number }}">
       </div>
       <div class="detail-group">
@@ -762,16 +758,16 @@
         <input type="text" name="course" value="{{ Auth::user()->course }}">
       </div>
       <div class="detail-group">
-        <label for="yr_lvl">Year Level:</label>
-        <input type="text" name="yr_lvl" value="{{ Auth::user()->yr_lvl }}">
+        <label for="gradeLevel">Year Level:</label>
+        <input type="text" name="gradeLevel" value="{{ Auth::user()->gradeLevel }}">
       </div>
       <div class="detail-group">
         <label for="skills">Skills/Interests:</label>
         <input type="text" name="skills" value="{{ Auth::user()->skills }}">
       </div>
       <div class="detail-group">
-        <label for="emergency_contact">Emergency Contact:</label>
-        <input type="text" name="emergency_contact" value="{{ Auth::user()->emergency_contact }}">
+        <label for="emergency_contact_no">Emergency Contact:</label>
+        <input type="text" name="emergency_contact_no" value="{{ Auth::user()->emergency_contact_no }}">
       </div>
 
       <button type="submit" class="btn-join">Save Changes</button>
@@ -1029,19 +1025,18 @@
       });
     }
 
-    // Join buttons
-    function initializeJoinButtons() {
-      document.querySelectorAll('.btn-join').forEach(button => {
-        button.addEventListener('click', function (e) {
-          e.preventDefault();
-          const activityTitle = this.closest('.activity-card').querySelector('h3').textContent;
-          alert(`You've joined "${activityTitle}"! Details will be sent to your email.`);
-          this.textContent = "Joined!";
-          this.classList.add('btn-disabled');
-          this.style.backgroundColor = '#28a745';
-        });
-      });
-    }
+function initializeJoinButtons() {
+  document.querySelectorAll('.activity-card .btn-join').forEach(button => {
+    button.addEventListener('click', function (e) {
+      e.preventDefault();
+      const activityTitle = this.closest('.activity-card').querySelector('h3').textContent;
+      alert(`You've joined "${activityTitle}"! Details will be sent to your email.`);
+      this.textContent = "Joined!";
+      this.classList.add('btn-disabled');
+      this.style.backgroundColor = '#28a745';
+    });
+  });
+}
 
     // Gallery
     function initializeGallery() {

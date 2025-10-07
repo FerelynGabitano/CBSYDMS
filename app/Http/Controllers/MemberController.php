@@ -90,27 +90,39 @@ class MemberController extends Controller
         $user = User::find(Auth::id());
 
         $request->validate([
-            'first_name'        => 'required|string|max:255',
-            'last_name'         => 'required|string|max:255',
-            'phone'             => 'nullable|string|max:20',
-            'address'           => 'nullable|string|max:255',
-            'barangay'          => 'nullable|string|max:255',
-            'education'         => 'nullable|string|max:255',
-            'course'            => 'nullable|string|max:255',
-            'skills'            => 'nullable|string|max:255',
-            'emergency_contact' => 'nullable|string|max:255',
+            'first_name'        => 'required|string|max:50',
+            'middle_name'       => 'nullable|string|max:50',   
+            'last_name'         => 'required|string|max:50',
+            'date_of_birth'     => 'required|date',
+            'gender'            => 'required|in:Male,Female,Other',
+            'contact_number'    => 'required|string|max:20',
+            'email'             => 'required|email|unique:users,email',
+            'street_address'    => 'required|string|max:255',
+            'barangay'          => 'required|string|max:100',
+            'city_municipality' => 'required|string|max:100',
+            'province'          => 'required|string|max:100',
+            'zip_code'          => 'required|string|max:20',
         ]);
 
         $user->update($request->only([
             'first_name',
+            'middle_name',
             'last_name',
-            'phone',
+            'date_of_birth',
+            'gender',
+            'contact_number',
+            'email',
+            'street_address',
+            'barangay',
+            'city_municipality',
+            'province',
+            'zip_code',
             'address',
             'barangay',
             'education',
             'course',
             'skills',
-            'emergency_contact',
+            'emergency_contact_no',
         ]));
 
         return back()->with('success', 'Profile updated successfully!');
