@@ -488,6 +488,13 @@
         <input type="text" name="location" required>
         <label>Max Participants</label>
         <input type="number" name="max_participants" min="1">
+        <label>Lead Facilitator</label>
+            <select name="lead_facilitator_id">
+              <option value="">-- Select Facilitator --</option>
+                @foreach($regularFacilitators as $faci)
+              </option>
+                @endforeach
+            </select>
         <button type="submit" class="btn btn-primary" style="margin-top:15px;">Add</button>
       </form>
     </div>
