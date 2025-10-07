@@ -14,14 +14,12 @@ class FacilitatorController extends Controller
 {
     public function faci_dashboard(Request $request)
     {
-        // Default: show all activities in the dashboard
         $activities = Activity::latest()->get();
         $members = User::all();
         $sponsors = Sponsor::all();
         $regularFacilitators = User::where('role_id', 2)->get();
 
-        // If filter was provided in the dashboard (optional)
-        $filter = $request->input('filter'); // 'daily'|'monthly'|'annual' or null
+        $filter = $request->input('filter') ?? $request->input('type');
         $filtered = null;
         $type = 'All';
         $date = $request->input('date', now()->toDateString());
@@ -30,11 +28,10 @@ class FacilitatorController extends Controller
             $filtered = Activity::whereDate('created_at', $date)->get();
             $type = 'Daily';
         } elseif ($filter === 'monthly') {
-            // if user passed a date, use that month/year; otherwise current month
             $d = Carbon::parse($date);
             $filtered = Activity::whereMonth('created_at', $d->month)
-                                 ->whereYear('created_at', $d->year)
-                                 ->get();
+                                ->whereYear('created_at', $d->year)
+                                ->get();
             $type = 'Monthly';
         } elseif ($filter === 'annual') {
             $d = Carbon::parse($date);
@@ -44,7 +41,7 @@ class FacilitatorController extends Controller
 
         return view('faci_dashboard', compact(
             'activities',
-            'filtered',          // collection or null
+            'filtered',
             'members',
             'sponsors',
             'regularFacilitators',
@@ -151,8 +148,7 @@ class FacilitatorController extends Controller
     }
 
     /**
-     * Generates a PDF for the filtered activities.
-     * Accepts GET params: filter (daily|monthly|annual), date (Y-m-d) (optional)
+     * Download PDF of filtered activities
      */
     public function downloadReport(Request $request)
     {
@@ -182,18 +178,18 @@ class FacilitatorController extends Controller
             $filtered = Activity::latest()->get();
         }
 
-        // Ensure you have resources/views/reports/pdf.blade.php
-        $pdf = Pdf::loadView('reports.pdf', compact('filtered', 'type', 'date', 'title'));
+        // Use your existing resources/views/pdf.blade.php
+        $pdf = Pdf::loadView('pdf', compact('filtered', 'type', 'date', 'title'))
+                  ->setPaper('a4', 'portrait');
+
         return $pdf->download('Activities_Report_' . ($type ?? 'All') . '.pdf');
     }
 
     /**
-     * Endpoint used by the reports form (if you want a dedicated route).
-     * Returns the dashboard view with the filtered result inserted into the reports tab.
+     * Route that triggers the filtering on the dashboard
      */
     public function filterReports(Request $request)
     {
-        // We'll reuse faci_dashboard logic: forward request to faci_dashboard
         return $this->faci_dashboard($request);
     }
 }

@@ -4,19 +4,59 @@
     <meta charset="utf-8">
     <title>{{ $title ?? 'Activities Report' }}</title>
     <style>
-        body { font-family: DejaVu Sans, Arial, Helvetica, sans-serif; font-size: 12px; color: #333; }
-        h2 { text-align: center; color: #1C0BA3; margin-bottom: 0.25rem; }
-        p.meta { text-align: center; margin-top: 0; margin-bottom: 1rem; color: #555; }
-        table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
-        th, td { padding: 8px 6px; border: 1px solid #ddd; text-align: left; vertical-align: top; }
-        th { background: #f2f2f2; }
-        .no-data { text-align: center; padding: 20px; color: #666; }
-        .footer { position: fixed; bottom: 0; left: 0; right: 0; text-align: center; font-size: 10px; color: #888; }
+        body {
+            font-family: DejaVu Sans, Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #333;
+            margin: 25px;
+        }
+        h2 {
+            text-align: center;
+            color: #1C0BA3;
+            margin-bottom: 0.25rem;
+        }
+        p.meta {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.75rem;
+        }
+        th, td {
+            padding: 8px 6px;
+            border: 1px solid #ddd;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f2f2f2;
+        }
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 10px;
+            color: #888;
+        }
     </style>
 </head>
 <body>
     <h2>Batang Surigaonon Youth - Activity Report</h2>
-    <p class="meta">Type: <strong>{{ $type ?? 'All' }}</strong> | Date: <strong>{{ \Carbon\Carbon::parse($date ?? now())->toFormattedDateString() }}</strong></p>
+    <p class="meta">
+        Type: <strong>{{ $type ?? 'All' }}</strong> |
+        Date: <strong>{{ \Carbon\Carbon::parse($date ?? now())->toFormattedDateString() }}</strong>
+    </p>
 
     @if(isset($filtered) && $filtered->count())
         <table>
@@ -56,6 +96,8 @@
         <div class="no-data">No activities found for this period.</div>
     @endif
 
-    <div class="footer">Generated: {{ \Carbon\Carbon::now()->toDayDateTimeString() }}</div>
+    <div class="footer">
+        Generated: {{ \Carbon\Carbon::now()->toDayDateTimeString() }}
+    </div>
 </body>
 </html>
