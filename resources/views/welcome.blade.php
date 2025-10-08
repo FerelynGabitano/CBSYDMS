@@ -9,7 +9,23 @@
 </head>
 
 <body>
-
+  @if (session('success'))
+    <div id="success-popup" class="success-popup">
+      <strong>Registered Successfully</strong>
+    </div>
+      <script>
+        setTimeout(() => {
+          const popup = document.getElementById('success-popup');
+            if (popup) popup.style.display = 'none';
+          }, 6000);
+      </script>
+      <style>
+      @keyframes fadeInDown {
+        from { opacity: 0; transform: translate(-50%, -30px); }
+        to { opacity: 1; transform: translate(-50%, 0); }
+      }
+      </style>
+  @endif
 
   <div class="container">
     <!-- New Header with Navigation -->
@@ -231,5 +247,4 @@
     });
   </script>
 </body>
-
 </html>

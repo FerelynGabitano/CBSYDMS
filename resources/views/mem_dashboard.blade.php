@@ -17,7 +17,23 @@
       background-color: #f5f7fa;
       color: #333;
     }
-
+    .success-popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #d7f8d8;
+      color: #1c7e20;
+      border: 1px solid #d7f8d8;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 9999;
+      font-family: 'Segoe UI', sans-serif;
+      min-width: 300px;
+      text-align: left;
+      animation: fadeInDown 0.5s ease;
+    }
     /* Header/Navbar */
     .dashboard-header {
       background-color: #1C0BA3;
@@ -525,6 +541,23 @@
 </head>
 
 <body>
+  @if (session('success'))
+    <div id="success-popup" class="success-popup">
+      <strong>{{ session('success') }}</strong>
+    </div>
+      <script>
+        setTimeout(() => {
+          const popup = document.getElementById('success-popup');
+            if (popup) popup.style.display = 'none';
+          }, 6000);
+      </script>
+      <style>
+      @keyframes fadeInDown {
+        from { opacity: 0; transform: translate(-50%, -30px); }
+        to { opacity: 1; transform: translate(-50%, 0); }
+      }
+      </style>
+  @endif
   <header class="dashboard-header">
     <div class="logo">
       <img src="{{ asset('images/bsylogo.png') }}" alt="BSY Logo">
@@ -533,7 +566,7 @@
     <div class="user-menu">
       <span id="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
       <div style="width: 36px; height: 36px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
-        JD
+        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
       </div>
       <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
         @csrf
@@ -944,11 +977,6 @@
         <div class="section-title">
           <h2><i class="fa-solid fa-graduation-cap"></i> Scholarships</h2>
         </div>
-
-        @if(session('success'))
-          <p style="color:green;">{{ session('success') }}</p>
-        @endif
-
         <form action="{{ route('upload.scholarship') }}" method="POST" enctype="multipart/form-data">
           @csrf
 
@@ -956,7 +984,7 @@
             <label>Barangay Certificate:</label>
             <input type="file" name="brgyCert">
             @if(Auth::user()->brgyCert)
-              <a href="{{ asset('storage/' . Auth::user()->brgyCert) }}" target="_blank">View</a>
+              <a href="{{ asset('storage/' . Auth::user()->brgyCert) }}" target="_blank">View File</a>
             @endif
           </div>
 

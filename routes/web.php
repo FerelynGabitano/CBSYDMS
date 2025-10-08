@@ -14,7 +14,7 @@
     // Public routes
     Route::get('/', [WelcomeController::class, 'welcome'])->name('welcome');
 
-    Route::get('/register', [RegisterController::class, 'create'])->name('register');  
+    Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

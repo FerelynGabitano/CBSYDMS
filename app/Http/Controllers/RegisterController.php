@@ -41,11 +41,11 @@ class RegisterController extends Controller
         ]);
 
         // Store uploaded files in storage/app/public/uploads
-        // and save the public-accessible path to the database
-        $validated['brgyCert'] = 'storage/' . $request->file('brgyCert')->store('uploads', 'public');
-        $validated['birthCert'] = 'storage/' . $request->file('birthCert')->store('uploads', 'public');
-        $validated['gradeReport'] = 'storage/' . $request->file('gradeReport')->store('uploads', 'public');
-        $validated['idPicture'] = 'storage/' . $request->file('idPicture')->store('uploads', 'public');
+        $validated['brgyCert'] = $request->file('brgyCert')->store('uploads', 'public');
+        $validated['birthCert'] = $request->file('birthCert')->store('uploads', 'public');
+        $validated['gradeReport'] = $request->file('gradeReport')->store('uploads', 'public');
+        $validated['idPicture'] = $request->file('idPicture')->store('uploads', 'public');
+
 
         // No password yet
         $validated['password'] = null;
@@ -56,6 +56,6 @@ class RegisterController extends Controller
         // Save to DB
         User::create($validated);
 
-        return redirect()->back()->with('success', 'Registration successful!');
+        return redirect()->route('welcome')->with('success', 'Registration successful!');
     }
 }

@@ -248,13 +248,6 @@
                 <p>Join our Batang Surigaonon Youth and be Part of the Change!</p>
             </div>
         <div class="form-container">
-            <!-- Success Message -->
-            @if (session('success'))
-                <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
-                {{ session('success') }}
-         </div>
-             @endif
-        <div class="form-container">
             <!-- Personal Information Section -->
             <div class="form-section">
                 <h2>Personal Information</h2>
@@ -342,16 +335,16 @@
                                 <label for="gradeLevel" class="required">Grade Level</label>
                                 <select id="gradeLevel" name="gradeLevel" required>
                                     <option value="">Select Grade Level</option>
-                                    <option value="grade7">Grade 7</option>
-                                    <option value="grade8">Grade 8</option>
-                                    <option value="grade9">Grade 9</option>
-                                    <option value="grade10">Grade 10</option>
-                                    <option value="grade11">Grade 11</option>
-                                    <option value="grade12">Grade 12</option>
-                                    <option value="1stcollege">1st Yr College</option>
-                                    <option value="2ndcollege">2nd Yr College</option>
-                                    <option value="3rdcollege">3rd Yr College</option>
-                                    <option value="4thcollege">4th Yr College</option>
+                                    <option value="grade 7">Grade 7</option>
+                                    <option value="grade 8">Grade 8</option>
+                                    <option value="grade 9">Grade 9</option>
+                                    <option value="grade 10">Grade 10</option>
+                                    <option value="grade 11">Grade 11</option>
+                                    <option value="grade 12">Grade 12</option>
+                                    <option value="1st Yr. College">1st Yr. College</option>
+                                    <option value="2nd Yr. College">2nd Yr. College</option>
+                                    <option value="3rd Yr. College">3rd Yr. College</option>
+                                    <option value="4th Yr. College">4th Yr. College</option>
                                 </select>
                             </div>
                         </div>
@@ -420,8 +413,56 @@
                         <p>Already have an account?
                             <a href="/login"> Login</a>
                         </p>
-                        @if (session('error'))
-                            <p style="color: red;">{{ session('error') }}</p>
+                        @if ($errors->any())
+                            <div id="error-popup" style="
+                                position: fixed;
+                                top: 20px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                background-color: #f8d7da;
+                                color: #842029;
+                                border: 1px solid #f5c2c7;
+                                padding: 15px 25px;
+                                border-radius: 8px;
+                                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                                z-index: 9999;
+                                font-family: 'Segoe UI', sans-serif;
+                                min-width: 300px;
+                                text-align: left;
+                                animation: fadeInDown 0.5s ease;
+                            ">
+                                <strong>Whoops!</strong> There were some problems with your input:
+                                <ul style="margin-top: 8px; padding-left: 20px;">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                                <button onclick="document.getElementById('error-popup').style.display='none'" style="
+                                    background: none;
+                                    border: none;
+                                    color: #842029;
+                                    font-weight: bold;
+                                    position: absolute;
+                                    top: 5px;
+                                    right: 10px;
+                                    cursor: pointer;
+                                ">×</button>
+                            </div>
+
+                            <script>
+                                // Auto-hide after 6 seconds
+                                setTimeout(() => {
+                                    const popup = document.getElementById('error-popup');
+                                    if (popup) popup.style.display = 'none';
+                                }, 6000);
+                            </script>
+
+                            <style>
+                                @keyframes fadeInDown {
+                                    from { opacity: 0; transform: translate(-50%, -30px); }
+                                    to { opacity: 1; transform: translate(-50%, 0); }
+                                }
+                            </style>
                         @endif
                     </div>
             </div>

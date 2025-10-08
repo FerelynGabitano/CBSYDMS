@@ -75,8 +75,9 @@ class MemberController extends Controller
 
         foreach (['brgyCert', 'birthCert', 'gradeReport', 'idPicture', 'cor', 'votersCert'] as $field) {
             if ($request->hasFile($field)) {
-                $path = $request->file($field)->store('requirements', 'public');
+                $path = $request->file($field)->store('uploads/requirements', 'public');
                 $user->$field = $path;
+
             }
         }
 
@@ -85,46 +86,48 @@ class MemberController extends Controller
         return back()->with('success', 'Requirements uploaded successfully!');
     }
 
-    public function updateProfile(Request $request)
-    {
-        $user = User::find(Auth::id());
+public function updateProfile(Request $request)
+{
+    // Get the currently logged-in user
+    $user = Auth::user();
 
-        $request->validate([
-            'first_name'        => 'required|string|max:50',
-            'middle_name'       => 'nullable|string|max:50',   
-            'last_name'         => 'required|string|max:50',
-            'date_of_birth'     => 'required|date',
-            'gender'            => 'required|in:Male,Female,Other',
-            'contact_number'    => 'required|string|max:20',
-            'email'             => 'required|email|unique:users,email',
-            'street_address'    => 'required|string|max:255',
-            'barangay'          => 'required|string|max:100',
-            'city_municipality' => 'required|string|max:100',
-            'province'          => 'required|string|max:100',
-            'zip_code'          => 'required|string|max:20',
-        ]);
+    // Validate the inputs (optional but recommended)
+    $request->validate([
+        'first_name' => 'required|string|max:255',
+        'middle_name' => 'nullable|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'contact_number' => 'nullable|string|max:20',
+        'street_address' => 'nullable|string|max:255',
+        'barangay' => 'nullable|string|max:255',
+        'city_municipality' => 'nullable|string|max:255',
+        'province' => 'nullable|string|max:255',
+        'zip_code' => 'nullable|string|max:10',
+        'school' => 'nullable|string|max:255',
+        'course' => 'nullable|string|max:255',
+        'gradeLevel' => 'nullable|string|max:50',
+        'skills' => 'nullable|string|max:255',
+        'emergency_contact_no' => 'nullable|string|max:255',
+    ]);
 
-        $user->update($request->only([
-            'first_name',
-            'middle_name',
-            'last_name',
-            'date_of_birth',
-            'gender',
-            'contact_number',
-            'email',
-            'street_address',
-            'barangay',
-            'city_municipality',
-            'province',
-            'zip_code',
-            'address',
-            'barangay',
-            'education',
-            'course',
-            'skills',
-            'emergency_contact_no',
-        ]));
+    // Update the user's info
+    $user->update([
+        'first_name' => $request->first_name,
+        'middle_name' => $request->middle_name,
+        'last_name' => $request->last_name,
+        'contact_number' => $request->contact_number,
+        'street_address' => $request->street_address,
+        'barangay' => $request->barangay,
+        'city_municipality' => $request->city_municipality,
+        'province' => $request->province,
+        'zip_code' => $request->zip_code,
+        'school' => $request->school,
+        'course' => $request->course,
+        'gradeLevel' => $request->gradeLevel, // must match column name in DB
+        'skills' => $request->skills,
+        'emergency_contact_no' => $request->emergency_contact_no, // must match DB column name
+    ]);
 
-        return back()->with('success', 'Profile updated successfully!');
-    }
+    // Redirect back with success message
+    return redirect()->back()->with('success', 'Profile updated successfully!');
+}
 }

@@ -4,14 +4,27 @@ body {
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: #2a0047; /* Dark purple background to match the interface */
+    background-color: #2a0047; 
     font-family: Arial, sans-serif;
     overflow-y: auto;
     }
-
-
-
-
+.success-popup {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #d7f8d8;
+  color: #1c7e20;
+  border: 1px solid #d7f8d8;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 9999;
+  font-family: 'Segoe UI', sans-serif;
+  min-width: 300px;
+  text-align: left;
+  animation: fadeInDown 0.5s ease;
+}
     /* Navigation Bar Styles */
 .navbar {
   /* background-color: #035ba28e;  */
@@ -160,7 +173,7 @@ body {
     }
 
     .login_redirect {
-    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+  background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
   padding: 10px 20px; /* Add padding for better spacing */
   border-radius: 5px; /* Rounded corners */
   display: inline-block; /* Ensure it wraps tightly around the link */
