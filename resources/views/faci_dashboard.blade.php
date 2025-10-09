@@ -7,8 +7,26 @@
   <title>Batang Surigaonon Youth - Dashboard</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background-color: #f5f7fa; color: #333; }
-
+    body { 
+      background-color: #f5f7fa; color: #333; 
+    }
+    .success-popup {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #d7f8d8;
+      color: #1c7e20;
+      border: 1px solid #d7f8d8;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 9999;
+      font-family: 'Segoe UI', sans-serif;
+      min-width: 300px;
+      text-align: left;
+      animation: fadeInDown 0.5s ease;
+    }
     .dashboard-header {
       background-color: #1C0BA3; color: white; padding: 1rem 2rem;
       display: flex; justify-content: space-between; align-items: center;
@@ -151,6 +169,23 @@
 </head>
 
 <body>
+    @if (session('success'))
+    <div id="success-popup" class="success-popup">
+      <strong>{{ session('success') }}</strong>
+    </div>
+      <script>
+        setTimeout(() => {
+          const popup = document.getElementById('success-popup');
+            if (popup) popup.style.display = 'none';
+          }, 6000);
+      </script>
+      <style>
+      @keyframes fadeInDown {
+        from { opacity: 0; transform: translate(-50%, -30px); }
+        to { opacity: 1; transform: translate(-50%, 0); }
+      }
+      </style>
+  @endif
   <header class="dashboard-header">
     <div class="logo">
       <img src="{{ asset('images/bsylogo.png') }}" alt="BSY Logo">
@@ -177,12 +212,6 @@
     </aside>
 
     <main class="main-content">
-      @if(session('success'))
-        <div style="background-color:#d4edda;color:#155724;padding:12px;border-radius:6px;margin-bottom:20px;">
-          {{ session('success') }}
-        </div>
-      @endif
-
         <!-- Activity Feed -->
         <section id="activities" class="tab-section active">
         <div class="list-section">
@@ -491,8 +520,8 @@
         <label>Lead Facilitator</label>
             <select name="lead_facilitator_id">
               <option value="">-- Select Facilitator --</option>
-                @foreach($regularFacilitators as $faci)
-              </option>
+                @foreach($regularFacilitators as $faci) 
+                <option value="{{ $faci->user_id }}">{{ $faci->first_name }} {{ $faci->last_name }}</option> 
                 @endforeach
             </select>
         <button type="submit" class="btn btn-primary" style="margin-top:15px;">Add</button>

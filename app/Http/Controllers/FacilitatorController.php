@@ -60,6 +60,7 @@ class FacilitatorController extends Controller
             'end_datetime'     => 'required|date|after:start_datetime',
             'location'         => 'required|string|max:255',
             'max_participants' => 'nullable|integer|min:1',
+            'lead_facilitator_id' => 'nullable|exists:users,user_id',
         ]);
 
         Activity::create([
@@ -69,6 +70,7 @@ class FacilitatorController extends Controller
             'end_datetime'     => $request->end_datetime,
             'location'         => $request->location,
             'max_participants' => $request->max_participants,
+            'lead_facilitator_id' => $request->lead_facilitator_id,
             'created_by'       => Auth::id(),
         ]);
 
