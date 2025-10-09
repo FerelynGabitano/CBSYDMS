@@ -74,9 +74,6 @@
         ->name('project.details')
         ->where('id', '[1-5]');
 
-    // Users resource (all user management requires auth)
-    Route::resource('users', UserController::class)->middleware('auth');
-
     // Specific user management actions
     Route::middleware('auth')->group(function () {
         Route::get('/users/{user_id}/edit', [UserController::class, 'edit'])->name('users.edit');
