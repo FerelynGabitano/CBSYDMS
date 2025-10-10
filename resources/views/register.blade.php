@@ -335,15 +335,15 @@
       <h2>Personal Information</h2>
       <div class="form-group">
         <label for="first_name" class="required">First Name</label>
-        <input type="text" id="first_name" name="first_name" required>
+        <input type="text" id="first_name" name="first_name" class="capitalize" required>
       </div>
       <div class="form-group">
         <label for="middle_name">Middle Name</label>
-        <input type="text" id="middle_name" name="middle_name" >
+        <input type="text" id="middle_name" name="middle_name" class="capitalize">
       </div>
       <div class="form-group">
         <label for="last_name" class="required">Last Name</label>
-        <input type="text" id="last_name" name="last_name" required>
+        <input type="text" id="last_name" name="last_name" class="capitalize" required>
      </div>
       <div class="form-group">
         <label for="date_of_birth" class="required">Date of Birth</label>
@@ -367,22 +367,23 @@
         <div class="button-group">
             <button type="button" class="btn next">Next</button>
         </div>
+        <p>Already have an account? <a href="/login"> Login</a> </p>
     </div>
 
     <!-- Step 2 -->
     <div class="form-section">
       <h2>Address Information</h2>
       <div class="form-group"><label for="street_address" class="required">Street Address</label>
-                        <input type="text" id="street_address" name="street_address" required>
+                        <input type="text" id="street_address" name="street_address" class="capitalize" required>
                     </div>
       <div class="form-group"><label for="barangay" class="required">Barangay</label>
-                        <input type="text" id="barangay" name="barangay" required>
+                        <input type="text" id="barangay" name="barangay" class="capitalize" required>
                     </div>
       <div class="form-group"><label for="city_municipality" class="required">City/Municipality</label>
-                        <input type="text" id="city_municipality" name="city_municipality" required>
+                        <input type="text" id="city_municipality" name="city_municipality" class="capitalize"   required>
                     </div>
       <div class="form-group"><label for="province" class="required">Province</label>
-                        <input type="text" id="province" name="province" required>
+                        <input type="text" id="province" name="province" class="capitalize" required>
                     </div>
       <div class="form-group"><label for="zip_code" class="required">Zip Code</label>
                         <input type="text" id="zip_code" name="zip_code" required>
@@ -391,13 +392,14 @@
             <button type="button" class="btn prev">Previous</button>
             <button type="button" class="btn next">Next</button>
         </div>
+        <p>Already have an account? <a href="/login"> Login</a> </p>
     </div>
 
     <!-- Step 3 -->
     <div class="form-section">
       <h2>Educational Background</h2>
       <div class="form-group"><label for="school" class="required">School Name</label>
-                                <input type="text" id="school" name="school" required>
+                                <input type="text" id="school" name="school" class="capitalize" required>
                             </div>
       <div class="form-group">
         <label for="gradeLevel" class="required">Grade Level</label>
@@ -419,6 +421,7 @@
             <button type="button" class="btn prev">Previous</button>
             <button type="button" class="btn next">Next</button>
         </div>
+        <p>Already have an account? <a href="/login"> Login</a> </p>
     </div>
 
     <!-- Step 4 -->
@@ -465,11 +468,50 @@
       <div class="button-group">
         <button type="button" class="btn prev">Previous</button>
         <button type="submit" class="btn">Submit</button>
-      </div>
     </div>
+        <p>Already have an account? <a href="/login"> Login</a> </p>
+        @if ($errors->any()) 
+            <div id="error-popup" style=" 
+                position: fixed; 
+                top: 20px; 
+                left: 50%; 
+                transform: translateX(-50%); 
+                background-color: #f8d7da; 
+                color: #842029; 
+                border: 1px solid #f5c2c7; 
+                padding: 15px 25px; 
+                border-radius: 8px; 
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+                z-index: 9999; 
+                font-family: 'Segoe UI', sans-serif; 
+                min-width: 300px; 
+                text-align: left; 
+                animation: fadeInDown 0.5s ease; "> 
+            <strong>Whoops!</strong> There were some problems with your input: 
+                <ul style="margin-top: 8px; padding-left: 20px;"> 
+                @foreach ($errors->all() as $error) 
+                    <li>{{ $error }}</li> 
+                @endforeach 
+                </ul> 
+                <button onclick="document.getElementById('error-popup').style.display='none'" style=" 
+                background: none; 
+                border: none; 
+                color: #842029; 
+                font-weight: bold; 
+                position: absolute; 
+                top: 5px; right: 10px; 
+                cursor: pointer; ">×</button> 
+            </div> 
+            <script> // Auto-hide after 6 seconds 
+                setTimeout(() => { const popup = document.getElementById('error-popup'); 
+                    if (popup) popup.style.display = 'none'; }, 6000); 
+            </script> 
+                <style> @keyframes fadeInDown { from { opacity: 0; transform: translate(-50%, -30px); } 
+                to { opacity: 1; transform: translate(-50%, 0); } }
+            </style>
+            @endif
     </div>
 </form>
-
 <script>
   const sections = document.querySelectorAll('.form-section');
   const nextBtns = document.querySelectorAll('.next');
@@ -482,15 +524,149 @@
     steps.forEach((step, i) => step.classList.toggle('active', i <= index));
   }
 
+  // ✅ GLOBAL auto-capitalize first letter of each word
+  document.querySelectorAll('.capitalize').forEach(input => {
+    input.addEventListener('input', function() {
+      const cursorPos = this.selectionStart;
+      const words = this.value.split(' ').map(word => {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      });
+      this.value = words.join(' ');
+      this.setSelectionRange(cursorPos, cursorPos);
+    });
+  });
+  document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.addEventListener('change', function () {
+                const fileInfo = this.parentElement.querySelector('.file-info');
+                if (this.files.length > 0) {
+                    fileInfo.textContent = this.files[0].name + " (" +
+                        Math.round(this.files[0].size / 1024) + "KB)";
+                    fileInfo.style.color = "#1C0BA3";
+                } else {
+                    fileInfo.textContent = "(PDF, JPG, or PNG)";
+                    fileInfo.style.color = "#666";
+                }
+            });
+        });
+
+  // ✅ Validation for required fields
+  function validateCurrentStep() {
+    const currentSection = sections[currentStep];
+    const requiredInputs = currentSection.querySelectorAll('input[required], select[required], textarea[required]');
+    let isValid = true;
+
+    requiredInputs.forEach(input => {
+      input.style.borderColor = '#ddd'; // reset style first
+
+      if (!input.value.trim()) {
+        isValid = false;
+        input.style.borderColor = 'red';
+      }
+
+      if (input.pattern) {
+        const pattern = new RegExp(input.pattern);
+        if (!pattern.test(input.value.trim())) {
+          isValid = false;
+          input.style.borderColor = 'red';
+        }
+      }
+
+      // 👇 When user types, remove red border immediately
+      input.addEventListener('input', () => {
+        if (input.value.trim() !== '') {
+          input.style.borderColor = '#ddd';
+        }
+      });
+    });
+
+    // Auto remove red borders after 4s
+    setTimeout(() => {
+      requiredInputs.forEach(input => {
+        if (input.style.borderColor === 'red' && input.value.trim()) {
+          input.style.borderColor = '#ddd';
+        }
+      });
+    }, 4000);
+
+    return isValid;
+  }
+
+  // ✅ Custom popup for validation warning
+  function showValidationPopup() {
+    const existingPopup = document.getElementById('validation-popup');
+    if (existingPopup) existingPopup.remove();
+
+    const popup = document.createElement('div');
+    popup.id = 'validation-popup';
+    popup.innerHTML = `
+      <strong>⚠️ Please fill out all required fields before proceeding.</strong>
+      <button id="close-popup"></button>
+    `;
+
+    Object.assign(popup.style, {
+      position: 'fixed',
+      top: '20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: '#f8d7da',
+      color: '#842029',
+      border: '1px solid #f5c2c7',
+      padding: '15px 25px',
+      borderRadius: '8px',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+      zIndex: '9999',
+      fontFamily: "'Segoe UI', sans-serif",
+      minWidth: '300px',
+      textAlign: 'center',
+      animation: 'fadeInDown 0.4s ease'
+    });
+
+    document.body.appendChild(popup);
+
+    const closeBtn = popup.querySelector('#close-popup');
+    closeBtn.style.cssText = `
+      background: none;
+      border: none;
+      color: #842029;
+      font-weight: bold;
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    `;
+    closeBtn.onclick = () => popup.remove();
+
+    setTimeout(() => popup.remove(), 3000);
+  }
+
+  // ✅ Handle next/prev navigation
   nextBtns.forEach(btn => btn.addEventListener('click', () => {
-    if (currentStep < sections.length - 1) currentStep++;
-    showStep(currentStep);
+    if (validateCurrentStep()) {
+      if (currentStep < sections.length - 1) currentStep++;
+      showStep(currentStep);
+    } else {
+      showValidationPopup();
+    }
   }));
 
   prevBtns.forEach(btn => btn.addEventListener('click', () => {
     if (currentStep > 0) currentStep--;
     showStep(currentStep);
   }));
+
+  // ✅ Add fade animation
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translate(-50%, -20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Initialize
+  showStep(currentStep);
 </script>
 </body>
 </html>
