@@ -165,6 +165,85 @@
     .modal form input, .modal form textarea, .modal form select {
       width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px;
     }
+    .dropdown {
+  position: relative;
+  margin-left: auto;
+  cursor: pointer;
+}
+.dropdown-toggle {
+  font-size: 1.2rem;
+  color: #666;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  min-width: 180px;
+  z-index: 10;
+}
+.dropdown-menu a,
+.dropdown-menu label {
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+}
+.dropdown-menu a:hover,
+.dropdown-menu label:hover {
+  background-color: #f0f2ff;
+  color: #1C0BA3;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background: white;
+  margin: 10% auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.modal-content h2 {
+  color: #1C0BA3;
+  margin-bottom: 1rem;
+}
+.modal-content .detail-group {
+  margin-bottom: 1rem;
+}
+.modal-content input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: black;
+}
   </style>
 </head>
 
@@ -601,6 +680,41 @@
         if (event.target === modal) modal.style.display = 'none';
       });
     }
+      // Dropdown toggle
+    document.querySelectorAll('.dropdown').forEach(drop => {
+    const toggle = drop.querySelector('.dropdown-toggle');
+    const menu = drop.querySelector('.dropdown-menu');
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    document.addEventListener('click', () => {
+      menu.style.display = 'none';
+    });
+  });
+      // ================= Modal handling =================
+  const modal = document.getElementById("editProfileModal");
+  const btn = document.getElementById("editProfileBtn");
+  const span = modal ? modal.querySelector(".close") : null;
+
+  if (btn && modal && span) {
+    btn.addEventListener("click", function(e) {
+      e.preventDefault();
+      modal.style.display = "block";
+    });
+
+    span.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  }
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </body>
