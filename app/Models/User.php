@@ -69,7 +69,6 @@ class User extends Authenticatable
             ->withPivot('attendance_status')
             ->withTimestamps(); 
     }
-    
     public function createdActivities(): HasMany
     {
         return $this->hasMany(Activity::class, 'created_by');

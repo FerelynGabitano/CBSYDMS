@@ -9,6 +9,7 @@ use App\Models\Sponsor;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class FacilitatorController extends Controller
 {
@@ -216,10 +217,10 @@ class FacilitatorController extends Controller
 
         return back()->with('success', 'Profile picture updated successfully!');
     }
-    public function updateProfile(Request $request)
+public function updateProfile(Request $request)
 {
-    // Get the currently logged-in user
-    $user = Auth::user();
+    // Get the currently logged-in user as an Eloquent model instance
+    $user = User::find(Auth::id());
 
     // Validate the inputs (optional but recommended)
     $request->validate([
@@ -238,24 +239,23 @@ class FacilitatorController extends Controller
         'skills' => 'nullable|string|max:255',
         'emergency_contact_no' => 'nullable|string|max:255',
     ]);
-    
+
     // Update the user's info
-    $user->update([
-        'first_name' => $request->first_name,
-        'middle_name' => $request->middle_name,
-        'last_name' => $request->last_name,
-        'contact_number' => $request->contact_number,
-        'street_address' => $request->street_address,
-        'barangay' => $request->barangay,
-        'city_municipality' => $request->city_municipality,
-        'province' => $request->province,
-        'zip_code' => $request->zip_code,
-        'school' => $request->school,
-        'course' => $request->course,
-        'gradeLevel' => $request->gradeLevel, 
-        'skills' => $request->skills,
-        'emergency_contact_no' => $request->emergency_contact_no,
-    ]);
+    $user->first_name = $request->first_name;
+    $user->middle_name = $request->middle_name;
+    $user->last_name = $request->last_name;
+    $user->contact_number = $request->contact_number;
+    $user->street_address = $request->street_address;
+    $user->barangay = $request->barangay;
+    $user->city_municipality = $request->city_municipality;
+    $user->province = $request->province;
+    $user->zip_code = $request->zip_code;
+    $user->school = $request->school;
+    $user->course = $request->course;
+    $user->gradeLevel = $request->gradeLevel;
+    $user->skills = $request->skills;
+    $user->emergency_contact_no = $request->emergency_contact_no;
+    $user->save();
 
     // Redirect back with success message
     return redirect()->back()->with('success', 'Profile updated successfully!');
