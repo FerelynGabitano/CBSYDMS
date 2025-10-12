@@ -91,7 +91,10 @@ Route::get('/facilitator/reports/pdf', [FacilitatorController::class, 'generateP
 Route::get('/project/{id}', [ProjectController::class, 'show'])
     ->name('project.details')
     ->where('id', '[1-5]');
-
+    
+Route::put('/faci_dashboard/profile/update', [FacilitatorController::class, 'updateProfile'])
+    ->name('faci.profile.update')
+    ->middleware(['auth', 'role:facilitator']);
 // ------------------------------
 // User management (auth only)
 // ------------------------------

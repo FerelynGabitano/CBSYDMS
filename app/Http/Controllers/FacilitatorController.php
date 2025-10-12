@@ -238,7 +238,7 @@ class FacilitatorController extends Controller
         'skills' => 'nullable|string|max:255',
         'emergency_contact_no' => 'nullable|string|max:255',
     ]);
-
+    
     // Update the user's info
     $user->update([
         'first_name' => $request->first_name,
@@ -252,12 +252,13 @@ class FacilitatorController extends Controller
         'zip_code' => $request->zip_code,
         'school' => $request->school,
         'course' => $request->course,
-        'gradeLevel' => $request->gradeLevel, // must match column name in DB
+        'gradeLevel' => $request->gradeLevel, 
         'skills' => $request->skills,
-        'emergency_contact_no' => $request->emergency_contact_no, // must match DB column name
+        'emergency_contact_no' => $request->emergency_contact_no,
     ]);
 
     // Redirect back with success message
     return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
 }

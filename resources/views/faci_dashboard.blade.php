@@ -271,9 +271,10 @@
       <h2>BSY Facilitator</h2>
     </div>
     <div class="user-actions" style="display:flex;align-items:center;gap:10px;">
-      <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-      <img src="{{ asset('images/user-avatar.jpg') }}" alt="Facilitator Avatar"
-        style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+      <span id="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
+      <div style="width: 36px; height: 36px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Avatar" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+      </div>
       <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
         @csrf
         <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -439,7 +440,7 @@
                   </div>
                   <div class="detail-group">
                     <label>Yeal Level:</label>
-                    <span>{{ Auth::user()->yr_lvl }}</span>
+                    <span>{{ Auth::user()->gradeLevel }}</span>
                   </div>
                   <div class="detail-group">
                     <label>Skills/Interests:</label>
@@ -447,7 +448,7 @@
                   </div>
                   <div class="detail-group">
                     <label>Emergency Contact:</label>
-                    <span>{{ Auth::user()->emergency_contact }}</span>
+                    <span>{{ Auth::user()->emergency_contact_no }}</span>
                   </div>
                 </div>
               </div>
@@ -458,7 +459,7 @@
         <div class="modal-content">
           <span class="close">&times;</span>
           <h2>Edit Profile Information</h2>
-          <form action="{{ route('users.update', auth()->id()) }}" method="POST">
+          <form action="{{ route('faci.profile.update') }}" method="POST">
               @csrf
               @method('PUT')
             
@@ -504,7 +505,7 @@
             </div>
             <div class="detail-group">
               <label for="yr_lvl">Year Level:</label>
-              <input type="text" name="yr_lvl" value="{{ Auth::user()->yr_lvl }}">
+              <input type="text" name="gradeLevel" value="{{ Auth::user()->gradeLevel }}">
             </div>
             <div class="detail-group">
               <label for="skills">Skills/Interests:</label>
@@ -512,7 +513,7 @@
             </div>
             <div class="detail-group">
               <label for="emergency_contact">Emergency Contact:</label>
-              <input type="text" name="emergency_contact" value="{{ Auth::user()->emergency_contact }}">
+              <input type="text" name="emergency_contact_no" value="{{ Auth::user()->emergency_contact_no }}">
             </div>
 
             <button type="submit" class="btn-join">Save Changes</button>
