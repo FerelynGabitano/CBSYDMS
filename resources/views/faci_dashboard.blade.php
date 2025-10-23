@@ -245,7 +245,7 @@
   color: black;
 }
   </style>
-</head>
+  </head>
 
 <body>
     @if (session('success'))

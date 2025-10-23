@@ -156,7 +156,11 @@
             outline: none;
             box-shadow: 0 0 0 2px rgba(28, 11, 163, 0.2);
         }
-
+        .form-group p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
         .file-upload {
             border: 2px dashed #ddd;
             padding: 20px;
@@ -185,6 +189,21 @@
             color: #666;
             margin-top: 5px;
         }
+p {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+p a {
+  color: #1C0BA3;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
 
         .btn-next {
             background-color: #1C0BA3;
@@ -258,41 +277,61 @@
             color: red;
         }
 
- .terms-container {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
+.terms-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
 }
 
 .terms-checkbox {
-    appearance: none;
-    width: 10px; 
-    height: 10px;
-    border: 2px solid #1C0BA3;
-    border-radius: 3px;
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 10px !important;      /* ✅ force square size */
+  height: 10px !important;
+  min-width: 10px !important;
+  min-height: 10px !important;
+  max-width: 10px !important;
+  max-height: 10px !important;
+
+  border: 2px solid #1C0BA3;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.terms-checkbox:hover {
+  border-color: #12067a;
 }
 
 .terms-checkbox:checked {
-    background-color: #1C0BA3;
+  background-color: #1C0BA3;
+  border-color: #1C0BA3;
 }
 
 .terms-checkbox:checked::after {
-    content: "✓";
-    color: white;
-    font-size: 10px;
-    position: absolute;
-    top: -1px;
-    left: 2px;
+  content: "✓";
+  color: white;
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  font-weight: bold;
 }
 
 .terms-label {
-    margin: 0;
-    font-size: 0.95rem;
-    color: #333;
-    cursor: pointer;
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1.3;
 }
 
 .terms-container i {
@@ -640,7 +679,6 @@
     setTimeout(() => popup.remove(), 3000);
   }
 
-  // ✅ Handle next/prev navigation
   nextBtns.forEach(btn => btn.addEventListener('click', () => {
     if (validateCurrentStep()) {
       if (currentStep < sections.length - 1) currentStep++;

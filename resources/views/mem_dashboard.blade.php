@@ -629,7 +629,25 @@
                     </span>
                   </div>
                   <p>{{ $activity->description }}</p>
-                  <a href="#" class="btn-join">Participate Now</a>
+                      @php
+                          $alreadyJoined = DB::table('activity_participants')
+                              ->where('user_id', Auth::id())
+                              ->where('activity_id', $activity->activity_id)
+                              ->exists();
+                        @endphp
+
+                        @if ($alreadyJoined)
+                          <button class="btn-join btn-disabled" disabled>Joined</button>
+                        @else
+                          <form action="{{ route('activities.join', $activity->activity_id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn-join"
+                              onclick="return confirm('Are you sure you want to join this activity?');">
+                              Join
+                            </button>
+                          </form>
+                        @endif
+
                 </div>
               </div>
             @empty
@@ -663,7 +681,24 @@
                     </span>
                   </div>
                   <p>{{ $activity->description }}</p>
-                  <a href="#" class="btn-join">Join</a>
+                      @php
+                          $alreadyJoined = DB::table('activity_participants')
+                              ->where('user_id', Auth::id())
+                              ->where('activity_id', $activity->activity_id)
+                              ->exists();
+                        @endphp
+
+                        @if ($alreadyJoined)
+                          <button class="btn-join btn-disabled" disabled>Joined</button>
+                        @else
+                          <form action="{{ route('activities.join', $activity->activity_id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn-join"
+                              onclick="return confirm('Are you sure you want to join this activity?');">
+                              Join
+                            </button>
+                          </form>
+                        @endif
                 </div>
               </div>
             @empty
@@ -810,78 +845,40 @@
 
 
       <!-- Participation Section -->
-            <div id="participation-section" class="content-section">
-        <div class="participation-stats">
+       <div id="participation-section" class="content-section">
           <div class="stat-card">
-            <div class="stat-number">12</div>
+            <div class="stat-number">{{ $joinedCount }}</div>
             <div class="stat-label">Activities Joined</div>
           </div>
           <div class="stat-card">
-            <div class="stat-number">8</div>
+            <div class="stat-number">{{ $completedCount }}</div>
             <div class="stat-label">Completed</div>
           </div>
           <div class="stat-card">
-            <div class="stat-number">2</div>
+            <div class="stat-number">{{ $ongoingCount }}</div>
             <div class="stat-label">Ongoing</div>
           </div>
           <div class="stat-card">
-            <div class="stat-number">2</div>
+            <div class="stat-number">{{ $upcomingCount }}</div>
             <div class="stat-label">Upcoming</div>
           </div>
-        </div>
 
         <div class="participation-list">
-          <h3 style="color: #1C0BA3; margin-bottom: 1rem;">My Activity History</h3>
+            <h3 style="color: #1C0BA3; margin-bottom: 1rem;">My Activity History</h3>
 
-          <div class="participation-item">
-            <div class="participation-info">
-              <h4>Community Cleanup Drive</h4>
-              <p><i class="fas fa-calendar"></i> Joined: October 15, 2023</p>
-            </div>
-            <span class="participation-badge status-active">Ongoing</span>
+            @forelse($history as $activity)
+              <div class="participation-item">
+                <div class="participation-info">
+                  <h4>{{ $activity->title }}</h4>
+                  <p><i class="fas fa-calendar"></i> Joined: {{ \Carbon\Carbon::parse($activity->joined_at)->format('F d, Y') }}</p>
+                </div>
+                <span class="participation-badge status-active">{{ $activity->attendance_status }}</span>
+              </div>
+            @empty
+              <p>No activities joined yet.</p>
+            @endforelse
           </div>
-
-          <div class="participation-item">
-            <div class="participation-info">
-              <h4>Youth Art Workshop</h4>
-              <p><i class="fas fa-calendar"></i> Joined: October 10, 2023</p>
-            </div>
-            <span class="participation-badge status-active">Ongoing</span>
-          </div>
-
-          <div class="participation-item">
-            <div class="participation-info">
-              <h4>Tree Planting Activity</h4>
-              <p><i class="fas fa-calendar"></i> Completed: September 20, 2023</p>
-            </div>
-            <span class="participation-badge status-completed">Completed</span>
-          </div>
-
-          <div class="participation-item">
-            <div class="participation-info">
-              <h4>Blood Donation Drive</h4>
-              <p><i class="fas fa-calendar"></i> Completed: September 5, 2023</p>
-            </div>
-            <span class="participation-badge status-completed">Completed</span>
-          </div>
-
-          <div class="participation-item">
-            <div class="participation-info">
-              <h4>Youth Leadership Seminar</h4>
-              <p><i class="fas fa-calendar"></i> Completed: August 15, 2023</p>
-            </div>
-            <span class="participation-badge status-completed">Completed</span>
-          </div>
-
-          <div class="participation-item">
-            <div class="participation-info">
-              <h4>Beach Cleanup Campaign</h4>
-              <p><i class="fas fa-calendar"></i> Completed: July 30, 2023</p>
-            </div>
-            <span class="participation-badge status-completed">Completed</span>
-          </div>
-        </div>
-      </div>
+       </div>
 
       <!-- Gallery Section -->
             <div id="gallery-section" class="content-section">

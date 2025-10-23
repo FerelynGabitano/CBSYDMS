@@ -45,6 +45,10 @@ Route::get('/mem_dashboard', [MemberController::class, 'mem_dashboard'])
     ->name('mem_dashboard')
     ->middleware(['auth', 'role:member']);
 
+Route::post('/activities/join/{activity}', [MemberController::class, 'joinActivity'])
+    ->name('activities.join')
+    ->middleware(['auth', 'role:member']);
+
 Route::post('/scholarship/upload', [MemberController::class, 'uploadScholarshipRequirements'])
     ->name('upload.scholarship');
 

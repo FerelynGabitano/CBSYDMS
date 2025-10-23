@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Activity;
-use App\Models\User;    
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class MemberController extends Controller
@@ -14,8 +15,9 @@ class MemberController extends Controller
     public function mem_dashboard()
     {
         $now = Carbon::now();
+        $user = Auth::user();
 
-        // Ongoing activities
+        // ✅ Active (ongoing) activities
         $activeActivities = Activity::where('is_active', true)
             ->where('start_datetime', '<=', $now)
             ->where(function ($q) use ($now) {
@@ -24,17 +26,44 @@ class MemberController extends Controller
             })
             ->get();
 
-        // Future activities
+        // ✅ Upcoming (future) activities
         $upcomingActivities = Activity::where('is_active', true)
             ->where('start_datetime', '>', $now)
             ->get();
 
-        // Past activities this member has joined
-        $history = Auth::user()->activities()
-            ->where('end_datetime', '<', $now)
+        // ✅ All activities joined by this user
+        $history = DB::table('activity_participants')
+            ->join('activities', 'activity_participants.activity_id', '=', 'activities.activity_id')
+            ->where('activity_participants.user_id', $user->user_id)
+            ->select('activities.*', 'activity_participants.attendance_status', 'activity_participants.created_at as joined_at')
+            ->orderBy('activity_participants.created_at', 'desc')
             ->get();
 
-        return view('mem_dashboard', compact('activeActivities', 'upcomingActivities', 'history'));
+        // ✅ Participation stats
+        $joinedCount = $history->count();
+
+        $completedCount = $history->filter(function ($a) use ($now) {
+            return $a->end_datetime && Carbon::parse($a->end_datetime)->isPast();
+        })->count();
+
+        $ongoingCount = $history->filter(function ($a) use ($now) {
+            return Carbon::parse($a->start_datetime)->isPast() &&
+                   (!$a->end_datetime || Carbon::parse($a->end_datetime)->isFuture());
+        })->count();
+
+        $upcomingCount = $history->filter(function ($a) use ($now) {
+            return Carbon::parse($a->start_datetime)->isFuture();
+        })->count();
+
+        return view('mem_dashboard', compact(
+            'activeActivities',
+            'upcomingActivities',
+            'history',
+            'joinedCount',
+            'completedCount',
+            'ongoingCount',
+            'upcomingCount'
+        ));
     }
 
     public function updateProfilePicture(Request $request)
@@ -45,15 +74,12 @@ class MemberController extends Controller
 
         $user = User::find(Auth::id());
 
-        // Store new picture
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
 
-        // Delete old picture if exists
         if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
             Storage::disk('public')->delete($user->profile_picture);
         }
 
-        // Update in DB
         $user->profile_picture = $path;
         $user->save();
 
@@ -77,7 +103,6 @@ class MemberController extends Controller
             if ($request->hasFile($field)) {
                 $path = $request->file($field)->store('uploads/requirements', 'public');
                 $user->$field = $path;
-
             }
         }
 
@@ -86,47 +111,58 @@ class MemberController extends Controller
         return back()->with('success', 'Requirements uploaded successfully!');
     }
 
-public function updateProfile(Request $request)
-{
-    // Get the currently logged-in user as an Eloquent model
-    $user = User::find(Auth::id());
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(Auth::id());
 
-    // Validate the inputs (optional but recommended)
-    $request->validate([
-        'first_name' => 'required|string|max:255',
-        'middle_name' => 'nullable|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'contact_number' => 'nullable|string|max:20',
-        'street_address' => 'nullable|string|max:255',
-        'barangay' => 'nullable|string|max:255',
-        'city_municipality' => 'nullable|string|max:255',
-        'province' => 'nullable|string|max:255',
-        'zip_code' => 'nullable|string|max:10',
-        'school' => 'nullable|string|max:255',
-        'course' => 'nullable|string|max:255',
-        'gradeLevel' => 'nullable|string|max:50',
-        'skills' => 'nullable|string|max:255',
-        'emergency_contact_no' => 'nullable|string|max:255',
-    ]);
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:20',
+            'street_address' => 'nullable|string|max:255',
+            'barangay' => 'nullable|string|max:255',
+            'city_municipality' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:10',
+            'school' => 'nullable|string|max:255',
+            'course' => 'nullable|string|max:255',
+            'gradeLevel' => 'nullable|string|max:50',
+            'skills' => 'nullable|string|max:255',
+            'emergency_contact_no' => 'nullable|string|max:255',
+        ]);
 
-    // Update the user's info
-    $user->first_name = $request->first_name;
-    $user->middle_name = $request->middle_name;
-    $user->last_name = $request->last_name;
-    $user->contact_number = $request->contact_number;
-    $user->street_address = $request->street_address;
-    $user->barangay = $request->barangay;
-    $user->city_municipality = $request->city_municipality;
-    $user->province = $request->province;
-    $user->zip_code = $request->zip_code;
-    $user->school = $request->school;
-    $user->course = $request->course;
-    $user->gradeLevel = $request->gradeLevel; // must match column name in DB
-    $user->skills = $request->skills;
-    $user->emergency_contact_no = $request->emergency_contact_no; // must match DB column name
-    $user->save();
+        $user->update($request->only([
+            'first_name', 'middle_name', 'last_name', 'contact_number',
+            'street_address', 'barangay', 'city_municipality', 'province',
+            'zip_code', 'school', 'course', 'gradeLevel', 'skills', 'emergency_contact_no'
+        ]));
 
-    // Redirect back with success message
-    return redirect()->back()->with('success', 'Profile updated successfully!');
-}
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    /** ✅ JOIN ACTIVITY FUNCTION **/
+    public function joinActivity($activityId)
+    {
+        $user = Auth::user();
+
+        // ✅ Prevent duplicate joins
+        if (DB::table('activity_participants')
+            ->where('user_id', $user->user_id)
+            ->where('activity_id', $activityId)
+            ->exists()) {
+            return back()->with('success', 'You already joined this activity.');
+        }
+
+        // ✅ Insert join record
+        DB::table('activity_participants')->insert([
+            'user_id' => $user->user_id,
+            'activity_id' => $activityId,
+            'attendance_status' => 'Pending',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return back()->with('success', 'You have successfully joined the activity!');
+    }
 }
