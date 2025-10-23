@@ -8,24 +8,14 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
     body { background-color: #f5f7fa; color: #333; overflow-x: hidden; }
-    
     .success-popup {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #d7f8d8;
-      color: #1c7e20;
-      border: 1px solid #d7f8d8;
-      padding: 15px 25px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      z-index: 9999;
-      font-family: 'Segoe UI', sans-serif;
-      min-width: 300px;
-      text-align: left;
-      animation: fadeInDown 0.5s ease;
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background-color: #d7f8d8; color: #1c7e20; border: 1px solid #d7f8d8;
+      padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 9999; font-family: 'Segoe UI', sans-serif;
+      min-width: 300px; text-align: left; animation: fadeInDown 0.5s ease;
     }
+
     /* Header/Navbar */
     .dashboard-header { background-color: #1C0BA3; color: white; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .logo { display: flex; align-items: center; gap: 10px; }
@@ -62,21 +52,66 @@
     .btn-logout:hover { background-color: #150882; }
 
     /* Subtabs */
-    .subtab-btn {
-      background: none;
-      color: #1C0BA3;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      margin-right: 1rem;
-      font-size: 1rem;
-      transition: color 0.2s, border-bottom 0.2s;
-    }
-    .subtab-btn.active {
-      color: #FFC107;
-      border-bottom: 3px solid #FFC107;
+    .subtab-btn { background: none; color: #1C0BA3; border: none; font-weight: bold; cursor: pointer; margin-right: 1rem; font-size: 1rem; transition: color 0.2s, border-bottom 0.2s; }
+    .subtab-btn.active { color: #FFC107; border-bottom: 3px solid #FFC107; }
+
+    .profile-card {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
     }
 
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: #e9ecef;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: #6c757d;
+    }
+
+    .profile-info h2 {
+      color: #1C0BA3;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-info p {
+      color: #666;
+      margin-bottom: 0.3rem;
+    }
+
+    .profile-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .detail-group {
+      margin-bottom: 1rem;
+    }
+
+    .detail-group label {
+      font-weight: bold;
+      color: #1C0BA3;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .detail-group span {
+      color: #666;
+    }
     /* Modal */
     .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); padding: 2rem; }
     .modal-content { background-color: white; margin: auto; padding: 2rem; border-radius: 10px; max-width: 500px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); position: relative; }
@@ -85,6 +120,84 @@
     .close { position: absolute; right: 15px; top: 10px; color: #1C0BA3; font-size: 1.5rem; font-weight: bold; cursor: pointer; }
     .close:hover { color: #150882; }
 
+    .dropdown {
+  position: relative;
+  margin-left: auto;
+  cursor: pointer;
+}
+.dropdown-toggle {
+  font-size: 1.2rem;
+  color: #666;
+}
+.dropdown-menu {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  display: none;
+  flex-direction: column;
+  min-width: 180px;
+  z-index: 10;
+}
+.dropdown-menu a,
+.dropdown-menu label {
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  display: block;
+}
+.dropdown-menu a:hover,
+.dropdown-menu label:hover {
+  background-color: #f0f2ff;
+  color: #1C0BA3;
+}
+
+.modal-profile {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+.modal-content-profile {
+  background: white;
+  margin: 10% auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.modal-content-profile h2 {
+  color: #1C0BA3;
+  margin-bottom: 1rem;
+}
+.modal-content-profile .detail-group {
+  margin-bottom: 1rem;
+}
+.modal-content-profile input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: black;
+}
     .alert-success { background-color: #e6f4ea; color: #256029; padding: 0.75rem 1rem; border-radius: 5px; margin-bottom: 1rem; }
     .alert-error { background-color: #fdecea; color: #b71c1c; padding: 0.75rem 1rem; border-radius: 5px; margin-bottom: 1rem; }
 
@@ -112,8 +225,8 @@
       <h2>Batang Surigaonon Youth</h2>
     </div>
     <div class="user-menu">
-      <span>{{ auth()->user()->first_name }}</span>
-      <img src="{{ asset('images/user-avatar.jpg') }}" alt="User Avatar">
+      <span>{{ auth()->user()->first_name }} {{ Auth::user()->last_name }}</span>
+      <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="User Avatar">
       <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:inline;">
         @csrf
         <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -123,16 +236,14 @@
 
   <div class="dashboard-container">
     <aside class="sidebar">
-      <div class="menu-item active" onclick="navigate('dashboard')"><i class="fas fa-home"></i><span>Dashboard</span></div>
-      <div class="menu-item" onclick="navigate('users')"><i class="fas fa-users"></i><span>Users</span></div>
-      <div class="menu-item" onclick="navigate('profile')">
-        <i class="fas fa-user"></i>
-        <span>My Profile</span>
-      </div>
+      <div class="menu-item active" onclick="navigate('dashboard', this)"><i class="fas fa-home"></i><span>Dashboard</span></div>
+      <div class="menu-item" onclick="navigate('users', this)"><i class="fas fa-users"></i><span>Users</span></div>
+      <div class="menu-item" onclick="navigate('profile', this)"><i class="fas fa-user"></i><span>My Profile</span></div>
     </aside>
 
     <main class="main-content">
-      <section id="dashboard-section">
+      <!-- Dashboard Section -->
+      <section id="dashboard-section" style="display:block;">
         <div class="welcome-section">
           <h1>Welcome back, Admin!</h1>
           <p>Here's what's happening with BSY today.</p>
@@ -144,9 +255,10 @@
           <div class="stat-card"><h3>Active Projects</h3><p>3</p></div>
         </div>
       </section>
-            <!-- Profile Section -->
-      <section id="profile-section" class="content-section">
-        <div class="profile-card">
+
+      <!-- Profile Section -->
+      <section id="profile-section" class="content-section" style="display:none;">
+               <div class="profile-card">
           <div class="profile-header">
             <div class="profile-avatar">
                 @if(Auth::user()->profile_picture)
@@ -209,8 +321,8 @@
       </section>
 
       <!-- ================= MODAL ================= -->
-<div id="editProfileModal" class="modal">
-  <div class="modal-content">
+<div id="editProfileModal" class="modal-profile">
+  <div class="modal-content-profile">
     <span class="close">&times;</span>
     <h2>Edit Profile Information</h2>
     <form action="{{ route('profile.update') }}" method="POST">
@@ -278,10 +390,11 @@
     </form>
   </div>
 </div>
+      </section>
 
       <!-- Users Section -->
       <section id="users-section" style="display:none;">
-        <h1>Users</h1>
+       <h1>Users</h1>
 
         <!-- Sub Navigation Tabs -->
         <div style="margin-bottom: 1rem;">
@@ -355,6 +468,9 @@
       </section>
     </main>
   </div>
+      </section>
+    </main>
+  </div>
 
   <!-- Single Modal -->
   <div id="editUserModal" class="modal">
@@ -382,52 +498,106 @@
     </div>
   </div>
 
+
+  <!-- ✅ Fixed Navigation Script -->
   <script>
-    const modal = document.getElementById('editUserModal');
-    const closeBtn = modal.querySelector('.close');
-    const editButtons = document.querySelectorAll('.btn-edit');
-    const form = document.getElementById('editUserForm');
-    const credentialInput = document.getElementById('credential_email');
-    const roleSelect = document.getElementById('role');
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('editUserModal');
+  const closeBtn = modal.querySelector('.close');
+  const editButtons = document.querySelectorAll('.btn-edit');
+  const form = document.getElementById('editUserForm');
+  const credentialInput = document.getElementById('credential_email');
+  const roleSelect = document.getElementById('role');
 
-    editButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const userId = this.dataset.userId;
-        const credentialEmail = this.dataset.credentialEmail;
-        const roleId = this.dataset.roleId;
+  // ✅ Edit user modal logic
+  editButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const userId = this.dataset.userId;
+      const credentialEmail = this.dataset.credentialEmail;
+      const roleId = this.dataset.roleId;
 
-        form.action = `/users/${userId}`;
-        credentialInput.value = credentialEmail || '';
-        roleSelect.value = roleId || '';
+      form.action = `/users/${userId}`;
+      credentialInput.value = credentialEmail || '';
+      roleSelect.value = roleId || '';
 
-        modal.style.display = 'block';
-      });
+      modal.style.display = 'block';
+    });
+  });
+
+  closeBtn.onclick = () => modal.style.display = 'none';
+  window.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
+
+  // ✅ Navigation
+  function navigate(section, element) {
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    element.classList.add('active');
+
+    const sections = ['dashboard-section', 'users-section', 'profile-section'];
+    sections.forEach(id => {
+      const sec = document.getElementById(id);
+      if (sec) sec.style.display = 'none';
     });
 
-    closeBtn.onclick = () => modal.style.display = 'none';
-    window.onclick = e => { if (e.target == modal) modal.style.display = 'none'; }
+    const target = document.getElementById(section + '-section');
+    if (target) target.style.display = 'block';
+  }
 
-    // Navigation
-    function navigate(section) {
-      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-      event.target.closest('.menu-item').classList.add('active');
-      document.getElementById('dashboard-section').style.display = (section === 'dashboard') ? 'block' : 'none';
-      document.getElementById('users-section').style.display = (section === 'users') ? 'block' : 'none';
-    }
+  // ✅ Initialize default view (Dashboard only)
+  const activeMenu = document.querySelector('.menu-item.active');
+  if (activeMenu) navigate('dashboard', activeMenu);
 
-    // Subtab switching
-    const subtabButtons = document.querySelectorAll('.subtab-btn');
-    const userTabs = document.querySelectorAll('.user-tab');
+  // ✅ Expose navigate() globally so sidebar onclick still works
+  window.navigate = navigate;
 
-    subtabButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        subtabButtons.forEach(b => b.classList.remove('active'));
-        userTabs.forEach(t => t.style.display = 'none');
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).style.display = 'block';
-      });
+  // ✅ Subtab switching
+  const subtabButtons = document.querySelectorAll('.subtab-btn');
+  const userTabs = document.querySelectorAll('.user-tab');
+
+  subtabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      subtabButtons.forEach(b => b.classList.remove('active'));
+      userTabs.forEach(t => t.style.display = 'none');
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).style.display = 'block';
     });
-  </script>
+  });
+});
+
+document.querySelectorAll('.dropdown').forEach(drop => {
+    const toggle = drop.querySelector('.dropdown-toggle');
+    const menu = drop.querySelector('.dropdown-menu');
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    document.addEventListener('click', () => {
+      menu.style.display = 'none';
+    });
+  });
+  const modal = document.getElementById("editProfileModal");
+  const btn = document.getElementById("editProfileBtn");
+  const span = modal ? modal.querySelector(".close") : null;
+
+  if (btn && modal && span) {
+    btn.addEventListener("click", function(e) {
+      e.preventDefault();
+      modal.style.display = "block";
+    });
+
+    span.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  }
+
+</script>
 </body>
 </html>
