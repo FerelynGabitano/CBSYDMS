@@ -10,7 +10,7 @@ use App\Http\Controllers\LearnMoreController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController; 
-
+use App\Http\Controllers\ReportController;
 // ------------------------------
 // Public routes (for guests only)
 // ------------------------------
@@ -106,4 +106,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user_id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user_id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user_id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+// ------------------------------
+// Report Download PDF
+// ------------------------------
+
+
+Route::get('/download-pdf', [ReportController::class, 'downloadPDF'])->name('download.pdf');
+
 });
+
