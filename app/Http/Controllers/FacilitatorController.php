@@ -51,6 +51,13 @@ class FacilitatorController extends Controller
             'date'
         ));
     }
+    public function faci_activities_feed()
+{
+    $activities = \App\Models\Activity::with('leadFacilitator')->latest()->get();
+    $regularFacilitators = \App\Models\User::where('role_id', 2)->get();
+
+    return view('sections.activities_feed', compact('activities', 'regularFacilitators'));
+}
 
     public function storeActivity(Request $request)
     {
@@ -150,9 +157,6 @@ class FacilitatorController extends Controller
         return redirect()->route('faci_dashboard')->with('success', 'Sponsor added successfully!');
     }
 
-    /**
-     * Download PDF of filtered activities
-     */
     public function downloadReport(Request $request)
     {
         $filter = $request->input('filter');
@@ -181,21 +185,23 @@ class FacilitatorController extends Controller
             $filtered = Activity::latest()->get();
         }
 
-        // Use your existing resources/views/pdf.blade.php
         $pdf = Pdf::loadView('pdf', compact('filtered', 'type', 'date', 'title'))
                   ->setPaper('a4', 'portrait');
 
         return $pdf->download('Activities_Report_' . ($type ?? 'All') . '.pdf');
     }
 
-    /**
-     * Route that triggers the filtering on the dashboard
-     */
     public function filterReports(Request $request)
     {
         return $this->faci_dashboard($request);
     }
-        public function updateProfilePicture(Request $request)
+     public function faci_profile()
+{
+    $user = Auth::user();
+    return view('sections.faci_profile', compact('user'));
+}
+
+    public function updateProfilePicture(Request $request)
     {
         $request->validate([
             'profile_picture' => 'required|image|mimes:jpg,jpeg,png|max:2048',
@@ -203,62 +209,93 @@ class FacilitatorController extends Controller
 
         $user = User::find(Auth::id());
 
-        // Store new picture
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
 
-        // Delete old picture if exists
         if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
             Storage::disk('public')->delete($user->profile_picture);
         }
 
-        // Update in DB
         $user->profile_picture = $path;
         $user->save();
 
         return back()->with('success', 'Profile picture updated successfully!');
     }
-public function updateProfile(Request $request)
-{
-    // Get the currently logged-in user as an Eloquent model instance
-    $user = User::find(Auth::id());
 
-    // Validate the inputs (optional but recommended)
-    $request->validate([
-        'first_name' => 'required|string|max:255',
-        'middle_name' => 'nullable|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'contact_number' => 'nullable|string|max:20',
-        'street_address' => 'nullable|string|max:255',
-        'barangay' => 'nullable|string|max:255',
-        'city_municipality' => 'nullable|string|max:255',
-        'province' => 'nullable|string|max:255',
-        'zip_code' => 'nullable|string|max:10',
-        'school' => 'nullable|string|max:255',
-        'course' => 'nullable|string|max:255',
-        'gradeLevel' => 'nullable|string|max:50',
-        'skills' => 'nullable|string|max:255',
-        'emergency_contact_no' => 'nullable|string|max:255',
-    ]);
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(Auth::id());
 
-    // Update the user's info
-    $user->first_name = $request->first_name;
-    $user->middle_name = $request->middle_name;
-    $user->last_name = $request->last_name;
-    $user->contact_number = $request->contact_number;
-    $user->street_address = $request->street_address;
-    $user->barangay = $request->barangay;
-    $user->city_municipality = $request->city_municipality;
-    $user->province = $request->province;
-    $user->zip_code = $request->zip_code;
-    $user->school = $request->school;
-    $user->course = $request->course;
-    $user->gradeLevel = $request->gradeLevel;
-    $user->skills = $request->skills;
-    $user->emergency_contact_no = $request->emergency_contact_no;
-    $user->save();
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:20',
+            'street_address' => 'nullable|string|max:255',
+            'barangay' => 'nullable|string|max:255',
+            'city_municipality' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:10',
+            'school' => 'nullable|string|max:255',
+            'course' => 'nullable|string|max:255',
+            'gradeLevel' => 'nullable|string|max:50',
+            'skills' => 'nullable|string|max:255',
+            'emergency_contact_no' => 'nullable|string|max:255',
+        ]);
 
-    // Redirect back with success message
-    return redirect()->back()->with('success', 'Profile updated successfully!');
+        $user->first_name = $request->first_name;
+        $user->middle_name = $request->middle_name;
+        $user->last_name = $request->last_name;
+        $user->contact_number = $request->contact_number;
+        $user->street_address = $request->street_address;
+        $user->barangay = $request->barangay;
+        $user->city_municipality = $request->city_municipality;
+        $user->province = $request->province;
+        $user->zip_code = $request->zip_code;
+        $user->school = $request->school;
+        $user->course = $request->course;
+        $user->gradeLevel = $request->gradeLevel;
+        $user->skills = $request->skills;
+        $user->emergency_contact_no = $request->emergency_contact_no;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
+    public function faci_members()
+    {
+        $members = User::all();
+        return view('sections.member', compact('members'));
+    }
+
+    public function faci_sponsors()
+    {
+        $sponsors = Sponsor::all();
+        return view('sections.sponsors', compact('sponsors'));
+    }
+
+    public function faci_reports(Request $request)
+    {
+        $activities = Activity::latest()->get();
+        $filter = $request->input('filter');
+        $date = $request->input('date', now()->toDateString());
+        $filtered = collect();
+        $type = 'All';
+
+        if ($filter === 'daily') {
+            $filtered = Activity::whereDate('created_at', $date)->get();
+            $type = 'Daily';
+        } elseif ($filter === 'monthly') {
+            $d = Carbon::parse($date);
+            $filtered = Activity::whereMonth('created_at', $d->month)
+                                ->whereYear('created_at', $d->year)
+                                ->get();
+            $type = 'Monthly';
+        } elseif ($filter === 'annual') {
+            $d = Carbon::parse($date);
+            $filtered = Activity::whereYear('created_at', $d->year)->get();
+            $type = 'Annual';
+        }
+
+        return view('sections.reports', compact('activities', 'filtered', 'filter', 'type', 'date'));
+    }
 }

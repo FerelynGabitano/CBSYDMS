@@ -73,7 +73,6 @@ class MemberController extends Controller
         ]);
 
         $user = User::find(Auth::id());
-
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
 
         if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
@@ -146,7 +145,6 @@ class MemberController extends Controller
     {
         $user = Auth::user();
 
-        // ✅ Prevent duplicate joins
         if (DB::table('activity_participants')
             ->where('user_id', $user->user_id)
             ->where('activity_id', $activityId)
@@ -154,15 +152,81 @@ class MemberController extends Controller
             return back()->with('success', 'You already joined this activity.');
         }
 
-        // ✅ Insert join record
         DB::table('activity_participants')->insert([
             'user_id' => $user->user_id,
             'activity_id' => $activityId,
-            'attendance_status' => 'Pending',
+            'attendance_status' => 'registered',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         return back()->with('success', 'You have successfully joined the activity!');
+    }
+
+    // ------------------------------
+    // New section-based views
+    // ------------------------------
+
+    public function activities()
+    {
+        $now = now();
+
+        $activeActivities = Activity::where('is_active', true)
+            ->where('start_datetime', '<=', $now)
+            ->where(function ($q) use ($now) {
+                $q->where('end_datetime', '>=', $now)
+                  ->orWhereNull('end_datetime');
+            })
+            ->get();
+
+        $upcomingActivities = Activity::where('is_active', true)
+            ->where('start_datetime', '>', $now)
+            ->get();
+
+        return view('sections.activities', compact('activeActivities', 'upcomingActivities'));
+    }
+
+    public function profile()
+{
+    $user = Auth::user();
+    return view('sections.profile', compact('user'));
+}
+
+
+    public function participation()
+    {
+        $user = Auth::user();
+        $now = now();
+
+        $history = DB::table('activity_participants')
+            ->join('activities', 'activity_participants.activity_id', '=', 'activities.activity_id')
+            ->where('activity_participants.user_id', $user->user_id)
+            ->select('activities.*', 'activity_participants.attendance_status', 'activity_participants.created_at as joined_at')
+            ->orderBy('activity_participants.created_at', 'desc')
+            ->get();
+
+        $joinedCount = $history->count();
+        $completedCount = $history->filter(fn($a) => $a->end_datetime && Carbon::parse($a->end_datetime)->isPast())->count();
+        $ongoingCount = $history->filter(fn($a) => Carbon::parse($a->start_datetime)->isPast() && (!$a->end_datetime || Carbon::parse($a->end_datetime)->isFuture()))->count();
+        $upcomingCount = $history->filter(fn($a) => Carbon::parse($a->start_datetime)->isFuture())->count();
+
+        return view('sections.participation', compact(
+            'history',
+            'joinedCount',
+            'completedCount',
+            'ongoingCount',
+            'upcomingCount'
+        ));
+    }
+
+    public function gallery()
+    {
+        return view('sections.gallery');
+    }
+
+    public function scholarships()
+    {
+        $user = Auth::user();
+        return view('sections.scholarships', compact('user'));
     }
 }
