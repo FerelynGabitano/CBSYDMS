@@ -151,7 +151,7 @@ Route::prefix('facilitator')->middleware(['auth', 'role:facilitator'])->group(fu
 // Match Blade "sections.*" routes
 // ------------------------------
 Route::prefix('facilitator')->middleware(['auth', 'role:facilitator'])->group(function () {
-    Route::get('/activities-feed', [App\Http\Controllers\FacilitatorController::class, 'faci_dashboard'])->name('sections.activities_feed');
+    Route::get('/faci_dashboard/activities-feed', [FacilitatorController::class, 'faci_activities_feed'])->name('sections.activities_feed');
     Route::get('/profile', [FacilitatorController::class, 'faci_profile'])->name('sections.faci_profile');
     Route::get('/members', [App\Http\Controllers\FacilitatorController::class, 'faci_members'])->name('sections.member');
     Route::get('/sponsors', [App\Http\Controllers\FacilitatorController::class, 'faci_sponsors'])->name('sections.sponsors');
