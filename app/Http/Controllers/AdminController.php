@@ -19,4 +19,10 @@ class AdminController extends Controller
         // Pass them to your blade file
         return view('admin_dashboard', compact('users', 'roles'));
     }
+
+    public function profile()
+    {
+        return view('sections.admin_profile');
+    }
 }
+
