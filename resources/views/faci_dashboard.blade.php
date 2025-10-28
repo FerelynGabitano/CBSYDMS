@@ -48,7 +48,7 @@
   <div class="dashboard-container">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <a href="{{ route('faci.activities.feed') }}" class="menu-item {{ request()->routeIs('faci.activities.feed') ? 'active' : '' }}">
+      <a href="{{ route('sections.activities_feed') }}" class="menu-item {{ request()->routeIs('sections.activities_feed') ? 'active' : '' }}">
         <i class="fas fa-calendar-alt"></i> Activity Feed
       </a>
       <a href="{{ route('sections.member') }}" class="menu-item {{ request()->routeIs('sections.member') ? 'active' : '' }}">

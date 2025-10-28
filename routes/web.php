@@ -107,6 +107,56 @@ Route::middleware('auth')->group(function () {
     Route::put('/users/{user_id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user_id}', [UserController::class, 'destroy'])->name('users.destroy');
 
+// ------------------------------ 
+// Member Dashboard Subpages
+// ------------------------------
+Route::prefix('member')->middleware(['auth', 'role:member'])->group(function () {
+    Route::get('/activities', [MemberController::class, 'activities'])->name('sections.activities');
+    Route::get('/profile', [MemberController::class, 'profile'])->name('sections.profile');
+    Route::get('/participation', [MemberController::class, 'participation'])->name('sections.participation');
+    Route::get('/gallery', [MemberController::class, 'gallery'])->name('sections.gallery');
+    Route::get('/scholarships', [MemberController::class, 'scholarships'])->name('sections.scholarships');
+});
+
+// ------------------------------ 
+// Facilitator Dashboard Subpages
+// ------------------------------
+Route::prefix('facilitator')->middleware(['auth', 'role:facilitator'])->group(function () {
+    // Dashboard / Activities
+    Route::get('/dashboard', [FacilitatorController::class, 'faci_dashboard'])->name('faci.dashboard');
+    Route::post('/activity/store', [FacilitatorController::class, 'storeActivity'])->name('faci.activity.store');
+    Route::post('/activity/{id}/update', [FacilitatorController::class, 'updateActivity'])->name('faci.activity.update');
+    Route::delete('/activity/{id}/delete', [FacilitatorController::class, 'destroyActivity'])->name('faci.activity.delete');
+
+    // Attendance (Members)
+    Route::post('/attendance/update', [FacilitatorController::class, 'updateAttendance'])->name('faci.attendance.update');
+    Route::get('/members', [FacilitatorController::class, 'faci_members'])->name('faci.members');
+
+    // Sponsors
+    Route::get('/sponsors', [FacilitatorController::class, 'faci_sponsors'])->name('faci.sponsors');
+    Route::post('/sponsor/store', [FacilitatorController::class, 'storeSponsor'])->name('faci.sponsor.store');
+
+    // Profile
+    Route::get('/profile', [FacilitatorController::class, 'faci_profile'])->name('facilitator.profile');
+    Route::post('/profile/update', [FacilitatorController::class, 'updateProfile'])->name('faci.profile.update');
+    Route::post('/profile/picture', [FacilitatorController::class, 'updateProfilePicture'])->name('faci.profile.picture');
+
+    // Reports / PDF
+    Route::get('/reports', [FacilitatorController::class, 'faci_reports'])->name('faci.reports');
+    Route::get('/reports/filter', [FacilitatorController::class, 'filterReports'])->name('facilitator.reports.filter');
+    Route::get('/reports/download', [FacilitatorController::class, 'downloadReport'])->name('facilitator.reports.download');
+});
+
+// ------------------------------
+// Match Blade "sections.*" routes
+// ------------------------------
+Route::prefix('facilitator')->middleware(['auth', 'role:facilitator'])->group(function () {
+    Route::get('/activities-feed', [App\Http\Controllers\FacilitatorController::class, 'faci_dashboard'])->name('sections.activities_feed');
+    Route::get('/profile', [FacilitatorController::class, 'faci_profile'])->name('sections.faci_profile');
+    Route::get('/members', [App\Http\Controllers\FacilitatorController::class, 'faci_members'])->name('sections.member');
+    Route::get('/sponsors', [App\Http\Controllers\FacilitatorController::class, 'faci_sponsors'])->name('sections.sponsors');
+    Route::get('/reports', [App\Http\Controllers\FacilitatorController::class, 'faci_reports'])->name('sections.reports');
+});
 // ------------------------------
 // Report Download PDF
 // ------------------------------
