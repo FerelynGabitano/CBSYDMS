@@ -41,9 +41,9 @@ Route::get('/admin_dashboard', [AdminController::class, 'admin_dashboard'])
 // ------------------------------
 // Member dashboard
 // ------------------------------
-Route::get('/mem_dashboard', [MemberController::class, 'mem_dashboard'])
-    ->name('mem_dashboard')
-    ->middleware(['auth', 'role:member']);
+Route::get('/mem_dashboard', function () {
+    return redirect()->route('sections.activities');
+    })->name('mem_dashboard')->middleware(['auth', 'role:member']);
 
 Route::post('/activities/join/{activity}', [MemberController::class, 'joinActivity'])
     ->name('activities.join')
@@ -61,15 +61,15 @@ Route::put('/profile/update', [MemberController::class, 'updateProfile'])
 // ------------------------------
 // Facilitator dashboard
 // ------------------------------
-Route::get('/faci_dashboard', [FacilitatorController::class, 'faci_dashboard'])
-    ->name('faci_dashboard')
-    ->middleware(['auth', 'role:facilitator']);
+Route::get('/faci_dashboard', function () {
+    return redirect()->route('sections.activities_feed');
+    })->name('faci_dashboard')->middleware(['auth', 'role:facilitator']);
 
 Route::post('/faci_dashboard/activity', [FacilitatorController::class, 'storeActivity'])
     ->name('faci.activity.store')
     ->middleware(['auth', 'role:facilitator']);
 
-Route::post('/faci_dashboard/attendance', [FacilitatorController::class, 'updateAttendance'])
+Route::post('/faci_dashboard/attendance/{activity_id}', [FacilitatorController::class, 'updateAttendance'])
     ->name('faci.attendance.update')
     ->middleware(['auth', 'role:facilitator']);
 
@@ -106,7 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/{user_id}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user_id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user_id}', [UserController::class, 'destroy'])->name('users.destroy');
-
+});
 // ------------------------------ 
 // Member Dashboard Subpages
 // ------------------------------
@@ -157,7 +157,8 @@ Route::prefix('facilitator')->middleware(['auth', 'role:facilitator'])->group(fu
 // Admin Dashboard Subpages
 // ------------------------------
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'admin_dashboard'])->name('sections.admin_dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('sections.dashboard');
+    Route::get('/user_manage', [AdminController::class, 'user_manage'])->name('sections.user_manage');
     Route::get('/profile', [AdminController::class, 'profile'])->name('sections.admin_profile');
 });
 
@@ -168,4 +169,4 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 
 Route::get('/download-pdf', [ReportController::class, 'downloadPDF'])->name('download.pdf');
 
-});
+

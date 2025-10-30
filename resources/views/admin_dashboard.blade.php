@@ -48,20 +48,14 @@
   <div class="dashboard-container">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <a href="{{ route('sections.admin_profile') }}" class="menu-item {{ request()->routeIs('faci.activities.feed') ? 'active' : '' }}">
-        <i class="fas fa-calendar-alt"></i> Activity Feed
+      <a href="{{ route('sections.dashboard') }}" class="menu-item {{ request()->routeIs('sections.dashboard') ? 'active' : '' }}">
+          <i class="fas fa-home"></i> Dashboard
       </a>
-      <a href="{{ route('sections.member') }}" class="menu-item {{ request()->routeIs('sections.member') ? 'active' : '' }}">
-        <i class="fas fa-user"></i> Members and Attendance
+      <a href="{{ route('sections.user_manage') }}" class="menu-item {{ request()->routeIs('sections.user_manage') ? 'active' : '' }}">
+          <i class="fas fa-users"></i> User Management
       </a>
-      <a href="{{ route('sections.sponsors') }}" class="menu-item {{ request()->routeIs('sections.sponsors') ? 'active' : '' }}">
-        <i class="fas fa-check-circle"></i> Sponsors
-      </a>
-      <a href="{{ route('sections.faci_profile') }}" class="menu-item {{ request()->routeIs('sections.faci_profile') ? 'active' : '' }}">
+      <a href="{{ route('sections.admin_profile') }}" class="menu-item {{ request()->routeIs('sections.admin_profile') ? 'active' : '' }}">
           <i class="fas fa-user"></i> My Profile
-      </a>
-      <a href="{{ route('sections.reports') }}" class="menu-item {{ request()->routeIs('sections.reports') ? 'active' : '' }}">
-        <i class="fa-solid fa-graduation-cap"></i> Reports
       </a>
     </aside>
 

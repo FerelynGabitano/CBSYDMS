@@ -16,42 +16,34 @@ class UserController extends Controller
 
     // Update user
     public function update(Request $request, $user_id)
-{
-    // Find the user by user_id
-    $user = User::findOrFail($user_id);
+    {
+        $user = User::findOrFail($user_id);
 
-    // Validate input
-    $request->validate([
-        'credential_email' => 'required|email|unique:users,credential_email,' . $user->user_id . ',user_id',
-        'role_id' => 'required|exists:roles,role_id', // ✅ validate role_id exists
-        'password' => 'nullable|min:6|confirmed',
-    ]);
+        $request->validate([
+            'credential_email' => 'required|email|unique:users,credential_email,' . $user->user_id . ',user_id',
+            'role_id' => 'required|exists:roles,role_id',
+            'password' => 'nullable|min:6|confirmed',
+        ]);
 
-    try {
-        // Update credential_email
-        $user->credential_email = $request->credential_email;
+        try {
+            $user->credential_email = $request->credential_email;
+            $user->role_id = $request->role_id;
 
-        // ✅ Update role
-        $user->role_id = $request->role_id;
+            if ($request->filled('password')) {
+                $user->password = bcrypt($request->password);
+            }
 
-        // Update password if provided
-        if ($request->filled('password')) {
-            $user->password = bcrypt($request->password);
+            $user->save();
+
+            // ✅ Redirect to User Management page instead of Dashboard
+            return redirect()->route('sections.user_manage')
+                ->with('success', 'User updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Failed to update user: ' . $e->getMessage());
         }
-
-        // Save changes
-        $user->save();
-
-        // Redirect with success message
-        return redirect()->route('admin_dashboard')
-            ->with('success', 'User updated successfully.');
-    } catch (\Exception $e) {
-        // Redirect back with error message
-        return redirect()->back()
-            ->withInput()
-            ->with('error', 'Failed to update user: ' . $e->getMessage());
     }
-}
 
     // Delete user
     public function destroy($id)
@@ -59,6 +51,8 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin_dashboard')->with('success', 'User deleted successfully.');
+        // ✅ Redirect to User Management page instead of Dashboard
+        return redirect()->route('sections.user_manage')
+            ->with('success', 'User deleted successfully.');
     }
 }

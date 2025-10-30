@@ -114,20 +114,28 @@ class FacilitatorController extends Controller
         return redirect()->route('faci_dashboard')->with('success', 'Activity deleted successfully!');
     }
 
-    public function updateAttendance(Request $request)
-    {
-        if ($request->has('attendance')) {
-            foreach ($request->attendance as $memberId => $status) {
-                $member = User::find($memberId);
-                if ($member) {
-                    $member->attendance = $status ? 1 : 0;
-                    $member->save();
-                }
-            }
-        }
+    public function updateAttendance(Request $request, $activity_id)
+{
+    $activity = Activity::with('participants')->find($activity_id);
 
-        return redirect()->route('faci_dashboard')->with('success', 'Attendance updated!');
+    if (!$activity) {
+        return back()->with('error', 'Activity not found.');
     }
+
+    foreach ($activity->participants as $participant) {
+        $user_id = $participant->user_id;
+        // Checkbox present = attended, missing = absent
+        $status = isset($request->attendance[$user_id]) ? 'attended' : 'absent';
+
+        $activity->participants()->updateExistingPivot(
+            $user_id,
+            ['attendance_status' => $status]
+        );
+    }
+
+    return back()->with('success', 'Attendance updated successfully!');
+}
+
 
     public function storeSponsor(Request $request)
     {

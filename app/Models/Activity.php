@@ -10,7 +10,7 @@ use Carbon\Carbon;
 class Activity extends Model
 {
     protected $table = 'activities';
-    protected $primaryKey = 'activity_id'; // 👈 important since your PK is activity_id
+    protected $primaryKey = 'activity_id';
 
     protected $fillable = [
         'title',
@@ -23,6 +23,8 @@ class Activity extends Model
         'lead_facilitator_id',
         'is_active',
     ];
+
+    // Accessors
     public function getStartDateAttribute()
     {
         return $this->start_datetime ? Carbon::parse($this->start_datetime) : null;
@@ -32,7 +34,8 @@ class Activity extends Model
     {
         return $this->end_datetime ? Carbon::parse($this->end_datetime) : null;
     }
-    
+
+    // Relationships
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -43,11 +46,14 @@ class Activity extends Model
         return $this->belongsTo(User::class, 'lead_facilitator_id');
     }
 
-    // ✅ participants relationship (members who joined)
-    public function participants(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'activity_participants', 'activity_id', 'user_id')
-            ->withPivot('attendance_status') // removed registered_at
-            ->withTimestamps();
-    }
+    // ✅ Participants (members who joined)
+    public function participants()
+{
+    return $this->belongsToMany(User::class, 'activity_participants', 'activity_id', 'user_id')
+        ->using(\App\Models\ActivityParticipant::class)
+        ->withPivot('participant_id', 'attendance_status')
+        ->withTimestamps();
+}
+
+
 }

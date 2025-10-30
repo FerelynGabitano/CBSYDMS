@@ -68,17 +68,15 @@ class User extends Authenticatable
     }
 
     // ✅ FIXED: Correct belongsToMany relationship with activities
-    public function activities(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Activity::class,         
-            'activity_participants', 
-            'user_id',               
-            'activity_id'           
-        )
-        ->withPivot('attendance_status')
+   public function activities()
+{
+    return $this->belongsToMany(Activity::class, 'activity_participants', 'user_id', 'activity_id')
+        ->using(\App\Models\ActivityParticipant::class)
+        ->withPivot('participant_id', 'attendance_status')
         ->withTimestamps();
-    }
+}
+
+
 
     // Activities created by the user
     public function createdActivities(): HasMany

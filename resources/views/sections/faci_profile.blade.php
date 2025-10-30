@@ -75,62 +75,64 @@
     <form action="{{ route('profile.update') }}" method="POST">
         @csrf
         @method('PUT')
-      
-      <div class="detail-group">
-        <label for="first_name">First Name:</label>
-        <input type="text" name="first_name" value="{{ Auth::user()->first_name }}">
-      </div>
-      <div class="detail-group">
-        <label for="middle_name">Middle Name:</label>
-        <input type="text" name="middle_name" value="{{ Auth::user()->middle_name }}">
-      </div>
-      <div class="detail-group">
-        <label for="last_name">Last Name:</label>
-        <input type="text" name="last_name" value="{{ Auth::user()->last_name }}">
-      </div>
-      <div class="detail-group">
-        <label for="contact_number">Contact Number:</label>
-        <input type="text" name="contact_number" value="{{ Auth::user()->contact_number }}">
-      </div>
-      <div class="detail-group">
-        <label for="street_address">Street Address:</label>
-        <input type="text" name="street_address" value="{{ Auth::user()->street_address }}">
-      </div>
-      <div class="detail-group">
-        <label for="barangay">Barangay:</label>
-        <input type="text" name="barangay" value="{{ Auth::user()->barangay }}">
-      </div>
-      <div class="detail-group">
-        <label for="city_municipality">City / Municipality:</label>
-        <input type="text" name="city_municipality" value="{{ Auth::user()->city_municipality }}">
-      </div>
-      <div class="detail-group">
-        <label for="province">Province:</label>
-        <input type="text" name="province" value="{{ Auth::user()->province }}">
-      </div>
-      <div class="detail-group">
-        <label for="zip_code">Zip Code:</label>
-        <input type="text" name="zip_code" value="{{ Auth::user()->zip_code }}">
-      </div>
-      <div class="detail-group">
-        <label for="school">School:</label>
-        <input type="text" name="school" value="{{ Auth::user()->school }}">
-      </div>
-      <div class="detail-group">
-        <label for="course">Course:</label>
-        <input type="text" name="course" value="{{ Auth::user()->course }}">
-      </div>
-      <div class="detail-group">
-        <label for="gradeLevel">Year Level:</label>
-        <input type="text" name="gradeLevel" value="{{ Auth::user()->gradeLevel }}">
-      </div>
-      <div class="detail-group">
-        <label for="skills">Skills/Interests:</label>
-        <input type="text" name="skills" value="{{ Auth::user()->skills }}">
-      </div>
-      <div class="detail-group">
-        <label for="emergency_contact_no">Emergency Contact:</label>
-        <input type="text" name="emergency_contact_no" value="{{ Auth::user()->emergency_contact_no }}">
+
+      <div class="form-grid">
+        <div class="detail-group">
+          <label for="first_name">First Name:</label>
+          <input type="text" name="first_name" value="{{ Auth::user()->first_name }}">
+        </div>
+        <div class="detail-group">
+          <label for="middle_name">Middle Name:</label>
+          <input type="text" name="middle_name" value="{{ Auth::user()->middle_name }}">
+        </div>
+        <div class="detail-group">
+          <label for="last_name">Last Name:</label>
+          <input type="text" name="last_name" value="{{ Auth::user()->last_name }}">
+        </div>
+        <div class="detail-group">
+          <label for="contact_number">Contact Number:</label>
+          <input type="text" name="contact_number" value="{{ Auth::user()->contact_number }}">
+        </div>
+        <div class="detail-group">
+          <label for="street_address">Street Address:</label>
+          <input type="text" name="street_address" value="{{ Auth::user()->street_address }}">
+        </div>
+        <div class="detail-group">
+          <label for="barangay">Barangay:</label>
+          <input type="text" name="barangay" value="{{ Auth::user()->barangay }}">
+        </div>
+        <div class="detail-group">
+          <label for="city_municipality">City / Municipality:</label>
+          <input type="text" name="city_municipality" value="{{ Auth::user()->city_municipality }}">
+        </div>
+        <div class="detail-group">
+          <label for="province">Province:</label>
+          <input type="text" name="province" value="{{ Auth::user()->province }}">
+        </div>
+        <div class="detail-group">
+          <label for="zip_code">Zip Code:</label>
+          <input type="text" name="zip_code" value="{{ Auth::user()->zip_code }}">
+        </div>
+        <div class="detail-group">
+          <label for="school">School:</label>
+          <input type="text" name="school" value="{{ Auth::user()->school }}">
+        </div>
+        <div class="detail-group">
+          <label for="course">Course:</label>
+          <input type="text" name="course" value="{{ Auth::user()->course }}">
+        </div>
+        <div class="detail-group">
+          <label for="gradeLevel">Year Level:</label>
+          <input type="text" name="gradeLevel" value="{{ Auth::user()->gradeLevel }}">
+        </div>
+        <div class="detail-group">
+          <label for="skills">Skills/Interests:</label>
+          <input type="text" name="skills" value="{{ Auth::user()->skills }}">
+        </div>
+        <div class="detail-group">
+          <label for="emergency_contact_no">Emergency Contact:</label>
+          <input type="text" name="emergency_contact_no" value="{{ Auth::user()->emergency_contact_no }}">
+        </div>
       </div>
 
       <button type="submit" class="btn-join">Save Changes</button>

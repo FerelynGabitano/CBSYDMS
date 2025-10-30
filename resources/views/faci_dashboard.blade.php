@@ -51,9 +51,6 @@
       <a href="{{ route('sections.activities_feed') }}" class="menu-item {{ request()->routeIs('sections.activities_feed') ? 'active' : '' }}">
         <i class="fas fa-calendar-alt"></i> Activity Feed
       </a>
-      <a href="{{ route('sections.member') }}" class="menu-item {{ request()->routeIs('sections.member') ? 'active' : '' }}">
-        <i class="fas fa-user"></i> Members and Attendance
-      </a>
       <a href="{{ route('sections.sponsors') }}" class="menu-item {{ request()->routeIs('sections.sponsors') ? 'active' : '' }}">
         <i class="fas fa-check-circle"></i> Sponsors
       </a>
