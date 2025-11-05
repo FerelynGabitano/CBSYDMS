@@ -59,9 +59,6 @@
       <a href="{{ route('sections.participation') }}" class="menu-item {{ request()->routeIs('sections.participation') ? 'active' : '' }}">
         <i class="fas fa-check-circle"></i> My Participation
       </a>
-      <a href="{{ route('sections.gallery') }}" class="menu-item {{ request()->routeIs('sections.gallery') ? 'active' : '' }}">
-        <i class="fas fa-images"></i> Gallery
-      </a>
       <a href="{{ route('sections.scholarships') }}" class="menu-item {{ request()->routeIs('sections.scholarships') ? 'active' : '' }}">
         <i class="fa-solid fa-graduation-cap"></i> Scholarship
       </a>

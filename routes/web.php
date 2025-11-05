@@ -11,6 +11,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController; 
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SystemLogController;
+use Illuminate\Support\Facades\Mail;
 // ------------------------------
 // Public routes (for guests only)
 // ------------------------------
@@ -169,4 +171,18 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
 
 Route::get('/download-pdf', [ReportController::class, 'downloadPDF'])->name('download.pdf');
 
+Route::get('/system-log', [SystemLogController::class, 'index'])->name('system_log');
 
+
+Route::get('/send-test', function () {
+    try {
+        Mail::raw('This is a test email from Laravel using Gmail SMTP.', function ($message) {
+            $message->to('yourtestemail@gmail.com') // change to your recipient email
+                    ->subject('Laravel Email Test');
+        });
+
+        return '✅ Email sent successfully!';
+    } catch (\Exception $e) {
+        return '❌ Error: ' . $e->getMessage();
+    }
+});

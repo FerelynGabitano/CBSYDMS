@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', 'Batang Surigaonon Youth')</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -56,6 +57,9 @@
       </a>
       <a href="{{ route('sections.admin_profile') }}" class="menu-item {{ request()->routeIs('sections.admin_profile') ? 'active' : '' }}">
           <i class="fas fa-user"></i> My Profile
+      </a>
+      <a href="{{ route('system_log') }}" class="menu-item {{ request()->routeIs('system_log') ? 'active' : '' }}">
+           <i class="fas fa-clipboard-list"></i> System Logs
       </a>
     </aside>
 

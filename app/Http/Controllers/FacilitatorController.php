@@ -31,8 +31,8 @@ class FacilitatorController extends Controller
         } elseif ($filter === 'monthly') {
             $d = Carbon::parse($date);
             $filtered = Activity::whereMonth('created_at', $d->month)
-                                ->whereYear('created_at', $d->year)
-                                ->get();
+                ->whereYear('created_at', $d->year)
+                ->get();
             $type = 'Monthly';
         } elseif ($filter === 'annual') {
             $d = Carbon::parse($date);
@@ -51,13 +51,14 @@ class FacilitatorController extends Controller
             'date'
         ));
     }
-    public function faci_activities_feed()
-{
-    $activities = \App\Models\Activity::with('leadFacilitator')->latest()->get();
-    $regularFacilitators = \App\Models\User::where('role_id', 2)->get();
 
-    return view('sections.activities_feed', compact('activities', 'regularFacilitators'));
-}
+    public function faci_activities_feed()
+    {
+        $activities = Activity::with('leadFacilitator')->latest()->get();
+        $regularFacilitators = User::where('role_id', 2)->get();
+
+        return view('sections.activities_feed', compact('activities', 'regularFacilitators'));
+    }
 
     public function storeActivity(Request $request)
     {
@@ -115,28 +116,27 @@ class FacilitatorController extends Controller
     }
 
     public function updateAttendance(Request $request, $activity_id)
-{
-    $activity = Activity::with('participants')->find($activity_id);
+    {
+        $activity = Activity::with('participants')->find($activity_id);
 
-    if (!$activity) {
-        return back()->with('error', 'Activity not found.');
+        if (!$activity) {
+            return back()->with('error', 'Activity not found.');
+        }
+
+        foreach ($activity->participants as $participant) {
+            $user_id = $participant->user_id;
+            $status = isset($request->attendance[$user_id]) ? 'attended' : 'absent';
+
+            $activity->participants()->updateExistingPivot(
+                $user_id,
+                ['attendance_status' => $status]
+            );
+        }
+
+        return back()->with('success', 'Attendance updated successfully!');
     }
 
-    foreach ($activity->participants as $participant) {
-        $user_id = $participant->user_id;
-        // Checkbox present = attended, missing = absent
-        $status = isset($request->attendance[$user_id]) ? 'attended' : 'absent';
-
-        $activity->participants()->updateExistingPivot(
-            $user_id,
-            ['attendance_status' => $status]
-        );
-    }
-
-    return back()->with('success', 'Attendance updated successfully!');
-}
-
-
+    // ✅ FIXED SPONSOR FUNCTION
     public function storeSponsor(Request $request)
     {
         $request->validate([
@@ -145,13 +145,7 @@ class FacilitatorController extends Controller
             'email'          => 'nullable|email|max:255',
             'phone'          => 'nullable|string|max:50',
             'address'        => 'nullable|string|max:500',
-            'logo_path'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
-        $logoPath = null;
-        if ($request->hasFile('logo_path')) {
-            $logoPath = $request->file('logo_path')->store('sponsors', 'public');
-        }
 
         Sponsor::create([
             'name'           => $request->name,
@@ -159,7 +153,6 @@ class FacilitatorController extends Controller
             'email'          => $request->email,
             'phone'          => $request->phone,
             'address'        => $request->address,
-            'logo_path'      => $logoPath,
         ]);
 
         return redirect()->route('faci_dashboard')->with('success', 'Sponsor added successfully!');
@@ -180,8 +173,8 @@ class FacilitatorController extends Controller
         } elseif ($filter === 'monthly') {
             $d = Carbon::parse($date);
             $filtered = Activity::whereMonth('created_at', $d->month)
-                                ->whereYear('created_at', $d->year)
-                                ->get();
+                ->whereYear('created_at', $d->year)
+                ->get();
             $type = 'Monthly';
             $title = 'Monthly Activities Report (' . $d->format('F Y') . ')';
         } elseif ($filter === 'annual') {
@@ -194,7 +187,7 @@ class FacilitatorController extends Controller
         }
 
         $pdf = Pdf::loadView('pdf', compact('filtered', 'type', 'date', 'title'))
-                  ->setPaper('a4', 'portrait');
+            ->setPaper('a4', 'portrait');
 
         return $pdf->download('Activities_Report_' . ($type ?? 'All') . '.pdf');
     }
@@ -203,11 +196,12 @@ class FacilitatorController extends Controller
     {
         return $this->faci_dashboard($request);
     }
-     public function faci_profile()
-{
-    $user = Auth::user();
-    return view('sections.faci_profile', compact('user'));
-}
+
+    public function faci_profile()
+    {
+        $user = Auth::user();
+        return view('sections.faci_profile', compact('user'));
+    }
 
     public function updateProfilePicture(Request $request)
     {
@@ -216,7 +210,6 @@ class FacilitatorController extends Controller
         ]);
 
         $user = User::find(Auth::id());
-
         $path = $request->file('profile_picture')->store('profile_pictures', 'public');
 
         if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
@@ -250,21 +243,11 @@ class FacilitatorController extends Controller
             'emergency_contact_no' => 'nullable|string|max:255',
         ]);
 
-        $user->first_name = $request->first_name;
-        $user->middle_name = $request->middle_name;
-        $user->last_name = $request->last_name;
-        $user->contact_number = $request->contact_number;
-        $user->street_address = $request->street_address;
-        $user->barangay = $request->barangay;
-        $user->city_municipality = $request->city_municipality;
-        $user->province = $request->province;
-        $user->zip_code = $request->zip_code;
-        $user->school = $request->school;
-        $user->course = $request->course;
-        $user->gradeLevel = $request->gradeLevel;
-        $user->skills = $request->skills;
-        $user->emergency_contact_no = $request->emergency_contact_no;
-        $user->save();
+        $user->update($request->only([
+            'first_name', 'middle_name', 'last_name', 'contact_number',
+            'street_address', 'barangay', 'city_municipality', 'province', 'zip_code',
+            'school', 'course', 'gradeLevel', 'skills', 'emergency_contact_no'
+        ]));
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
@@ -295,8 +278,8 @@ class FacilitatorController extends Controller
         } elseif ($filter === 'monthly') {
             $d = Carbon::parse($date);
             $filtered = Activity::whereMonth('created_at', $d->month)
-                                ->whereYear('created_at', $d->year)
-                                ->get();
+                ->whereYear('created_at', $d->year)
+                ->get();
             $type = 'Monthly';
         } elseif ($filter === 'annual') {
             $d = Carbon::parse($date);

@@ -260,20 +260,71 @@ document.addEventListener('DOMContentLoaded', () => {
     link.href = url.toString();
   });
 
-  // 🔸 Password validation
-  const passwordInput = form.querySelector('input[name="password"]');
-  const confirmInput = form.querySelector('input[name="password_confirmation"]');
-  form.addEventListener('submit', function(e) {
-    const password = passwordInput.value.trim();
-    const confirm = confirmInput.value.trim();
-    if (password !== '' || confirm !== '') {
-      if (password !== confirm) {
-        e.preventDefault();
-        showErrorPopup('Passwords do not match.');
-        return false;
-      }
+  // 🔸 Password validation + AJAX submit
+const passwordInput = form.querySelector('input[name="password"]');
+const confirmInput = form.querySelector('input[name="password_confirmation"]');
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const password = passwordInput.value.trim();
+  const confirm = confirmInput.value.trim();
+  if (password !== '' || confirm !== '') {
+    if (password !== confirm) {
+      showErrorPopup('Passwords do not match.');
+      return;
     }
+  }
+
+  const formData = new FormData(form);
+
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      headers: { 
+        'X-HTTP-Method-Override': 'PUT', 
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: formData
+    });
+
+    if (response.ok) {
+      showSuccessPopup(" User updated successfully! Email sent.");
+      modal.style.display = 'none';
+      setTimeout(() => location.reload(), 2000);
+    } else {
+      showErrorPopup("Failed to update user.");
+    }
+  } catch (error) {
+    showErrorPopup("Error: " + error.message);
+  }
+});
+
+// 🔹 Success popup (fixed)
+function showSuccessPopup(message) {
+  const popup = document.createElement('div');
+  popup.textContent = message;
+  Object.assign(popup.style, {
+    position: 'fixed',
+    top: '20px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: '#d7f8d8',
+    color: '#1c7e20',
+    border: '1px solid #b2e6b3',
+    padding: '15px 25px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    zIndex: '9999',
+    fontFamily: 'Segoe UI, sans-serif',
+    minWidth: '300px',
+    textAlign: 'center',
+    animation: 'fadeInDown 0.5s ease',
   });
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 3000);
+}
 });
 </script>
 

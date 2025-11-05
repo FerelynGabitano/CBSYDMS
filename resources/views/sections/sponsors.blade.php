@@ -12,7 +12,6 @@
             <input type="email" name="email" placeholder="Email">
             <input type="text" name="phone" placeholder="Phone">
             <textarea name="address" rows="3" placeholder="Address"></textarea>
-            <input type="file" name="logo_path" accept="image/*">
             <button type="submit">Add Sponsor</button>
           </form>
           <ul>
@@ -23,7 +22,7 @@
                 @if($sponsor->email) - Email: {{ $sponsor->email }} @endif
                 @if($sponsor->phone) - Phone: {{ $sponsor->phone }} @endif
                 @if($sponsor->address) - Address: {{ $sponsor->address }} @endif
-                @if($sponsor->logo_path)<br><img src="{{ asset('storage/' . $sponsor->logo_path) }}" alt="Logo" width="80">@endif
+                  @endif
               </li>
             @endforeach
           </ul>
