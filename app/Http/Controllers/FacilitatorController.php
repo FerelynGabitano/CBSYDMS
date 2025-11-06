@@ -136,7 +136,6 @@ class FacilitatorController extends Controller
         return back()->with('success', 'Attendance updated successfully!');
     }
 
-    // ✅ FIXED SPONSOR FUNCTION
     public function storeSponsor(Request $request)
     {
         $request->validate([
@@ -155,9 +154,20 @@ class FacilitatorController extends Controller
             'address'        => $request->address,
         ]);
 
-        return redirect()->route('faci_dashboard')->with('success', 'Sponsor added successfully!');
+        return redirect()->route('sections.sponsors')->with('success', 'Sponsor added successfully!');
+    }
+    public function updateSponsor(Request $request, $id)
+    {
+        $sponsor = Sponsor::findOrFail($id);
+        $sponsor->update($request->only(['name', 'contact_person', 'email', 'phone', 'address']));
+        return redirect()->route('faci.sponsor.index')->with('success', 'Sponsor updated successfully!');
     }
 
+    public function destroySponsor($id)
+    {
+        Sponsor::findOrFail($id)->delete();
+        return redirect()->route('faci.sponsor.index')->with('success', 'Sponsor deleted successfully!');
+    }
     public function downloadReport(Request $request)
     {
         $filter = $request->input('filter');
@@ -186,11 +196,32 @@ class FacilitatorController extends Controller
             $filtered = Activity::latest()->get();
         }
 
-        $pdf = Pdf::loadView('pdf', compact('filtered', 'type', 'date', 'title'))
+        $pdf = Pdf::loadView('reports.pdf', compact('filtered', 'type', 'date', 'title'))
             ->setPaper('a4', 'portrait');
 
         return $pdf->download('Activities_Report_' . ($type ?? 'All') . '.pdf');
     }
+    public function previewActivityReport($id)
+{
+    $activity = Activity::with('leadFacilitator')->findOrFail($id);
+
+    $pdf = Pdf::loadView('reports.pdf_single', compact('activity'))
+        ->setPaper('a4', 'portrait');
+
+    // ✅ Show PDF in browser
+    return $pdf->stream('Activity_Report_' . $activity->activity_id . '.pdf');
+}
+
+public function downloadActivityReport($id)
+{
+    $activity = Activity::with('leadFacilitator')->findOrFail($id);
+
+    $pdf = Pdf::loadView('reports.pdf_single', compact('activity'))
+        ->setPaper('a4', 'portrait');
+
+    // ✅ Force download
+    return $pdf->download('Activity_Report_' . $activity->activity_id . '.pdf');
+}
 
     public function filterReports(Request $request)
     {

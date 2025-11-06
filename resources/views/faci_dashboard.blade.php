@@ -34,9 +34,13 @@
     </div>
     <div class="user-menu">
       <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-      <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;">
-        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">
-      </div>
+      
+      <a href="{{ route('sections.faci_profile') }}" style="width:36px;height:36px;border-radius:50%;overflow:hidden;display:inline-block;">
+        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
+            alt="Avatar" 
+            style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+      </a>
+
       <form id="logoutForm" action="{{ route('logout') }}" method="POST">
         @csrf
         <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -51,8 +55,8 @@
       <a href="{{ route('sections.activities_feed') }}" class="menu-item {{ request()->routeIs('sections.activities_feed') ? 'active' : '' }}">
         <i class="fas fa-calendar-alt"></i> Activity Feed
       </a>
-      <a href="{{ route('sections.sponsors') }}" class="menu-item {{ request()->routeIs('sections.sponsors') ? 'active' : '' }}">
-        <i class="fas fa-check-circle"></i> Sponsors
+      <a href="{{ route('faci.sponsor.index') }}" class="menu-item {{ request()->routeIs('faci.sponsor.index') ? 'active' : '' }}">
+        <i class="fas fa-hand-holding-heart"></i> Sponsors
       </a>
       <a href="{{ route('sections.faci_profile') }}" class="menu-item {{ request()->routeIs('sections.faci_profile') ? 'active' : '' }}">
           <i class="fas fa-user"></i> My Profile

@@ -9,7 +9,7 @@ class Sponsor extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'sponsor_id'; // since you’re not using default "id"
+    protected $primaryKey = 'sponsor_id'; 
 
     protected $fillable = [
         'name',
@@ -17,6 +17,5 @@ class Sponsor extends Model
         'email',
         'phone',
         'address',
-        'logo_path',
     ];
 }

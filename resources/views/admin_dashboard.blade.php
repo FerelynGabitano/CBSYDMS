@@ -35,9 +35,13 @@
     </div>
     <div class="user-menu">
       <span>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-      <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;">
-        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">
-      </div>
+      
+      <a href="{{ route('sections.admin_profile') }}" style="width:36px;height:36px;border-radius:50%;overflow:hidden;display:inline-block;">
+        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" 
+            alt="Avatar" 
+            style="width:100%;height:100%;object-fit:cover;cursor:pointer;">
+      </a>
+
       <form id="logoutForm" action="{{ route('logout') }}" method="POST">
         @csrf
         <button type="submit" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>

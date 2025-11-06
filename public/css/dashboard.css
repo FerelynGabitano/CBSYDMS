@@ -528,7 +528,8 @@ body {
     .stat-card h3 { color: #666; font-size: 0.9rem; margin-bottom: 0.5rem; }
     .stat-card p { font-size: 1.8rem; font-weight: bold; color: #1C0BA3; }
 
-    .subtab-btn { background: none; color: #1C0BA3; border: none; font-weight: bold; cursor: pointer; margin-right: 1rem; font-size: 1rem; transition: color 0.2s, border-bottom 0.2s; }
+    .subtab-btn { background: none; color: #1C0BA3; border: none; font-weight: bold; cursor: pointer; margin-right: 1rem; font-size: 1rem; transition: color 0.2s, border-bottom 0.2s; text-decoration: none !important;
+ }
     .subtab-btn.active { color: #FFC107; border-bottom: 3px solid #FFC107; }
 
     table { width: 100%; border-collapse: collapse; background: white; margin-top: 1rem; border-radius: 8px; overflow: hidden; }
@@ -541,3 +542,138 @@ body {
     .btn-delete:hover { background-color: #150882; }
 
 
+  .sponsor-section {
+    padding: 25px;
+    background: #f9f9ff;
+    border-radius: 16px;
+  }
+
+  .sponsor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .sponsor-header h3 {
+    font-size: 1.5rem;
+    color: #1C0BA3;
+    font-weight: 700;
+  }
+
+  .sponsor-header button {
+    background: #1C0BA3;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s;
+  }
+
+  .sponsor-header button:hover {
+    background: #1C0BA3;
+  }
+
+  .sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .sponsor-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    padding: 18px;
+    transition: transform 0.2s;
+  }
+
+  .sponsor-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .sponsor-card strong {
+    color: #1C0BA3;
+    font-size: 1.1rem;
+  }
+
+  .sponsor-info {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: #444;
+  }
+
+  .sponsor-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .sponsor-actions button {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .edit-btn {
+    background: #1C0BA3;
+  }
+
+  .delete-btn {
+    background: #1C0BA3;
+  }
+
+  .edit-btn:hover {
+    background: #1C0BA3;
+  }
+
+  .delete-btn:hover {
+    background: #1C0BA3;
+  }
+
+  /* Modal styling */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+
+  .modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 400px;
+  }
+
+  .modal-content input,
+  .modal-content textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .modal-content button {
+    background: #1C0BA3;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .modal-content button:hover {
+    background: #1C0BA3;
+  }
