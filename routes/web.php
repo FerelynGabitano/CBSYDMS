@@ -75,7 +75,7 @@ Route::middleware(['auth', 'role:facilitator'])->group(function () {
     Route::prefix('facilitator')->group(function () {
         // Dashboard
         Route::get('/dashboard', [FacilitatorController::class, 'faci_dashboard'])->name('faci.dashboard');
-        Route::get('/faci_dashboard/activities-feed', [FacilitatorController::class, 'faci_activities_feed'])->name('sections.activities_feed');
+        Route::get('/activities-feed', [FacilitatorController::class, 'faci_activities_feed'])->name('sections.activities_feed');
 
         // Profile
         Route::get('/profile', [FacilitatorController::class, 'faci_profile'])->name('sections.faci_profile');
@@ -95,16 +95,15 @@ Route::middleware(['auth', 'role:facilitator'])->group(function () {
         Route::post('/sponsor/store', [FacilitatorController::class, 'storeSponsor'])->name('faci.sponsor.store');
         Route::put('/sponsor/{id}', [FacilitatorController::class, 'updateSponsor'])->name('faci.sponsor.update');
         Route::delete('/sponsor/{id}', [FacilitatorController::class, 'destroySponsor'])->name('faci.sponsor.destroy');
-        
+
         // Members
         Route::get('/members', [FacilitatorController::class, 'faci_members'])->name('sections.member');
 
         // Reports
         Route::get('/reports', [FacilitatorController::class, 'faci_reports'])->name('sections.reports');
-        Route::post('/reports/filter', [FacilitatorController::class, 'filterReports'])->name('facilitator.reports.filter');
         Route::get('/reports/download', [FacilitatorController::class, 'downloadReport'])->name('facilitator.reports.download');
 
-        // ✅ Individual Activity Reports
+        // Individual Activity Reports
         Route::get('/reports/{id}/preview', [FacilitatorController::class, 'previewActivityReport'])->name('facilitator.reports.preview');
         Route::get('/reports/{id}/download', [FacilitatorController::class, 'downloadActivityReport'])->name('facilitator.reports.download.single');
     });

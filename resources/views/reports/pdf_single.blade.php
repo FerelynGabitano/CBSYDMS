@@ -43,6 +43,7 @@
   </style>
 </head>
 <body>
+  <h1>Batang Surigaonon Youth</h1>
   <h1>{{ $activity->title }}</h1>
   <p><strong>Description:</strong> {{ $activity->description }}</p>
 
