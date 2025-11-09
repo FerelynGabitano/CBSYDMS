@@ -9,6 +9,14 @@
     <button id="openAddModal">+ Add Sponsor</button>
   </div>
 
+  <form method="GET" action="{{ route('faci.sponsor.index') }}" style="display:inline-block; margin-right:15px;">
+        <input type="text" name="search" placeholder="Search sponsors..." value="{{ request('search') }}">
+        <button type="submit" class="btn btn-secondary">Search</button>
+        @if(request('search'))
+            <a href="{{ route('faci.sponsor.index') }}" class="clear-btn">✕</a>
+        @endif
+    </form>
+
   {{-- Sponsor Grid --}}
   @if($sponsors->count() > 0)
   <div class="sponsor-grid">
@@ -85,6 +93,12 @@
     </form>
   </div>
 </div>
+
+<div class="w-full text-center py-4">
+      <div class="inline-block">
+        {{ $sponsors->appends(['search' => request('search')])->links('pagination::simple-tailwind') }}
+      </div>
+    </div>
 
 <script>
   // Add Sponsor Modal

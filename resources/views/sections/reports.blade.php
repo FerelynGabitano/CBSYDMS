@@ -74,6 +74,14 @@
     </div>
 </div>
 
+@if($activities->hasPages())
+<div class="w-full text-center py-4">
+    <div class="inline-block">
+        {{ $activities->appends(['search' => request('search')])->links('pagination::simple-tailwind') }}
+    </div>
+</div>
+@endif
+
 {{-- 💅 Inline Styles (optional, tweak freely) --}}
 <style>
 .search-bar {

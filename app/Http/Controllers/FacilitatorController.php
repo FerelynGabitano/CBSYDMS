@@ -9,6 +9,8 @@ use App\Models\Sponsor;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\SystemLogHelper as LogHelper;
+
 
 class FacilitatorController extends Controller
 {
@@ -29,9 +31,23 @@ class FacilitatorController extends Controller
     }
 
     // Activities feed
-    public function faci_activities_feed()
+    public function faci_activities_feed(Request $request)
     {
-        $activities = Activity::with('leadFacilitator')->latest()->get();
+        $query = Activity::with('leadFacilitator');
+
+        // Search
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%")
+                ->orWhere('location', 'like', "%{$search}%");
+            });
+        }
+
+        // Paginate results (10 per page)
+        $activities = $query->latest()->paginate(8);
+
         $regularFacilitators = User::where('role_id', 2)->get();
 
         return view('sections.activities_feed', compact('activities', 'regularFacilitators'));
@@ -50,10 +66,12 @@ class FacilitatorController extends Controller
             'lead_facilitator_id' => 'nullable|exists:users,user_id',
         ]);
 
-        Activity::create(array_merge(
+        $activity = Activity::create(array_merge(
             $request->only(['title','description','start_datetime','end_datetime','location','max_participants','lead_facilitator_id']),
             ['created_by' => Auth::id()]
         ));
+
+        LogHelper::log('create_activity', 'Created activity: ' . $activity->title);
 
         return redirect()->route('faci_dashboard')->with('success', 'Activity posted successfully!');
     }
@@ -73,12 +91,17 @@ class FacilitatorController extends Controller
         $activity = Activity::findOrFail($id);
         $activity->update($request->only(['title','description','start_datetime','end_datetime','location','max_participants','lead_facilitator_id']));
 
+        LogHelper::log('update_activity', 'Updated activity: ' . $activity->title);
+
         return redirect()->route('faci_dashboard')->with('success', 'Activity updated successfully!');
     }
 
     public function destroyActivity($id)
     {
-        Activity::findOrFail($id)->delete();
+        $activity = Activity::findOrFail($id)->delete();
+
+        LogHelper::log('delete_activity', 'Deleted activity: ' . $activity->title);
+
         return redirect()->route('faci_dashboard')->with('success', 'Activity deleted successfully!');
     }
 
@@ -106,7 +129,10 @@ class FacilitatorController extends Controller
             'address' => 'nullable|string|max:500',
         ]);
 
-        Sponsor::create($request->only(['name','contact_person','email','phone','address']));
+        $sponsor = Sponsor::create($request->only(['name','contact_person','email','phone','address']));
+
+        LogHelper::log('create_sponsor', 'Added sponsor: ' . $sponsor->name);
+
         return redirect()->route('sections.sponsors')->with('success', 'Sponsor added successfully!');
     }
 
@@ -114,12 +140,18 @@ class FacilitatorController extends Controller
     {
         $sponsor = Sponsor::findOrFail($id);
         $sponsor->update($request->only(['name','contact_person','email','phone','address']));
+
+        LogHelper::log('update_sponsor', 'Updated sponsor: ' . $sponsor->name);
+
         return redirect()->route('faci.sponsor.index')->with('success', 'Sponsor updated successfully!');
     }
 
     public function destroySponsor($id)
     {
-        Sponsor::findOrFail($id)->delete();
+        $sponsor = Sponsor::findOrFail($id)->delete();
+
+        LogHelper::log('delete_sponsor', 'Deleted sponsor: ' . $sponsor->name);
+
         return redirect()->route('faci.sponsor.index')->with('success', 'Sponsor deleted successfully!');
     }
 
@@ -174,20 +206,22 @@ class FacilitatorController extends Controller
     {
         $search = $request->input('search');
 
-        $activities = Activity::latest();
+        $query = Activity::latest();
 
         if ($search) {
-            $activities->where(function($q) use ($search) {
+            $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%")
                 ->orWhere('location', 'like', "%{$search}%");
             });
         }
 
-        $activities = $activities->get();
+        // Paginate results (10 per page)
+        $activities = $query->paginate(10);
 
         return view('sections.reports', compact('activities', 'search'));
     }
+
 
     // Profile
     public function faci_profile()
@@ -245,8 +279,26 @@ class FacilitatorController extends Controller
         return view('sections.member', ['members' => User::all()]);
     }
 
-    public function faci_sponsors()
+    public function faci_sponsors(Request $request)
     {
-        return view('sections.sponsors', ['sponsors' => Sponsor::all()]);
+        $query = Sponsor::query();
+
+        // Search
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhere('contact_person', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%");
+            });
+        }
+
+        // Paginate (10 per page)
+        $sponsors = $query->latest()->paginate(8);
+
+        return view('sections.sponsors', compact('sponsors'));
     }
+
 }

@@ -41,6 +41,9 @@ class UserController extends Controller
             }
 
             $user->save();
+        
+            SystemLogHelper::log('update_user', "Updated user: {$user->first_name} {$user->last_name} ({$user->credential_email})");
+
 
             // ✅ Send credentials email if password was changed
             if ($passwordSent) {
@@ -76,9 +79,16 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+        $userName = $user->first_name . ' ' . $user->last_name;
+        $userEmail = $user->credential_email;
+
         $user->delete();
+
+        // ✅ Log deletion
+        SystemLogHelper::log('delete_user', "Deleted user: {$userName} ({$userEmail})");
 
         return redirect()->route('sections.user_manage')
             ->with('success', 'User deleted successfully.');
     }
+
 }

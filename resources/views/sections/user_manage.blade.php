@@ -93,7 +93,7 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Create red popup for errors
+// Create reusable popup
 function createPopup(color) {
   const popup = document.createElement('div');
   Object.assign(popup.style, {
@@ -121,12 +121,10 @@ const successPopup = createPopup('#4CAF50');
 function showPopup(popup, message) {
   popup.textContent = message;
   popup.style.opacity = '1';
-  setTimeout(() => {
-    popup.style.opacity = '0';
-  }, 2000);
+  setTimeout(() => popup.style.opacity = '0', 2000);
 }
 
-// Handle password + AJAX form submit
+// Handle form submit
 const form = document.getElementById('editUserForm');
 const passwordInput = form.querySelector('input[name="password"]');
 const confirmInput = form.querySelector('input[name="password_confirmation"]');
@@ -138,7 +136,12 @@ form.addEventListener('submit', async function(e) {
   const password = passwordInput.value.trim();
   const confirm = confirmInput.value.trim();
 
+  // ✅ Validate password before sending
   if (password !== '' || confirm !== '') {
+    if (password.length < 6) {
+      showPopup(errorPopup, 'Password must be at least 6 characters long.');
+      return;
+    }
     if (password !== confirm) {
       showPopup(errorPopup, 'Passwords do not match.');
       return;
@@ -170,3 +173,4 @@ form.addEventListener('submit', async function(e) {
   }
 });
 </script>
+

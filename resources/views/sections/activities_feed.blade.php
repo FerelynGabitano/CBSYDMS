@@ -5,7 +5,16 @@
 @section('content')
 <div class="list-section">
   <h3>Activity Feed</h3>
+
   <button class="btn btn-primary" onclick="openModal('addActivityModal')">+ Add Activity</button>
+
+  <form method="GET" action="{{ route('sections.activities_feed') }}" style="margin-bottom:15px;">
+        <input type="text" name="search" placeholder="Search activities..." value="{{ request('search') }}">
+        <button type="submit" class="btn btn-secondary">Search</button>
+        @if(request('search'))
+            <a href="{{ route('sections.activities_feed') }}" class="clear-btn">✕</a>
+        @endif
+    </form>
 
   <div class="activity-grid">
     @foreach($activities as $activity)
@@ -131,6 +140,12 @@
       </div>
     @endforeach
   </div>
+
+<div class="w-full text-center py-4">
+    <div class="inline-block">
+        {{ $activities->appends(['search' => request('search')])->links('pagination::simple-tailwind') }}
+    </div>
+</div>
 
   <!-- Add Activity Modal -->
   <div id="addActivityModal" class="modal">

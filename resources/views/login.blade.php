@@ -188,10 +188,6 @@
                     </div>
                     <button type="submit" class="btn">Login</button>
                 </form>
-
-            <div class="links">
-                <a href="#">Forgot Password?</a>
-            </div>
         </div>
     </div>
 </body>
