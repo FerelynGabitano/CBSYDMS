@@ -27,6 +27,7 @@
               <i class="fas fa-ellipsis-v dropdown-toggle"></i>
               <div class="dropdown-menu">
                 <label for="profilePicUpload">Change Profile Picture</label>
+                <a href="#" id="changePasswordBtn">Change Password</a>
                 <a href="#" id="editProfileBtn">Edit Information</a>
               </div>
             </div>
@@ -66,6 +67,33 @@
           </div>
         </div>
       </div>
+
+            <!-- ================= MODAL ================= -->
+<div id="changePasswordModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Change Password</h2>
+    <form id="changePasswordForm" action="{{ route('facilitator.profile.password.update') }}" method="POST">
+      @csrf
+      @method('PUT')
+
+      <div class="detail-group">
+        <label for="current_password">Current Password:</label>
+        <input type="password" id="current_password" name="current_password" required>
+      </div>
+      <div class="detail-group">
+        <label for="new_password">New Password:</label>
+        <input type="password" id="new_password" name="new_password" required>
+      </div>
+      <div class="detail-group">
+        <label for="new_password_confirmation">Confirm New Password:</label>
+        <input type="password" id="new_password_confirmation" name="new_password_confirmation" required>
+      </div>
+
+      <button type="submit" class="btn-join">Update Password</button>
+    </form>
+  </div>
+</div>
 
       <!-- ================= MODAL ================= -->
 <div id="editProfileModal" class="modal-profile">
@@ -140,42 +168,117 @@
   </div>
 </div>
 <script>
- // Dropdown toggle
+ document.addEventListener('DOMContentLoaded', () => {
+  // Dropdown toggle
   document.querySelectorAll('.dropdown').forEach(drop => {
     const toggle = drop.querySelector('.dropdown-toggle');
     const menu = drop.querySelector('.dropdown-menu');
 
-    toggle.addEventListener('click', (e) => {
+    toggle.addEventListener('click', e => {
       e.stopPropagation();
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     });
 
-    document.addEventListener('click', () => {
-      menu.style.display = 'none';
-    });
+    document.addEventListener('click', () => menu.style.display = 'none');
   });
 
-  // ================= Modal handling =================
-  const modal = document.getElementById("editProfileModal");
-  const btn = document.getElementById("editProfileBtn");
-  const span = modal ? modal.querySelector(".close") : null;
+  // Reusable popup
+  function createPopup(color) {
+    const popup = document.createElement('div');
+    Object.assign(popup.style, {
+      position: 'fixed',
+      top: '20px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      backgroundColor: color,
+      color: 'white',
+      padding: '10px 20px',
+      borderRadius: '6px',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+      fontWeight: '600',
+      opacity: '0',
+      transition: 'opacity 0.3s ease',
+      zIndex: '2000'
+    });
+    document.body.appendChild(popup);
+    return popup;
+  }
 
-  if (btn && modal && span) {
-    btn.addEventListener("click", function(e) {
+  const errorPopup = createPopup('#ff4d4d');
+  const successPopup = createPopup('#4CAF50');
+  function showPopup(popup, message) {
+    popup.textContent = message;
+    popup.style.opacity = '1';
+    setTimeout(() => popup.style.opacity = '0', 2000);
+  }
+
+  // ================= Edit Profile Modal =================
+  const editProfileModal = document.getElementById('editProfileModal');
+  const editProfileBtn = document.getElementById('editProfileBtn');
+  const editClose = editProfileModal ? editProfileModal.querySelector('.close') : null;
+
+  if (editProfileModal && editProfileBtn && editClose) {
+    editProfileBtn.addEventListener('click', e => {
       e.preventDefault();
-      modal.style.display = "block";
+      editProfileModal.style.display = 'block';
     });
+    editClose.addEventListener('click', () => editProfileModal.style.display = 'none');
+    window.addEventListener('click', e => { if (e.target === editProfileModal) editProfileModal.style.display = 'none'; });
+  }
 
-    span.addEventListener("click", function() {
-      modal.style.display = "none";
+  // ================= Change Password Modal =================
+  const passwordModal = document.getElementById('changePasswordModal');
+  const passwordBtn = document.getElementById('changePasswordBtn');
+  const passwordClose = passwordModal ? passwordModal.querySelector('.close') : null;
+  const passwordForm = document.getElementById('changePasswordForm');
+
+  if (passwordModal && passwordBtn && passwordClose && passwordForm) {
+    passwordBtn.addEventListener('click', e => {
+      e.preventDefault();
+      passwordModal.style.display = 'block';
     });
+    passwordClose.addEventListener('click', () => passwordModal.style.display = 'none');
+    window.addEventListener('click', e => { if (e.target === passwordModal) passwordModal.style.display = 'none'; });
 
-    window.addEventListener("click", function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
+    passwordForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const current = passwordForm.current_password.value.trim();
+      const newPassword = passwordForm.new_password.value.trim();
+      const confirmPassword = passwordForm.new_password_confirmation.value.trim();
+
+      // Client-side validation
+      if (newPassword.length < 6) { showPopup(errorPopup, 'New password must be at least 6 characters long.'); return; }
+      if (newPassword !== confirmPassword) { showPopup(errorPopup, 'New passwords do not match.'); return; }
+
+      const formData = new FormData(passwordForm);
+
+      try {
+        const response = await fetch(passwordForm.action, {
+          method: 'POST',
+          headers: {
+            'X-HTTP-Method-Override': 'PUT',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          showPopup(successPopup, 'Password updated successfully!');
+          passwordModal.style.display = 'none';
+          setTimeout(() => location.reload(), 2000);
+        } else {
+          // Show server-side error (wrong current password)
+          showPopup(errorPopup, data.message || 'Failed to update password.');
+        }
+      } catch (err) {
+        showPopup(errorPopup, 'Error: ' + err.message);
       }
     });
   }
+});
 </script>
 
 @endsection

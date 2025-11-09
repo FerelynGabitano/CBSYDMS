@@ -12,6 +12,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SystemLogController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Mail;
 
 // ------------------------------
@@ -43,6 +44,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('sections.dashboard');
     Route::get('/user_manage', [AdminController::class, 'user_manage'])->name('sections.user_manage');
     Route::get('/profile', [AdminController::class, 'profile'])->name('sections.admin_profile');
+    Route::put('/admin/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profile.password.update');
     Route::get('/admin_dashboard', [AdminController::class, 'admin_dashboard'])->name('admin_dashboard');
 });
 
@@ -64,6 +66,8 @@ Route::middleware(['auth', 'role:member'])->group(function () {
     Route::post('/scholarship/upload', [MemberController::class, 'uploadScholarshipRequirements'])->name('upload.scholarship');
     Route::post('/profile/update-picture', [MemberController::class, 'updateProfilePicture'])->name('profile.picture.update');
     Route::put('/profile/update', [MemberController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/member/profile/password', [ProfileController::class, 'updatePassword'])->name('member.profile.password.update');
+
 });
 
 // ------------------------------
@@ -81,6 +85,7 @@ Route::middleware(['auth', 'role:facilitator'])->group(function () {
         Route::get('/profile', [FacilitatorController::class, 'faci_profile'])->name('sections.faci_profile');
         Route::put('/profile/update', [FacilitatorController::class, 'updateProfile'])->name('faci.profile.update');
         Route::post('/profile/picture', [FacilitatorController::class, 'updateProfilePicture'])->name('faci.profile.picture');
+        Route::put('/facilitator/profile/password', [ProfileController::class, 'updatePassword'])->name('facilitator.profile.password.update');
 
         // Activities
         Route::post('/activity', [FacilitatorController::class, 'storeActivity'])->name('faci.activity.store');

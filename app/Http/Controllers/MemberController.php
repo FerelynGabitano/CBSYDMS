@@ -191,8 +191,6 @@ class MemberController extends Controller
     $user = Auth::user();
     return view('sections.profile', compact('user'));
 }
-
-
     public function participation()
     {
         $user = Auth::user();

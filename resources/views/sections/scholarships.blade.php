@@ -22,7 +22,7 @@
             <label>Birth Certificate:</label>
             <input type="file" name="birthCert">
             @if(Auth::user()->birthCert)
-              <a href="{{ asset('storage/' . Auth::user()->birthCert) }}" target="_blank">View</a>
+              <a href="{{ asset('storage/' . Auth::user()->birthCert) }}" target="_blank">View File</a>
             @endif
           </div>
 
@@ -30,7 +30,7 @@
             <label>Grade Report:</label>
             <input type="file" name="gradeReport">
             @if(Auth::user()->gradeReport)
-              <a href="{{ asset('storage/' . Auth::user()->gradeReport) }}" target="_blank">View</a>
+              <a href="{{ asset('storage/' . Auth::user()->gradeReport) }}" target="_blank">View File</a>
             @endif
           </div>
 
@@ -38,7 +38,7 @@
             <label>ID Picture:</label>
             <input type="file" name="idPicture">
             @if(Auth::user()->idPicture)
-              <a href="{{ asset('storage/' . Auth::user()->idPicture) }}" target="_blank">View</a>
+              <a href="{{ asset('storage/' . Auth::user()->idPicture) }}" target="_blank">View File</a>
             @endif
           </div>
 
@@ -46,7 +46,7 @@
             <label>Certificate of Registration (COR):</label>
             <input type="file" name="cor">
             @if(Auth::user()->cor)
-              <a href="{{ asset('storage/' . Auth::user()->cor) }}" target="_blank">View</a>
+              <a href="{{ asset('storage/' . Auth::user()->cor) }}" target="_blank">View File</a>
             @endif
           </div>
 
@@ -54,10 +54,10 @@
             <label>Voter's Certificate:</label>
             <input type="file" name="votersCert">
             @if(Auth::user()->votersCert)
-              <a href="{{ asset('storage/' . Auth::user()->votersCert) }}" target="_blank">View</a>
+              <a href="{{ asset('storage/' . Auth::user()->votersCert) }}" target="_blank">View File</a>
             @endif
           </div>
-          <button type="submit" class="btn-submit">Submit Requirements</button>
+          <button type="submit" class="btn">Submit Requirements</button>
         </form>
       </div>
     </main>
