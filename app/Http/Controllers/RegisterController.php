@@ -34,17 +34,25 @@ class RegisterController extends Controller
             'gradeLevel'        => 'required|string|max:50',
 
             // File validations
-            'brgyCert'     => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'birthCert'    => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'gradeReport'  => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'idPicture'    => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'brgyCert'     => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'birthCert'    => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'gradeReport'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'idPicture'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Store uploaded files in storage/app/public/uploads
-        $validated['brgyCert'] = $request->file('brgyCert')->store('uploads', 'public');
-        $validated['birthCert'] = $request->file('birthCert')->store('uploads', 'public');
-        $validated['gradeReport'] = $request->file('gradeReport')->store('uploads', 'public');
-        $validated['idPicture'] = $request->file('idPicture')->store('uploads', 'public');
+         if ($request->hasFile('brgyCert')) {
+            $validated['brgyCert'] = $request->file('brgyCert')->store('uploads', 'public');
+        }
+        if ($request->hasFile('birthCert')) {
+            $validated['birthCert'] = $request->file('birthCert')->store('uploads', 'public');
+        }
+        if ($request->hasFile('gradeReport')) {
+            $validated['gradeReport'] = $request->file('gradeReport')->store('uploads', 'public');
+        }
+        if ($request->hasFile('idPicture')) {
+            $validated['idPicture'] = $request->file('idPicture')->store('uploads', 'public');
+        }
 
 
         // No password yet

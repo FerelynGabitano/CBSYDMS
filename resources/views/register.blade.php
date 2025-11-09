@@ -319,7 +319,7 @@ p a:hover {
 .terms-checkbox:checked::after {
   content: "✓";
   color: white;
-  font-size: 18px;
+  font-size: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -464,46 +464,53 @@ p a:hover {
         <p>Already have an account? <a href="/login"> Login</a> </p>
     </div>
 
-    <!-- Step 4 -->
+<!-- Step 4 -->
     <div class="form-section">
       <h2>Upload Documents</h2>
-      <div class="form-group"><label class="required">Barangay Certificate</label>
-                                <div class="file-upload">
-                                    <input type="file" id="brgyCert" name="brgyCert" accept=".pdf,.jpg,.jpeg,.png"
-                                        required>
-                                    <label for="brgyCert">Click to upload file</label>
-                                    <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
-                                </div>
-      <div class="form-group"><label class="required">Birth Certificate</label>
-                                <div class="file-upload">
-                                    <input type="file" id="birthCert" name="birthCert" accept=".pdf,.jpg,.jpeg,.png"
-                                        required>
-                                    <label for="birthCert">Click to upload file</label>
-                                    <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
-                                </div>
-      <div class="form-group"><label class="required">Latest Grade Report</label>
-                                <div class="file-upload">
-                                    <input type="file" id="gradeReport" name="gradeReport" accept=".pdf,.jpg,.jpeg,.png"
-                                        required>
-                                    <label for="gradeReport">Click to upload file</label>
-                                    <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
-                                </div>
-      <div class="form-group"><label class="required">2x2 ID Picture</label>
-                                <div class="file-upload">
-                                    <input type="file" id="idPicture" name="idPicture" accept=".jpg,.jpeg,.png"
-                                        required>
-                                    <label for="idPicture">Click to upload file</label>
-                                    <div class="file-info">(JPG or PNG, max 2MB)</div>
-                                </div>
 
-                        <div class="terms-container">
-                            <input type="checkbox" id="terms" name="terms" class="terms-checkbox" required>
-                            <label for="terms" class="terms-label">
-                                <span class="required"></span> I certify that all information provided is true and
-                                correct.
-                            </label>
-                        </div>
-                        <i>Note: Hardcopy of All Documents Must Be Submitted Upon Request</i>
+      <div class="form-group">
+        <label>Barangay Certificate</label>
+        <div class="file-upload">
+          <input type="file" id="brgyCert" name="brgyCert" accept=".pdf,.jpg,.jpeg,.png">
+          <label for="brgyCert">Click to upload file</label>
+          <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Birth Certificate</label>
+        <div class="file-upload">
+          <input type="file" id="birthCert" name="birthCert" accept=".pdf,.jpg,.jpeg,.png">
+          <label for="birthCert">Click to upload file</label>
+          <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Latest Grade Report</label>
+        <div class="file-upload">
+          <input type="file" id="gradeReport" name="gradeReport" accept=".pdf,.jpg,.jpeg,.png">
+          <label for="gradeReport">Click to upload file</label>
+          <div class="file-info">(PDF, JPG, or PNG, max 5MB)</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>2x2 ID Picture</label>
+        <div class="file-upload">
+          <input type="file" id="idPicture" name="idPicture" accept=".jpg,.jpeg,.png">
+          <label for="idPicture">Click to upload file</label>
+          <div class="file-info">(JPG or PNG, max 2MB)</div>
+        </div>
+      </div>
+
+        <div class="terms-container">
+          <input type="checkbox" id="terms" name="terms" class="terms-checkbox" required>
+            <label for="terms" class="terms-label">
+              <span class="required"></span> I certify that all information provided is true and correct.
+            </label>
+        </div>
+        <i>Note: Hardcopy of All Documents Must Be Submitted Upon Request</i>
 
       <div class="button-group">
         <button type="button" class="btn prev">Previous</button>
