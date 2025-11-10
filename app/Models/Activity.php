@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User;
+use App\Models\Sponsor;
 use Carbon\Carbon;
 
 class Activity extends Model
@@ -21,6 +22,7 @@ class Activity extends Model
         'max_participants',
         'created_by',
         'lead_facilitator_id',
+        'sponsor_id', // ✅ added
         'is_active',
     ];
 
@@ -46,14 +48,18 @@ class Activity extends Model
         return $this->belongsTo(User::class, 'lead_facilitator_id');
     }
 
+    // ✅ New Sponsor relationship
+    public function sponsor()
+    {
+        return $this->belongsTo(Sponsor::class, 'sponsor_id', 'sponsor_id');
+    }
+
     // ✅ Participants (members who joined)
     public function participants()
-{
-    return $this->belongsToMany(User::class, 'activity_participants', 'activity_id', 'user_id')
-        ->using(\App\Models\ActivityParticipant::class)
-        ->withPivot('participant_id', 'attendance_status')
-        ->withTimestamps();
-}
-
-
+    {
+        return $this->belongsToMany(User::class, 'activity_participants', 'activity_id', 'user_id')
+            ->using(\App\Models\ActivityParticipant::class)
+            ->withPivot('participant_id', 'attendance_status')
+            ->withTimestamps();
+    }
 }

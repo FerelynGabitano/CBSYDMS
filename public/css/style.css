@@ -312,7 +312,7 @@ body {
 
 .about-text h3 {
     font-size: 2.5em;
-    color: #6A0DAD;
+    color: #1C0BA3;
     font-weight: bold;
     margin-top: 1.8px;
     text-align: left;
@@ -344,23 +344,23 @@ body {
 }
 
 .buttons .learn-more {
-    background-color: #6a0dad;
+    background-color: #1C0BA3;
     color: #fff;
     border: none;
 }
 
 .buttons .learn-more:hover {
-    background-color: #5a0b9a;
+    background-color: #1C0BA3;
 }
 
 .buttons .join-us {
     background-color: transparent;
-    color: #6a0dad;
-    border: 2px solid #6a0dad;
+    color: #1C0BA3;
+    border: 2px solid #1C0BA3;
 }
 
 .buttons .join-us:hover {
-    background-color: #6a0dad;
+    background-color: #1C0BA3;
     color: #fff;
 }
 
@@ -505,7 +505,7 @@ body {
 }
 
 .scroll-gallery-item h3 {
-    color: #6A0DAD; /* Purple to match theme */
+    color: #1C0BA3; /* Purple to match theme */
     font-size: 1.2em;
     margin: 0 0 8px 0; /* Small gap below title */
     width: 100%; /* Ensure title takes full width of container */
@@ -531,7 +531,7 @@ body {
 }
 
 .scroll-gallery-container::-webkit-scrollbar-thumb {
-    background-color: #6A0DAD; /* Purple scrollbar */
+    background-color: #1C0BA3; /* Purple scrollbar */
     border-radius: 10px;
 }
 
@@ -574,12 +574,12 @@ body {
   }
   .partners-sponsors h2 {
     font-size: 2rem;
-    color: #4B0082; /* Purple color for "PARTNERS & SPONSORS" */
+    color: #1C0BA3; /* Purple color for "PARTNERS & SPONSORS" */
     margin-bottom: 10px;
   }
   .partners-sponsors h3 {
     font-size: 1.5rem;
-    color: #4B0082; /* Purple color for "EXTENDING HANDS" */
+    color: #1C0BA3; /* Purple color for "EXTENDING HANDS" */
     margin-bottom: 40px;
   }
   .logo-grid {

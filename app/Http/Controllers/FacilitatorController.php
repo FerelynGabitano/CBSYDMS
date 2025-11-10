@@ -42,6 +42,9 @@ class FacilitatorController extends Controller
                 $q->where('title', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%")
                 ->orWhere('location', 'like', "%{$search}%");
+            })
+            ->orWhereHas('sponsor', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
             });
         }
 
@@ -49,8 +52,9 @@ class FacilitatorController extends Controller
         $activities = $query->latest()->paginate(8);
 
         $regularFacilitators = User::where('role_id', 2)->get();
+        $sponsors = Sponsor::all();
 
-        return view('sections.activities_feed', compact('activities', 'regularFacilitators'));
+        return view('sections.activities_feed', compact('activities', 'regularFacilitators','sponsors'));
     }
 
     // CRUD Activities
@@ -64,10 +68,11 @@ class FacilitatorController extends Controller
             'location' => 'required|string|max:255',
             'max_participants' => 'nullable|integer|min:1',
             'lead_facilitator_id' => 'nullable|exists:users,user_id',
+            'sponsor_id' => 'nullable|exists:sponsors,sponsor_id',
         ]);
 
         $activity = Activity::create(array_merge(
-            $request->only(['title','description','start_datetime','end_datetime','location','max_participants','lead_facilitator_id']),
+            $request->only(['title','description','start_datetime','end_datetime','location','max_participants','lead_facilitator_id','sponsor_id']),
             ['created_by' => Auth::id()]
         ));
 
@@ -86,10 +91,11 @@ class FacilitatorController extends Controller
             'location' => 'required|string|max:255',
             'max_participants' => 'nullable|integer|min:1',
             'lead_facilitator_id' => 'nullable|exists:users,user_id',
+            'sponsor_id' => 'nullable|exists:sponsors,sponsor_id',
         ]);
 
         $activity = Activity::findOrFail($id);
-        $activity->update($request->only(['title','description','start_datetime','end_datetime','location','max_participants','lead_facilitator_id']));
+        $activity->update($request->only(['title','description','start_datetime','end_datetime','location','max_participants','lead_facilitator_id','sponsor_id']));
 
         LogHelper::log('update_activity', 'Updated activity: ' . $activity->title);
 
@@ -98,12 +104,15 @@ class FacilitatorController extends Controller
 
     public function destroyActivity($id)
     {
-        $activity = Activity::findOrFail($id)->delete();
+        $activity = Activity::findOrFail($id);
 
         LogHelper::log('delete_activity', 'Deleted activity: ' . $activity->title);
 
-        return redirect()->route('faci_dashboard')->with('success', 'Activity deleted successfully!');
+        $activity->delete();
+
+        return redirect()->route('sections.activities_feed')->with('success', 'Activity deleted successfully!');
     }
+
 
     // Attendance
     public function updateAttendance(Request $request, $activity_id)
@@ -111,11 +120,11 @@ class FacilitatorController extends Controller
         $activity = Activity::with('participants')->findOrFail($activity_id);
 
         foreach ($activity->participants as $participant) {
-            $status = isset($request->attendance[$participant->user_id]) ? 'attended' : 'absent';
+            $status = $request->attendance[$participant->user_id] ?? 'absent';
             $activity->participants()->updateExistingPivot($participant->user_id, ['attendance_status' => $status]);
         }
 
-        return back()->with('success', 'Attendance updated successfully!');
+        return response()->json(['success' => true]);
     }
 
     // Sponsors CRUD
@@ -133,7 +142,7 @@ class FacilitatorController extends Controller
 
         LogHelper::log('create_sponsor', 'Added sponsor: ' . $sponsor->name);
 
-        return redirect()->route('sections.sponsors')->with('success', 'Sponsor added successfully!');
+        return redirect()->route('faci.sponsor.index')->with('success', 'Sponsor added successfully!');
     }
 
     public function updateSponsor(Request $request, $id)
@@ -148,9 +157,11 @@ class FacilitatorController extends Controller
 
     public function destroySponsor($id)
     {
-        $sponsor = Sponsor::findOrFail($id)->delete();
+        $sponsor = Sponsor::findOrFail($id);
 
         LogHelper::log('delete_sponsor', 'Deleted sponsor: ' . $sponsor->name);
+
+        $sponsor->delete();
 
         return redirect()->route('faci.sponsor.index')->with('success', 'Sponsor deleted successfully!');
     }
@@ -213,6 +224,9 @@ class FacilitatorController extends Controller
                 $q->where('title', 'like', "%{$search}%")
                 ->orWhere('description', 'like', "%{$search}%")
                 ->orWhere('location', 'like', "%{$search}%");
+            })
+            ->orWhereHas('sponsor', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
             });
         }
 
@@ -252,6 +266,7 @@ class FacilitatorController extends Controller
             'middle_name'=>'nullable|string|max:255',
             'last_name'=>'required|string|max:255',
             'contact_number'=>'nullable|string|max:20',
+            'email'=>'required|email|max:255',
             'street_address'=>'nullable|string|max:255',
             'barangay'=>'nullable|string|max:255',
             'city_municipality'=>'nullable|string|max:255',
@@ -265,7 +280,7 @@ class FacilitatorController extends Controller
         ]);
 
         $user->update($request->only([
-            'first_name','middle_name','last_name','contact_number',
+            'first_name','middle_name','last_name','contact_number','email',
             'street_address','barangay','city_municipality','province','zip_code',
             'school','course','gradeLevel','skills','emergency_contact_no'
         ]));
@@ -299,6 +314,23 @@ class FacilitatorController extends Controller
         $sponsors = $query->latest()->paginate(8);
 
         return view('sections.sponsors', compact('sponsors'));
+    }
+
+    public function viewScholarRequests(Request $request)
+    {
+        $query = User::query();
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                ->orWhere('last_name', 'like', "%{$search}%");
+            });
+        }
+
+        $members = $query->paginate(10); // paginate 10 per page
+
+        return view('sections.mem_scholar_req', compact('members'));
     }
 
 }

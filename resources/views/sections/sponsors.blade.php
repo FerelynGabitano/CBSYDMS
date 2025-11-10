@@ -5,12 +5,12 @@
 @section('content')
 <div class="sponsor-section">
   <div class="sponsor-header">
-    <h3>Sponsor Feed</h3>
-    <button id="openAddModal">+ Add Sponsor</button>
+    <h3>Partners</h3>
+    <button id="openAddModal">+ Add Partner</button>
   </div>
 
   <form method="GET" action="{{ route('faci.sponsor.index') }}" style="display:inline-block; margin-right:15px;">
-        <input type="text" name="search" placeholder="Search sponsors..." value="{{ request('search') }}">
+        <input type="text" name="search" placeholder="Search partners..." value="{{ request('search') }}" style="padding:5px; width: 200px;">
         <button type="submit" class="btn btn-secondary">Search</button>
         @if(request('search'))
             <a href="{{ route('faci.sponsor.index') }}" class="clear-btn">✕</a>

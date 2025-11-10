@@ -11,7 +11,7 @@
         <input 
             type="text" 
             name="search" 
-            placeholder="Search activity title, description, location..." 
+            placeholder="Search activity title, description, location, partners..." 
             value="{{ request('search') }}"
         >
         <button type="submit">Search</button>
@@ -59,6 +59,13 @@
                             {{ $activity->leadFacilitator->first_name }} {{ $activity->leadFacilitator->last_name }}
                         @else
                             Not Assigned
+                        @endif
+                    </p>
+                    <p><strong>🏢 Sponsor:</strong>
+                        @if($activity->sponsor)
+                        {{ $activity->sponsor->name }}
+                        @else
+                        None
                         @endif
                     </p>
 

@@ -34,7 +34,7 @@
           </div>
 
           <!-- hidden form for profile picture -->
-          <form id="profilePicForm" action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data" style="display:none;">
+          <form id="profilePicForm" action="{{ route('admin.profile.picture.update') }}" method="POST" enctype="multipart/form-data" style="display:none;">
             @csrf
             <input type="file" id="profilePicUpload" name="profile_picture" accept="image/*" onchange="document.getElementById('profilePicForm').submit();">
           </form>
@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <!-- ================= MODAL ================= -->
+                  <!-- ================= MODAL ================= -->
 <div id="changePasswordModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -95,12 +95,12 @@
   </div>
 </div>
 
-      <!-- ================= MODAL ================= -->
+            <!-- ================= MODAL ================= -->
 <div id="editProfileModal" class="modal-profile">
   <div class="modal-profile-content">
     <span class="close">&times;</span>
     <h2>Edit Profile Information</h2>
-    <form action="{{ route('profile.update') }}" method="POST">
+    <form action="{{ route('admin.profile.update') }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -120,6 +120,10 @@
         <div class="detail-group">
           <label for="contact_number">Contact Number:</label>
           <input type="text" name="contact_number" value="{{ Auth::user()->contact_number }}">
+        </div>
+        <div class="detail-group">
+          <label for="email">Email:</label>
+          <input type="email" name="email" value="{{ Auth::user()->email }}">
         </div>
         <div class="detail-group">
           <label for="street_address">Street Address:</label>

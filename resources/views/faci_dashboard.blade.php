@@ -57,14 +57,17 @@
       <a href="{{ route('sections.activities_feed') }}" class="menu-item {{ request()->routeIs('sections.activities_feed') ? 'active' : '' }}">
         <i class="fas fa-calendar-alt"></i> Activity Feed
       </a>
+      <a href="{{ route('sections.mem_scholar_req') }}" class="menu-item {{ request()->routeIs('sections.mem_scholar_req') ? 'active' : '' }}">
+          <i class="fa-solid fa-graduation-cap"></i> Member Scholarships
+      </a>
       <a href="{{ route('faci.sponsor.index') }}" class="menu-item {{ request()->routeIs('faci.sponsor.index') ? 'active' : '' }}">
-        <i class="fas fa-hand-holding-heart"></i> Sponsors
+        <i class="fas fa-hand-holding-heart"></i> Partners 
       </a>
       <a href="{{ route('sections.faci_profile') }}" class="menu-item {{ request()->routeIs('sections.faci_profile') ? 'active' : '' }}">
           <i class="fas fa-user"></i> My Profile
       </a>
       <a href="{{ route('sections.reports') }}" class="menu-item {{ request()->routeIs('sections.reports') ? 'active' : '' }}">
-        <i class="fa-solid fa-graduation-cap"></i> Reports
+        <i class="fas fa-clipboard-list"></i> Reports
       </a>
     </aside>
 

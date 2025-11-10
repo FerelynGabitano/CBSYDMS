@@ -9,12 +9,12 @@
   <button class="btn btn-primary" onclick="openModal('addActivityModal')">+ Add Activity</button>
 
   <form method="GET" action="{{ route('sections.activities_feed') }}" style="margin-bottom:15px;">
-        <input type="text" name="search" placeholder="Search activities..." value="{{ request('search') }}">
-        <button type="submit" class="btn btn-secondary">Search</button>
-        @if(request('search'))
-            <a href="{{ route('sections.activities_feed') }}" class="clear-btn">✕</a>
-        @endif
-    </form>
+    <input type="text" name="search" placeholder="Search activities..." value="{{ request('search') }}"style="padding:5px; width: 200px;">
+    <button type="submit" class="btn btn-secondary">Search</button>
+    @if(request('search'))
+      <a href="{{ route('sections.activities_feed') }}" class="clear-btn">✕</a>
+    @endif
+  </form>
 
   <div class="activity-grid">
     @foreach($activities as $activity)
@@ -41,7 +41,7 @@
           <p>{{ $activity->description }}</p>
           <p><strong>📍 Location:</strong> {{ $activity->location }}</p>
           <p><strong>📅 When:</strong>
-            {{ \Carbon\Carbon::parse($activity->start_datetime)->format('M d, Y h:i A') }} –
+            {{ \Carbon\Carbon::parse($activity->start_datetime)->format('M d, Y h:i A') }} – 
             {{ \Carbon\Carbon::parse($activity->end_datetime)->format('M d, Y h:i A') }}
           </p>
           <p><strong>👥 Max Participants:</strong> {{ $activity->max_participants ?? 'N/A' }}</p>
@@ -50,6 +50,13 @@
               {{ $activity->leadFacilitator->first_name }} {{ $activity->leadFacilitator->last_name }}
             @else
               Not Assigned
+            @endif
+          </p>
+          <p><strong>🏢 Partner:</strong>
+            @if($activity->sponsor)
+              {{ $activity->sponsor->name }}
+            @else
+              None
             @endif
           </p>
 
@@ -64,7 +71,7 @@
         </div>
       </div>
 
-      <!-- Edit Modal -->
+      <!-- Edit Activity Modal -->
       <div id="editActivityModal{{ $activity->activity_id }}" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeModal('editActivityModal{{ $activity->activity_id }}')">&times;</span>
@@ -93,59 +100,65 @@
                 </option>
               @endforeach
             </select>
+            <label>Partner</label>
+            <select name="sponsor_id">
+              <option value="">-- None --</option>
+              @foreach($sponsors as $sponsor)
+                <option value="{{ $sponsor->sponsor_id }}" {{ $activity->sponsor_id == $sponsor->sponsor_id ? 'selected' : '' }}>
+                  {{ $sponsor->name }}
+                </option>
+              @endforeach
+            </select>
             <button type="submit" class="btn btn-primary" style="margin-top:15px;">Update</button>
           </form>
         </div>
       </div>
 
-      <!-- View Modal -->
+      <!-- View Activity Modal -->
       <div id="viewActivityModal{{ $activity->activity_id }}" class="modal">
         <div class="modal-content" style="max-width:600px;">
           <span class="close" onclick="closeModal('viewActivityModal{{ $activity->activity_id }}')">&times;</span>
           <h3>Participants for: {{ $activity->title }}</h3>
 
           @if($activity->participants && $activity->participants->count() > 0)
-            <form action="{{ route('faci.attendance.update', $activity->activity_id) }}" method="POST">
-              @csrf
-              <table style="width:100%; border-collapse:collapse;">
-                <thead>
+            <table style="width:100%; border-collapse:collapse;">
+              <thead>
+                <tr>
+                  <th style="text-align:left;">Name</th>
+                  <th style="text-align:center;">Present</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($activity->participants as $participant)
                   <tr>
-                    <th style="text-align:left;">Name</th>
-                    <th style="text-align:center;">Present</th>
+                    <td>{{ $participant->first_name }} {{ $participant->last_name }}</td>
+                    <td class="center">
+                      <input type="checkbox"
+                        class="attendance-checkbox"
+                        data-user-id="{{ $participant->user_id }}"
+                        data-activity-id="{{ $activity->activity_id }}"
+                        data-url="{{ route('faci.attendance.update', $activity->activity_id) }}"
+                        {{ optional($participant->pivot)->attendance_status === 'attended' ? 'checked' : '' }}>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  @foreach($activity->participants as $participant)
-                    <tr>
-                        <td>{{ $participant->first_name }} {{ $participant->last_name }}</td>
-                        <td>
-                          <input type="checkbox"
-                                class="attendance-checkbox"
-                                data-user-id="{{ $participant->user_id }}"
-                                data-activity-id="{{ $activity->activity_id }}"
-                                @if(optional($participant->pivot)->attendance_status === 'attended') checked @endif>
-                        </td>
-
-
-                    </tr>
-                    @endforeach
-                </tbody>
-              </table>
-              <button type="submit" class="btn btn-success" style="margin-top:15px;">Save Attendance</button>
-            </form>
+                @endforeach
+              </tbody>
+            </table>
           @else
             <p>No participants joined yet.</p>
           @endif
         </div>
       </div>
-    @endforeach
+
+    @endforeach <!-- End of activities loop -->
   </div>
 
-<div class="w-full text-center py-4">
+  <!-- Pagination -->
+  <div class="w-full text-center py-4">
     <div class="inline-block">
-        {{ $activities->appends(['search' => request('search')])->links('pagination::simple-tailwind') }}
+      {{ $activities->appends(['search' => request('search')])->links('pagination::simple-tailwind') }}
     </div>
-</div>
+  </div>
 
   <!-- Add Activity Modal -->
   <div id="addActivityModal" class="modal">
@@ -169,8 +182,15 @@
         <label>Lead Facilitator</label>
         <select name="lead_facilitator_id">
           <option value="">-- Select Facilitator --</option>
-          @foreach($regularFacilitators as $faci) 
-            <option value="{{ $faci->user_id }}">{{ $faci->first_name }} {{ $faci->last_name }}</option> 
+          @foreach($regularFacilitators as $faci)
+            <option value="{{ $faci->user_id }}">{{ $faci->first_name }} {{ $faci->last_name }}</option>
+          @endforeach
+        </select>
+        <label>Partner</label>
+        <select name="sponsor_id">
+          <option value="">-- None --</option>
+          @foreach($sponsors as $sponsor)
+            <option value="{{ $sponsor->sponsor_id }}">{{ $sponsor->name }}</option>
           @endforeach
         </select>
         <button type="submit" class="btn btn-primary" style="margin-top:15px;">Add</button>
@@ -187,5 +207,31 @@ window.onclick = function(event) {
     if (event.target === modal) modal.style.display = 'none';
   });
 }
+
+// Attendance AJAX
+document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const userId = this.dataset.userId;
+        const activityId = this.dataset.activityId;
+        const url = this.dataset.url;
+        const status = this.checked ? 'attended' : 'absent';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ attendance: { [userId]: status } })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                console.log('Attendance updated for user:', userId);
+            }
+        })
+        .catch(err => console.error('Error updating attendance:', err));
+    });
+});
 </script>
 @endsection

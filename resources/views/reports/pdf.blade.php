@@ -39,6 +39,7 @@
         {{ \Carbon\Carbon::parse($activity->end_datetime)->format('M d, Y h:i A') }}<br>
         <span class="label">Lead Facilitator:</span>
         {{ $activity->leadFacilitator?->first_name ?? 'N/A' }} {{ $activity->leadFacilitator?->last_name ?? '' }}
+        <span class="label">Sponsor:</span> {{ $activity->sponsor?->name ?? 'N/A' }}
       </p>
 
       {{-- Participants table if available --}}

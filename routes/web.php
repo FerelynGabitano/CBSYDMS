@@ -40,12 +40,13 @@ Route::post('/logout', [LoginController::class, 'logout'])
 // ------------------------------
 // Admin Dashboard
 // ------------------------------
-Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('sections.dashboard');
+    Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'admin_dashboard'])->name('admin_dashboard');
     Route::get('/user_manage', [AdminController::class, 'user_manage'])->name('sections.user_manage');
     Route::get('/profile', [AdminController::class, 'profile'])->name('sections.admin_profile');
-    Route::put('/admin/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profile.password.update');
-    Route::get('/admin_dashboard', [AdminController::class, 'admin_dashboard'])->name('admin_dashboard');
+    Route::post('/profile/update-picture', [ProfileController::class, 'updateProfilePicture'])->name('admin.profile.picture.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('admin.profile.password.update');
+    Route::put('/admin/profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
 });
 
 // ------------------------------
@@ -103,6 +104,7 @@ Route::middleware(['auth', 'role:facilitator'])->group(function () {
 
         // Members
         Route::get('/members', [FacilitatorController::class, 'faci_members'])->name('sections.member');
+        Route::get('/facilitator/members/requests', [FacilitatorController::class, 'viewScholarRequests'])->name('sections.mem_scholar_req');
 
         // Reports
         Route::get('/reports', [FacilitatorController::class, 'faci_reports'])->name('sections.reports');

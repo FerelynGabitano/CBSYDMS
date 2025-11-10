@@ -35,6 +35,7 @@
 
           <!-- hidden form for profile picture -->
           <form id="profilePicForm" action="{{ route('profile.picture.update') }}" method="POST" enctype="multipart/form-data" style="display:none;">
+
             @csrf
             <input type="file" id="profilePicUpload" name="profile_picture" accept="image/*" onchange="document.getElementById('profilePicForm').submit();">
           </form>
@@ -68,7 +69,7 @@
         </div>
       </div>
 
-      <!-- ================= MODAL ================= -->
+            <!-- ================= MODAL ================= -->
 <div id="changePasswordModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -95,7 +96,6 @@
   </div>
 </div>
 
-
       <!-- ================= MODAL ================= -->
 <div id="editProfileModal" class="modal-profile">
   <div class="modal-profile-content">
@@ -121,6 +121,10 @@
         <div class="detail-group">
           <label for="contact_number">Contact Number:</label>
           <input type="text" name="contact_number" value="{{ Auth::user()->contact_number }}">
+        </div>
+        <div class="detail-group">
+          <label for="email">Email:</label>
+          <input type="email" name="email" value="{{ Auth::user()->email }}">
         </div>
         <div class="detail-group">
           <label for="street_address">Street Address:</label>
@@ -169,7 +173,7 @@
   </div>
 </div>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+ document.addEventListener('DOMContentLoaded', () => {
   // Dropdown toggle
   document.querySelectorAll('.dropdown').forEach(drop => {
     const toggle = drop.querySelector('.dropdown-toggle');

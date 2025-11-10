@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Activity;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    
     public function admin_dashboard()
     {
         $users = User::with('role')->get();
@@ -18,7 +21,22 @@ class AdminController extends Controller
         $totalMembers = $users->count();
         $upcomingEvents = $activities->where('date', '>=', now())->count();
         $newMembersThisMonth = $users->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count();
-        $activeProjects = $activities->where('status', 'active')->count();
+
+        $ongoingActivities = 0;
+        $completedActivities = 0;
+
+        $now = Carbon::now();
+
+        foreach ($activities as $activity) {
+            $start = Carbon::parse($activity->start_datetime);
+            $end = Carbon::parse($activity->end_datetime);
+
+            if ($now->between($start, $end)) {
+                $ongoingActivities++;
+            } elseif ($now->gt($end)) {
+                $completedActivities++;
+            }
+        }
 
         return view('sections.dashboard', compact(
             'users',
@@ -26,13 +44,9 @@ class AdminController extends Controller
             'totalMembers',
             'upcomingEvents',
             'newMembersThisMonth',
-            'activeProjects'
+            'ongoingActivities',
+            'completedActivities'
         ));
-    }
-
-    public function dashboard()
-    {
-        return $this->admin_dashboard();
     }
 
     public function profile()

@@ -18,4 +18,9 @@ class Sponsor extends Model
         'phone',
         'address',
     ];
+    public function activities()
+{
+    return $this->hasMany(Activity::class, 'sponsor_id', 'sponsor_id');
 }
+}
+

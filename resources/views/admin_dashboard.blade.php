@@ -54,7 +54,7 @@
   <div class="dashboard-container">
     <!-- Sidebar -->
     <aside class="sidebar">
-      <a href="{{ route('sections.dashboard') }}" class="menu-item {{ request()->routeIs('sections.dashboard') ? 'active' : '' }}">
+      <a href="{{ route('admin_dashboard') }}" class="menu-item {{ request()->routeIs('admin_dashboard') ? 'active' : '' }}">
           <i class="fas fa-home"></i> Dashboard
       </a>
       <a href="{{ route('sections.user_manage') }}" class="menu-item {{ request()->routeIs('sections.user_manage') ? 'active' : '' }}">

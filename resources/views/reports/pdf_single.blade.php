@@ -56,6 +56,7 @@
     <p><span class="label">Max Participants:</span> {{ $activity->max_participants ?? 'N/A' }}</p>
     <p><span class="label">Lead Facilitator:</span>
       {{ $activity->leadFacilitator?->first_name }} {{ $activity->leadFacilitator?->last_name }}
+      <span class="label">Sponsor:</span> {{ $activity->sponsor?->name ?? 'N/A' }}
     </p>
   </div>
 

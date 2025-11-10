@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    // ----------------- Update Password -----------------
     public function updatePassword(Request $request)
     {
         $user = Auth::user();
@@ -26,7 +28,6 @@ class ProfileController extends Controller
             ], 422);
         }
 
-
         $request->validate([
             'new_password' => 'required|string|min:6|confirmed',
         ]);
@@ -39,4 +40,61 @@ class ProfileController extends Controller
             'message' => 'Password updated successfully.'
         ]);
     }
+
+    // ------------- Update Profile Picture ----------------
+    public function updateProfilePicture(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->back()->withErrors(['Unauthorized.']);
+        }
+
+        $request->validate([
+            'profile_picture' => 'required|image|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            // Delete old picture if exists
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $user->profile_picture = $path;
+            $user->save();
+        }
+
+        return redirect()->back()->with('success', 'Profile picture updated!');
+    }
+    public function update(Request $request)
+{
+    $user = Auth::user();
+
+    if (!$user) {
+        return redirect()->back()->withErrors(['Unauthorized.']);
+    }
+
+    $validated = $request->validate([
+        'first_name' => 'required|string|max:50',
+        'middle_name' => 'nullable|string|max:50',
+        'last_name' => 'required|string|max:50',
+        'contact_number' => 'nullable|string|max:20',
+        'email'=>'required|email|max:255',
+        'street_address' => 'nullable|string|max:255',
+        'barangay' => 'nullable|string|max:255',
+        'city_municipality' => 'nullable|string|max:255',
+        'province' => 'nullable|string|max:255',
+        'zip_code' => 'nullable|string|max:10',
+        'school' => 'nullable|string|max:255',
+        'course' => 'nullable|string|max:255',
+        'gradeLevel' => 'nullable|string|max:50',
+        'skills' => 'nullable|string|max:255',
+        'emergency_contact_no' => 'nullable|string|max:20',
+    ]);
+
+    $user->update($validated);
+
+    return redirect()->back()->with('success', 'Profile information updated successfully.');
+}
 }

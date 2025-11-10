@@ -11,6 +11,7 @@
     <input type="hidden" name="tab" value="{{ $activeTab }}">
     <input type="text" name="search" placeholder="Search name or email"
            value="{{ request('search') }}"
+           style="padding:5px; width: 200px;"
            class="border rounded px-3 py-1 w-64 focus:outline-none focus:ring focus:ring-indigo-300">
     <button type="submit" class="btn">Search</button>
         @if(request('search'))

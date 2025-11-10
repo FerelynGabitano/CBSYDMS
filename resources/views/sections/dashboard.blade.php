@@ -9,9 +9,29 @@
 </div>
 
 <div class="stats-cards">
-    <div class="stat-card"><h3>Total Members</h3><p>{{ $totalMembers }}</p></div>
-    <div class="stat-card"><h3>Upcoming Events</h3><p>{{ $upcomingEvents }}</p></div>
-    <div class="stat-card"><h3>New Members (This Month)</h3><p>{{ $newMembersThisMonth }}</p></div>
-    <div class="stat-card"><h3>Active Projects</h3><p>{{ $activeProjects }}</p></div>
+    <div class="stat-card">
+        <h3>Total Members</h3>
+        <p>{{ $totalMembers }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>New Members (This Month)</h3>
+        <p>{{ $newMembersThisMonth }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Upcoming Events</h3>
+        <p>{{ $upcomingEvents }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Ongoing Activities</h3>
+        <p>{{ $ongoingActivities }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Completed Activities</h3>
+        <p>{{ $completedActivities }}</p>
+    </div>
 </div>
 @endsection

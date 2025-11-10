@@ -408,20 +408,24 @@ body {
   color: black;
 }
 
-/* Participation Section */
+    /* Participation Section */
     .participation-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      display: flex;
+      justify-content: space-between; /* spread them evenly */
+      align-items: stretch;
+      flex-wrap: wrap; /* ensures they stay responsive */
       gap: 1.5rem;
       margin-bottom: 2rem;
     }
 
     .stat-card {
       background: white;
+      flex: 1 1 calc(25% - 1.5rem); /* four cards per row, responsive */
       padding: 1.5rem;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      min-width: 200px; /* ensures they don’t get too small */
     }
 
     .stat-number {

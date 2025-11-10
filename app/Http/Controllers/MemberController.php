@@ -112,32 +112,33 @@ class MemberController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
 
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'contact_number' => 'nullable|string|max:20',
-            'street_address' => 'nullable|string|max:255',
-            'barangay' => 'nullable|string|max:255',
-            'city_municipality' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'zip_code' => 'nullable|string|max:10',
-            'school' => 'nullable|string|max:255',
-            'course' => 'nullable|string|max:255',
-            'gradeLevel' => 'nullable|string|max:50',
-            'skills' => 'nullable|string|max:255',
-            'emergency_contact_no' => 'nullable|string|max:255',
+        $validated = $request->validate([
+            'first_name'=>'required|string|max:255',
+            'middle_name'=>'nullable|string|max:255',
+            'last_name'=>'required|string|max:255',
+            'contact_number'=>'nullable|string|max:20',
+            'email'=>'required|email|max:255',
+            'street_address'=>'nullable|string|max:255',
+            'barangay'=>'nullable|string|max:255',
+            'city_municipality'=>'nullable|string|max:255',
+            'province'=>'nullable|string|max:255',
+            'zip_code'=>'nullable|string|max:10',
+            'school'=>'nullable|string|max:255',
+            'course'=>'nullable|string|max:255',
+            'gradeLevel'=>'nullable|string|max:50',
+            'skills'=>'nullable|string|max:255',
+            'emergency_contact_no'=>'nullable|string|max:255',
         ]);
 
-        $user->update($request->only([
-            'first_name', 'middle_name', 'last_name', 'contact_number',
-            'street_address', 'barangay', 'city_municipality', 'province',
-            'zip_code', 'school', 'course', 'gradeLevel', 'skills', 'emergency_contact_no'
-        ]));
+        $user->fill($validated);
+        $user->save();
 
-        return redirect()->back()->with('success', 'Profile updated successfully!');
+        // Refresh Auth user so Blade uses updated data
+        Auth::setUser($user->fresh());
+
+        return back()->with('success', 'Profile updated successfully!');
     }
 
     /** ✅ JOIN ACTIVITY FUNCTION **/

@@ -9,15 +9,16 @@
   <!-- Search and Filter -->
   <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
     <input type="text" id="searchLog" placeholder="Search logs..."
+           style="padding:5px; width: 200px;"
            class="border rounded px-3 py-1 w-72 focus:outline-none focus:ring focus:ring-indigo-300">
 
-    <select id="filterType" class="border rounded px-3 py-1 focus:outline-none focus:ring focus:ring-indigo-300">
+    <!-- <select id="filterType" class="border rounded px-3 py-1 focus:outline-none focus:ring focus:ring-indigo-300">
       <option value="">All Actions</option>
       <option value="create">Create</option>
       <option value="update">Update</option>
       <option value="delete">Delete</option>
       <option value="login">Login</option>
-    </select>
+    </select> -->
   </div>
 
   <!-- Logs Table -->
