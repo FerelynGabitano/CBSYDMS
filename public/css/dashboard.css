@@ -681,3 +681,14 @@ body {
   .modal-content button:hover {
     background: #1C0BA3;
   }
+
+  .btn-scholar {
+    background-color: #1C0BA3;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background-color 0.3s;
+  }

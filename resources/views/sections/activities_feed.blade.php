@@ -233,5 +233,52 @@ document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
         .catch(err => console.error('Error updating attendance:', err));
     });
 });
+// Reusable popup creation (same as your style)
+function createPopup(color) {
+  const popup = document.createElement('div');
+  Object.assign(popup.style, {
+    position: 'fixed',
+    top: '20px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: color,
+    color: 'white',
+    padding: '10px 20px',
+    borderRadius: '6px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+    fontWeight: '600',
+    opacity: '0',
+    transition: 'opacity 0.3s ease',
+    zIndex: '2000'
+  });
+  document.body.appendChild(popup);
+  return popup;
+}
+
+const errorPopup = createPopup('#ff4d4d');
+
+function showPopup(popup, message) {
+  popup.textContent = message;
+  popup.style.opacity = '1';
+  setTimeout(() => popup.style.opacity = '0', 3000);
+}
+
+// Form validation
+document.querySelectorAll('form[action*="activity"]').forEach(form => {
+  form.addEventListener('submit', function(e) {
+    const startInput = form.querySelector('input[name="start_datetime"]');
+    const endInput = form.querySelector('input[name="end_datetime"]');
+
+    if (startInput && endInput) {
+      const start = new Date(startInput.value);
+      const end = new Date(endInput.value);
+
+      if (end < start) {
+        e.preventDefault();
+        showPopup(errorPopup, '⚠️ The end date/time cannot be earlier than the start date/time.');
+      }
+    }
+  });
+});
 </script>
 @endsection

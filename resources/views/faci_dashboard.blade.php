@@ -58,7 +58,10 @@
         <i class="fas fa-calendar-alt"></i> Activity Feed
       </a>
       <a href="{{ route('sections.mem_scholar_req') }}" class="menu-item {{ request()->routeIs('sections.mem_scholar_req') ? 'active' : '' }}">
-          <i class="fa-solid fa-graduation-cap"></i> Member Scholarships
+          <i class="fa fa-file-text"></i> Member Scholarships
+      </a>
+      <a href="{{ route('sections.user_scholar_stat') }}" class="menu-item {{ request()->routeIs('sections.user_scholar_stat') ? 'active' : '' }}">
+          <i class="fa-solid fa-graduation-cap"></i> Scholarships Status Manage 
       </a>
       <a href="{{ route('faci.sponsor.index') }}" class="menu-item {{ request()->routeIs('faci.sponsor.index') ? 'active' : '' }}">
         <i class="fas fa-hand-holding-heart"></i> Partners 

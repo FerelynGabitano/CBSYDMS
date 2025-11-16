@@ -105,6 +105,8 @@ Route::middleware(['auth', 'role:facilitator'])->group(function () {
         // Members
         Route::get('/members', [FacilitatorController::class, 'faci_members'])->name('sections.member');
         Route::get('/facilitator/members/requests', [FacilitatorController::class, 'viewScholarRequests'])->name('sections.mem_scholar_req');
+        Route::get('/user-scholar-stat', [FacilitatorController::class, 'userScholarStat'])->name('sections.user_scholar_stat');
+        Route::patch('/user-scholar-stat/{userId}', [FacilitatorController::class, 'updateScholarStatus'])->name('sections.update_scholar_status');
 
         // Reports
         Route::get('/reports', [FacilitatorController::class, 'faci_reports'])->name('sections.reports');

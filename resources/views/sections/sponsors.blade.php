@@ -63,15 +63,15 @@
 <div class="modal" id="addModal">
   <div class="modal-content">
     <span class="close-btn" id="closeAdd">&times;</span>
-    <h4>Add Sponsor</h4>
+    <h4>Add Partner</h4>
     <form action="{{ route('faci.sponsor.store') }}" method="POST">
       @csrf
-      <input type="text" name="name" placeholder="Sponsor Name" required>
+      <input type="text" name="name" placeholder="Partner Name" required>
       <input type="text" name="contact_person" placeholder="Contact Person">
       <input type="email" name="email" placeholder="Email">
       <input type="text" name="phone" placeholder="Phone">
       <textarea name="address" rows="3" placeholder="Address"></textarea>
-      <button type="submit">Add Sponsor</button>
+      <button type="submit">Add Partner</button>
     </form>
   </div>
 </div>
@@ -80,7 +80,7 @@
 <div class="modal" id="editModal">
   <div class="modal-content">
     <span class="close-btn" id="closeEdit">&times;</span>
-    <h4>Edit Sponsor</h4>
+    <h4>Edit Partner</h4>
     <form id="editForm" method="POST">
       @csrf
       @method('PUT')

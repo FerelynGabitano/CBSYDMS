@@ -168,32 +168,42 @@ class FacilitatorController extends Controller
 
     // Reports
     public function downloadReport(Request $request)
-    {
-        $search = $request->input('search');
+{
+    $search = $request->input('search');
+    $year = $request->input('year');
 
-        $activities = Activity::with('leadFacilitator')->latest();
+    $activities = Activity::with(['leadFacilitator', 'sponsor'])->latest();
 
-        if ($search) {
-            $activities->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%")
-                ->orWhere('location', 'like', "%{$search}%");
-            });
-        }
-
-        $activities = $activities->get();
-
-        if ($activities->isEmpty()) {
-            // Optional: handle empty PDF gracefully
-            $pdf = Pdf::loadView('reports.pdf_empty')->setPaper('a4','portrait');
-            return $pdf->download('Activities_Report.pdf');
-        }
-
-        $pdf = Pdf::loadView('reports.pdf', compact('activities'))
-                ->setPaper('a4', 'portrait');
-
-        return $pdf->download('Activities_Report.pdf');
+    // 🔍 Apply search filter
+    if ($search) {
+        $activities->where(function ($q) use ($search) {
+            $q->where('title', 'like', "%{$search}%")
+              ->orWhere('description', 'like', "%{$search}%")
+              ->orWhere('location', 'like', "%{$search}%");
+        })
+        ->orWhereHas('sponsor', function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%");
+        });
     }
+
+    // 📅 Apply year filter
+    if ($year) {
+        $activities->whereYear('start_datetime', $year);
+    }
+
+    $activities = $activities->get();
+
+    // 🚨 If no records found, show popup instead of downloading
+    if ($activities->isEmpty()) {
+        return redirect()->back()->with('error', 'No activities found for your filters.');
+    }
+
+    // 🧾 Otherwise, generate PDF
+    $pdf = Pdf::loadView('reports.pdf', compact('activities'))
+              ->setPaper('a4', 'portrait');
+
+    return $pdf->download('Activities_Report.pdf');
+}
 
 
 
@@ -216,9 +226,11 @@ class FacilitatorController extends Controller
     public function faci_reports(Request $request)
     {
         $search = $request->input('search');
+        $year = $request->input('year');
 
-        $query = Activity::latest();
+        $query = Activity::with(['leadFacilitator', 'sponsor'])->latest();
 
+        // 🔍 Search filter
         if ($search) {
             $query->where(function($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
@@ -230,10 +242,15 @@ class FacilitatorController extends Controller
             });
         }
 
-        // Paginate results (10 per page)
-        $activities = $query->paginate(10);
+        // 📅 Yearly filter
+        if ($year) {
+            $query->whereYear('start_datetime', $year);
+        }
 
-        return view('sections.reports', compact('activities', 'search'));
+        // 🧾 Paginate
+        $activities = $query->paginate(10)->withQueryString();
+
+        return view('sections.reports', compact('activities', 'search', 'year'));
     }
 
 
@@ -324,13 +341,48 @@ class FacilitatorController extends Controller
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
-                ->orWhere('last_name', 'like', "%{$search}%");
+                ->orWhere('last_name', 'like', "%{$search}%")
+                ->orWhere('scholarship_status', 'like', "%{$search}%");
             });
         }
 
-        $members = $query->paginate(10); // paginate 10 per page
+        $members = $query->paginate(10); 
 
         return view('sections.mem_scholar_req', compact('members'));
     }
+
+    public function userScholarStat(Request $request)
+{
+    $query = User::with('role')
+        ->whereHas('role', fn($q) => $q->where('role_name', 'User'));
+
+    // Search by name
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function($q) use ($search) {
+            $q->where('first_name', 'like', "%{$search}%")
+              ->orWhere('last_name', 'like', "%{$search}%")
+              ->orWhere('scholarship_status', 'like', "%{$search}%");
+        });
+    }
+
+    // Paginate results
+    $users = $query->orderBy('first_name')->paginate(10)->withQueryString();
+
+    return view('sections.user_scholar_stat', compact('users'));
+}
+
+public function updateScholarStatus(Request $request, $userId)
+{
+    $request->validate([
+        'scholarship_status' => 'required|in:Ongoing,Accepted,Rejected,Revoked',
+    ]);
+
+    $user = User::findOrFail($userId);
+    $user->scholarship_status = $request->scholarship_status;
+    $user->save();
+
+    return redirect()->route('sections.user_scholar_stat')->with('success', 'Scholarship status updated.');
+}
 
 }
