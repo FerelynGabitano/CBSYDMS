@@ -23,41 +23,39 @@
           'cor' => 'Certificate of Registration (COR)',
           'votersCert' => "Voter's Certificate"
         ];
+        $userDocuments = Auth::user()->documents;
       @endphp
 
       @foreach ($files as $field => $label)
-        <div class="detail-group" 
-             style="background: #fff; padding: 1rem; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
-          <label style="font-weight: bold; color: #1C0BA3;">{{ $label }}:</label>
-          <input type="file" name="{{ $field }}" accept=".jpg,.jpeg,.png,.pdf" 
-                 style="display: block; margin-top: 0.5rem; margin-bottom: 0.5rem;">
+          <div class="detail-group" 
+              style="background: #fff; padding: 1rem; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+              <label style="font-weight: bold; color: #1C0BA3;">{{ $label }}:</label>
+              <input type="file" name="{{ $field }}" accept=".jpg,.jpeg,.png,.pdf" 
+                    style="display: block; margin-top: 0.5rem; margin-bottom: 0.5rem;">
 
-          @php
-            $filePath = Auth::user()->$field;
-          @endphp
+              @if ($userDocuments && $userDocuments->$field)
+                  @php
+                      $filePath = $userDocuments->$field;
+                      $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+                  @endphp
 
-          @if ($filePath)
-            @php
-              $extension = pathinfo($filePath, PATHINFO_EXTENSION);
-            @endphp
-
-            @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png']))
-              <div style="margin-top: 0.5rem;">
-                <img src="{{ asset('storage/' . $filePath) }}" 
-                     alt="{{ $label }}" 
-                     style="width: 100%; max-width: 250px; height: auto; border-radius: 8px; border: 1px solid #ddd;">
-              </div>
-            @else
-              <div style="margin-top: 0.5rem;">
-                <a href="{{ asset('storage/' . $filePath) }}" target="_blank" 
-                   style="color: #1C0BA3; text-decoration: underline;">
-                  View File
-                </a>
-              </div>
-            @endif
-          @endif
-        </div>
-      @endforeach
+                  @if (in_array(strtolower($extension), ['jpg', 'jpeg', 'png']))
+                      <div style="margin-top: 0.5rem;">
+                          <img src="{{ asset('storage/' . $filePath) }}" 
+                              alt="{{ $label }}" 
+                              style="width: 100%; max-width: 250px; height: auto; border-radius: 8px; border: 1px solid #ddd;">
+                      </div>
+                  @else
+                      <div style="margin-top: 0.5rem;">
+                          <a href="{{ asset('storage/' . $filePath) }}" target="_blank" 
+                            style="color: #1C0BA3; text-decoration: underline;">
+                              View File
+                          </a>
+                      </div>
+                  @endif
+              @endif
+          </div>
+      @endforeach 
     </div>
 
     <button type="submit" class="btn" 

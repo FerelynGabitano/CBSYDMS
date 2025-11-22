@@ -21,20 +21,11 @@ class User extends Authenticatable
         'credential_email',
         'email',
         'password',
-        'street_address',
-        'barangay',
-        'city_municipality',
-        'province',
-        'zip_code',
         'profile_picture',
         'role_id',
         'is_active',
         'course',
         'skills',
-        'brgyCert',
-        'birthCert',
-        'gradeReport',
-        'idPicture',
         'school',      
         'gradeLevel',             
         'emergency_contact_no',
@@ -55,28 +46,14 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id', 'role_id');
     }
 
-    // User uploaded requirements
-    public function requirements(): HasMany
+    // Activities user participates in
+    public function activities()
     {
-        return $this->hasMany(UserRequirement::class, 'user_id');
+        return $this->belongsToMany(Activity::class, 'activity_participants', 'user_id', 'activity_id')
+            ->using(\App\Models\ActivityParticipant::class)
+            ->withPivot('participant_id', 'attendance_status')
+            ->withTimestamps();
     }
-
-    // Reviewed requirements
-    public function reviewedRequirements(): HasMany
-    {
-        return $this->hasMany(UserRequirement::class, 'reviewed_by');
-    }
-
-    // ✅ FIXED: Correct belongsToMany relationship with activities
-   public function activities()
-{
-    return $this->belongsToMany(Activity::class, 'activity_participants', 'user_id', 'activity_id')
-        ->using(\App\Models\ActivityParticipant::class)
-        ->withPivot('participant_id', 'attendance_status')
-        ->withTimestamps();
-}
-
-
 
     // Activities created by the user
     public function createdActivities(): HasMany
@@ -84,15 +61,15 @@ class User extends Authenticatable
         return $this->hasMany(Activity::class, 'created_by');
     }
 
-    // Attendance logs
-    public function attendanceLogs(): HasMany
+    // ✅ New: User address relationship
+    public function address()
     {
-        return $this->hasMany(AttendanceLog::class, 'user_id');
+        return $this->hasOne(UserAddress::class, 'user_id', 'user_id');
     }
 
-    // Contributions recorded by the user
-    public function recordedContributions(): HasMany
+    // ✅ New: User documents relationship
+    public function documents()
     {
-        return $this->hasMany(SponsorContribution::class, 'recorded_by');
+        return $this->hasOne(UserDocument::class, 'user_id', 'user_id');
     }
 }

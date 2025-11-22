@@ -42,7 +42,17 @@
           <div class="profile-details">
             <div class="detail-group">
               <label>Address:</label>
-              <span>{{ Auth::user()->street_address . ', ' . Auth::user()->barangay . ', ' . Auth::user()->city_municipality . ', ' . Auth::user()->province . ' ' . Auth::user()->zip_code }}</span>
+              <span>
+              @if(Auth::user()->address)
+                  {{ Auth::user()->address->street_address }}, 
+                  {{ Auth::user()->address->barangay }}, 
+                  {{ Auth::user()->address->city_municipality }}, 
+                  {{ Auth::user()->address->province }} 
+                  {{ Auth::user()->address->zip_code }}
+              @else
+                  —
+              @endif
+              </span>
             </div>
             <div class="detail-group">
               <label>School:</label>
@@ -127,23 +137,23 @@
         </div>
         <div class="detail-group">
           <label for="street_address">Street Address:</label>
-          <input type="text" name="street_address" value="{{ Auth::user()->street_address }}">
+          <input type="text" name="street_address" value="{{ Auth::user()->address->street_address }}">
         </div>
         <div class="detail-group">
           <label for="barangay">Barangay:</label>
-          <input type="text" name="barangay" value="{{ Auth::user()->barangay }}">
+          <input type="text" name="barangay" value="{{ Auth::user()->address->barangay }}">
         </div>
         <div class="detail-group">
           <label for="city_municipality">City / Municipality:</label>
-          <input type="text" name="city_municipality" value="{{ Auth::user()->city_municipality }}">
+          <input type="text" name="city_municipality" value="{{ Auth::user()->address->city_municipality }}">
         </div>
         <div class="detail-group">
           <label for="province">Province:</label>
-          <input type="text" name="province" value="{{ Auth::user()->province }}">
+          <input type="text" name="province" value="{{ Auth::user()->address->province }}">
         </div>
         <div class="detail-group">
           <label for="zip_code">Zip Code:</label>
-          <input type="text" name="zip_code" value="{{ Auth::user()->zip_code }}">
+          <input type="text" name="zip_code" value="{{ Auth::user()->address->zip_code }}">
         </div>
         <div class="detail-group">
           <label for="school">School:</label>

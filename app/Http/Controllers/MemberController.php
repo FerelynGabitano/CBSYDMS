@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\User;
+use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -96,16 +97,21 @@ class MemberController extends Controller
             'votersCert'  => 'nullable|file|mimes:pdf,jpg,png|max:2048',
         ]);
 
-        $user = User::find(Auth::id());
+        $user = Auth::user();
 
-        foreach (['brgyCert', 'birthCert', 'gradeReport', 'idPicture', 'cor', 'votersCert'] as $field) {
+        $documents = [];
+
+        foreach (['brgyCert','birthCert','gradeReport','idPicture','cor','votersCert'] as $field) {
             if ($request->hasFile($field)) {
-                $path = $request->file($field)->store('uploads/requirements', 'public');
-                $user->$field = $path;
+                $documents[$field] = $request->file($field)->store('uploads/requirements', 'public');
             }
         }
 
-        $user->save();
+        // Create or update the documents record
+        $user->documents()->updateOrCreate(
+            ['user_id' => $user->user_id],
+            $documents
+        );
 
         return back()->with('success', 'Requirements uploaded successfully!');
     }
@@ -115,27 +121,41 @@ class MemberController extends Controller
         $user = Auth::user();
 
         $validated = $request->validate([
-            'first_name'=>'required|string|max:255',
-            'middle_name'=>'nullable|string|max:255',
-            'last_name'=>'required|string|max:255',
-            'contact_number'=>'nullable|string|max:20',
-            'email'=>'required|email|max:255',
-            'street_address'=>'nullable|string|max:255',
-            'barangay'=>'nullable|string|max:255',
-            'city_municipality'=>'nullable|string|max:255',
-            'province'=>'nullable|string|max:255',
-            'zip_code'=>'nullable|string|max:10',
-            'school'=>'nullable|string|max:255',
-            'course'=>'nullable|string|max:255',
-            'gradeLevel'=>'nullable|string|max:50',
-            'skills'=>'nullable|string|max:255',
-            'emergency_contact_no'=>'nullable|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:20',
+            'email' => 'required|email|max:255',
+            'school' => 'nullable|string|max:255',
+            'course' => 'nullable|string|max:255',
+            'gradeLevel' => 'nullable|string|max:50',
+            'skills' => 'nullable|string|max:255',
+            'emergency_contact_no' => 'nullable|string|max:255',
+            'street_address' => 'nullable|string|max:255',
+            'barangay' => 'nullable|string|max:255',
+            'city_municipality' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:10',
         ]);
 
+        // Update user fields
         $user->fill($validated);
         $user->save();
 
-        // Refresh Auth user so Blade uses updated data
+        // Update or create address
+        $addressData = [
+            'street_address' => $validated['street_address'] ?? null,
+            'barangay' => $validated['barangay'] ?? null,
+            'city_municipality' => $validated['city_municipality'] ?? null,
+            'province' => $validated['province'] ?? null,
+            'zip_code' => $validated['zip_code'] ?? null,
+        ];
+
+        $user->address()->updateOrCreate(
+            ['user_id' => $user->user_id],
+            $addressData
+        );
+
         Auth::setUser($user->fresh());
 
         return back()->with('success', 'Profile updated successfully!');

@@ -9,6 +9,7 @@ use App\Models\Sponsor;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 use App\Helpers\SystemLogHelper as LogHelper;
 
 
@@ -278,29 +279,44 @@ class FacilitatorController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
-            'first_name'=>'required|string|max:255',
-            'middle_name'=>'nullable|string|max:255',
-            'last_name'=>'required|string|max:255',
-            'contact_number'=>'nullable|string|max:20',
-            'email'=>'required|email|max:255',
-            'street_address'=>'nullable|string|max:255',
-            'barangay'=>'nullable|string|max:255',
-            'city_municipality'=>'nullable|string|max:255',
-            'province'=>'nullable|string|max:255',
-            'zip_code'=>'nullable|string|max:10',
-            'school'=>'nullable|string|max:255',
-            'course'=>'nullable|string|max:255',
-            'gradeLevel'=>'nullable|string|max:50',
-            'skills'=>'nullable|string|max:255',
-            'emergency_contact_no'=>'nullable|string|max:255',
+
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:20',
+            'email' => 'required|email|max:255',
+            'school' => 'nullable|string|max:255',
+            'course' => 'nullable|string|max:255',
+            'gradeLevel' => 'nullable|string|max:50',
+            'skills' => 'nullable|string|max:255',
+            'emergency_contact_no' => 'nullable|string|max:255',
+            'street_address' => 'nullable|string|max:255',
+            'barangay' => 'nullable|string|max:255',
+            'city_municipality' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:10',
         ]);
 
-        $user->update($request->only([
-            'first_name','middle_name','last_name','contact_number','email',
-            'street_address','barangay','city_municipality','province','zip_code',
-            'school','course','gradeLevel','skills','emergency_contact_no'
-        ]));
+        // Update user fields
+        $user->fill($validated);
+        $user->save();
+
+        // Update or create address
+        $addressData = [
+            'street_address' => $validated['street_address'] ?? null,
+            'barangay' => $validated['barangay'] ?? null,
+            'city_municipality' => $validated['city_municipality'] ?? null,
+            'province' => $validated['province'] ?? null,
+            'zip_code' => $validated['zip_code'] ?? null,
+        ];
+
+        $user->address()->updateOrCreate(
+            ['user_id' => $user->user_id],
+            $addressData
+        );
+
+        Auth::setUser($user->fresh());
 
         return back()->with('success', 'Profile updated successfully!');
     }
@@ -385,4 +401,70 @@ public function updateScholarStatus(Request $request, $userId)
     return redirect()->route('sections.user_scholar_stat')->with('success', 'Scholarship status updated.');
 }
 
+public function exportMemberDocuments(Request $request)
+{
+    $query = User::query();
+
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function($q) use ($search) {
+            $q->where('first_name', 'like', "%{$search}%")
+              ->orWhere('last_name', 'like', "%{$search}%")
+              ->orWhere('scholarship_status', 'like', "%{$search}%");
+        });
+    }
+
+    $members = $query->with('documents')->get();
+
+    if ($members->isEmpty()) {
+        return redirect()->back()->with('error', 'No members found to export.');
+    }
+
+    $zipFileName = 'members_documents.zip';
+    $zipPath = storage_path($zipFileName);
+
+    $zip = new \ZipArchive();
+    if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== TRUE) {
+        return redirect()->back()->with('error', 'Could not create zip file. Check folder permissions.');
+    }
+
+    $hasFiles = false; // Track if any file is added
+
+    foreach ($members as $member) {
+        $docs = $member->documents;
+        if ($docs) {
+            $files = [
+                'Voter Certificate' => $docs->votersCert,
+                'COR' => $docs->cor,
+                'ID Picture' => $docs->idPicture,
+                'Grade Report' => $docs->gradeReport,
+                'Birth Certificate' => $docs->birthCert,
+                'Barangay Certificate' => $docs->brgyCert,
+            ];
+
+            foreach ($files as $label => $file) {
+                if ($file && Storage::disk('public')->exists($file)) {
+                    $fullPath = storage_path('app/public/' . $file);
+                    $fileName = $member->first_name . '_' . $member->last_name . '_' . $label . '.' . pathinfo($file, PATHINFO_EXTENSION);
+                    $zip->addFile($fullPath, $fileName);
+                    $hasFiles = true;
+                }
+            }
+        }
+    }
+
+    $zip->close();
+
+    if (!$hasFiles) {
+        return redirect()->back()->with('error', 'The searched members do not have any files to export.');
+    }
+
+    return response()->download($zipPath)->deleteFileAfterSend(true);
+}
+
+public function view($id)
+{
+    $activity = Activity::with(['participants'])->findOrFail($id);
+    return view('sections.view', compact('activity'));
+}
 }

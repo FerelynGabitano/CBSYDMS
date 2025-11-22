@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role:facilitator'])->group(function () {
         Route::post('/activity', [FacilitatorController::class, 'storeActivity'])->name('faci.activity.store');
         Route::put('/activity/{activity_id}', [FacilitatorController::class, 'updateActivity'])->name('faci.activity.update');
         Route::delete('/activity/{activity_id}', [FacilitatorController::class, 'destroyActivity'])->name('faci.activity.destroy');
+        Route::get('/activity/view/{id}', [FacilitatorController::class, 'view'])->name('faci.activity.view');
 
         // Attendance
         Route::post('/attendance/{activity_id}', [FacilitatorController::class, 'updateAttendance'])->name('faci.attendance.update');
@@ -107,6 +108,9 @@ Route::middleware(['auth', 'role:facilitator'])->group(function () {
         Route::get('/facilitator/members/requests', [FacilitatorController::class, 'viewScholarRequests'])->name('sections.mem_scholar_req');
         Route::get('/user-scholar-stat', [FacilitatorController::class, 'userScholarStat'])->name('sections.user_scholar_stat');
         Route::patch('/user-scholar-stat/{userId}', [FacilitatorController::class, 'updateScholarStatus'])->name('sections.update_scholar_status');
+        Route::get('/members/export-docs', [FacilitatorController::class, 'exportMemberDocuments'])->name('sections.export_members_docs');
+
+
 
         // Reports
         Route::get('/reports', [FacilitatorController::class, 'faci_reports'])->name('sections.reports');

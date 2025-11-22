@@ -68,33 +68,48 @@ class ProfileController extends Controller
         return redirect()->back()->with('success', 'Profile picture updated!');
     }
     public function update(Request $request)
-{
-    $user = Auth::user();
+    {
+        $user = Auth::user();
 
-    if (!$user) {
-        return redirect()->back()->withErrors(['Unauthorized.']);
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'contact_number' => 'nullable|string|max:20',
+            'email' => 'required|email|max:255',
+            'school' => 'nullable|string|max:255',
+            'course' => 'nullable|string|max:255',
+            'gradeLevel' => 'nullable|string|max:50',
+            'skills' => 'nullable|string|max:255',
+            'emergency_contact_no' => 'nullable|string|max:255',
+            'street_address' => 'nullable|string|max:255',
+            'barangay' => 'nullable|string|max:255',
+            'city_municipality' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:10',
+        ]);
+
+        // Update user fields
+        $user->fill($validated);
+        $user->save();
+
+        // Update or create address
+        $addressData = [
+            'street_address' => $validated['street_address'] ?? null,
+            'barangay' => $validated['barangay'] ?? null,
+            'city_municipality' => $validated['city_municipality'] ?? null,
+            'province' => $validated['province'] ?? null,
+            'zip_code' => $validated['zip_code'] ?? null,
+        ];
+
+        $user->address()->updateOrCreate(
+            ['user_id' => $user->user_id],
+            $addressData
+        );
+
+        Auth::setUser($user->fresh());
+
+        return back()->with('success', 'Profile updated successfully!');
     }
 
-    $validated = $request->validate([
-        'first_name' => 'required|string|max:50',
-        'middle_name' => 'nullable|string|max:50',
-        'last_name' => 'required|string|max:50',
-        'contact_number' => 'nullable|string|max:20',
-        'email'=>'required|email|max:255',
-        'street_address' => 'nullable|string|max:255',
-        'barangay' => 'nullable|string|max:255',
-        'city_municipality' => 'nullable|string|max:255',
-        'province' => 'nullable|string|max:255',
-        'zip_code' => 'nullable|string|max:10',
-        'school' => 'nullable|string|max:255',
-        'course' => 'nullable|string|max:255',
-        'gradeLevel' => 'nullable|string|max:50',
-        'skills' => 'nullable|string|max:255',
-        'emergency_contact_no' => 'nullable|string|max:20',
-    ]);
-
-    $user->update($validated);
-
-    return redirect()->back()->with('success', 'Profile information updated successfully.');
-}
 }

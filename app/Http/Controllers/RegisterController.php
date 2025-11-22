@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class RegisterController extends Controller
@@ -40,29 +41,37 @@ class RegisterController extends Controller
             'idPicture'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Store uploaded files in storage/app/public/uploads
-         if ($request->hasFile('brgyCert')) {
-            $validated['brgyCert'] = $request->file('brgyCert')->store('uploads', 'public');
-        }
-        if ($request->hasFile('birthCert')) {
-            $validated['birthCert'] = $request->file('birthCert')->store('uploads', 'public');
-        }
-        if ($request->hasFile('gradeReport')) {
-            $validated['gradeReport'] = $request->file('gradeReport')->store('uploads', 'public');
-        }
-        if ($request->hasFile('idPicture')) {
-            $validated['idPicture'] = $request->file('idPicture')->store('uploads', 'public');
-        }
+        DB::transaction(function () use ($validated, $request) {
+            // 1. Create the user
+            $user = User::create([
+                'first_name' => $validated['first_name'],
+                'middle_name' => $validated['middle_name'] ?? null,
+                'last_name' => $validated['last_name'],
+                'date_of_birth' => $validated['date_of_birth'],
+                'gender' => $validated['gender'],
+                'contact_number' => $validated['contact_number'],
+                'email' => $validated['email'],
+                'password' => null, // No password yet
+                'role_id' => 1, // Default role
+            ]);
 
+            // 2. Save address
+            $user->address()->create([
+                'street_address' => $validated['street_address'],
+                'barangay' => $validated['barangay'],
+                'city_municipality' => $validated['city_municipality'],
+                'province' => $validated['province'],
+                'zip_code' => $validated['zip_code'],
+            ]);
 
-        // No password yet
-        $validated['password'] = null;
-
-        // Assign default role
-        $validated['role_id'] = 1;
-
-        // Save to DB
-        User::create($validated);
+            // 3. Save documents (handle file uploads)
+            $user->documents()->create([
+                'brgyCert'    => $request->hasFile('brgyCert') ? $request->file('brgyCert')->store('uploads', 'public') : null,
+                'birthCert'   => $request->hasFile('birthCert') ? $request->file('birthCert')->store('uploads', 'public') : null,
+                'gradeReport' => $request->hasFile('gradeReport') ? $request->file('gradeReport')->store('uploads', 'public') : null,
+                'idPicture'   => $request->hasFile('idPicture') ? $request->file('idPicture')->store('uploads', 'public') : null,
+            ]);
+        });
 
         return redirect()->route('welcome')->with('success', 'Registration successful!');
     }

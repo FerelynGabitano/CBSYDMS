@@ -13,7 +13,17 @@
         <td>{{ $user->gender }}</td>
         <td>{{ $user->contact_number }}</td>
         <td>{{ $user->email }}</td>
-        <td>{{ $user->street_address }} {{ $user->barangay }} {{ $user->city_municipality }} {{ $user->province }} {{ $user->zip_code }}</td>
+        <td>
+            @if($user->address)
+                {{ $user->address->street_address }} 
+                {{ $user->address->barangay }} 
+                {{ $user->address->city_municipality }} 
+                {{ $user->address->province }} 
+                {{ $user->address->zip_code }}
+            @else
+                — 
+            @endif
+        </td>
         <td>—</td>
         <td>{{ $user->role ? $user->role->role_name : 'No role' }}</td>
         <td>{{ $user->created_at->format('M d, Y') }}</td>
